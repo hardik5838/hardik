@@ -1,26 +1,54 @@
 import streamlit as st
 import math
 
-# --- Data for Distribution Companies (Parsed from your Excel) ---
+# --- Data for Distribution Companies (Parsed from your Excel and Endesa NRZ103) ---
 
-# Endesa Table AIDE Data
-# Potencia prevista (kW), Phase (mm²), Neutral (mm²), Ground (mm²), Max_Len_0.5% (m), Max_Len_1% (m), Tube_Dia (mm), CGP_Amp_Range, Conductor_Amp_Rating (used for Fuse/Breaker)
-endesa_aide_table = [
-    {"power_kw": 3, "phase_mm2": 9, "neutral_mm2": 16, "ground_mm2": 10, "max_len_0_5": 101, "max_len_1": 428, "tube_dia_mm": 75, "cgp_amp_range": "60", "conductor_amp_rating": 10},
-    {"power_kw": 6, "phase_mm2": 10, "neutral_mm2": 16, "ground_mm2": 10, "max_len_0_5": 106, "max_len_1": 450, "tube_dia_mm": 75, "cgp_amp_range": "80", "conductor_amp_rating": 16},
-    {"power_kw": 10, "phase_mm2": 16, "neutral_mm2": 16, "ground_mm2": 16, "max_len_0_5": 173, "max_len_1": 311, "tube_dia_mm": 100, "cgp_amp_range": "100", "conductor_amp_rating": 25},
-    {"power_kw": 15, "phase_mm2": 25, "neutral_mm2": 16, "ground_mm2": 16, "max_len_0_5": 173, "max_len_1": 311, "tube_dia_mm": 100, "cgp_amp_range": "125", "conductor_amp_rating": 35},
-    {"power_kw": 20, "phase_mm2": 25, "neutral_mm2": 25, "ground_mm2": 25, "max_len_0_5": 204, "max_len_1": 411, "tube_dia_mm": 125, "cgp_amp_range": "160", "conductor_amp_rating": 50},
-    {"power_kw": 30, "phase_mm2": 50, "neutral_mm2": 25, "ground_mm2": 25, "max_len_0_5": 224, "max_len_1": 441, "tube_dia_mm": 125, "cgp_amp_range": "200", "conductor_amp_rating": 70},
-    {"power_kw": 50, "phase_mm2": 70, "neutral_mm2": 35, "ground_mm2": 35, "max_len_0_5": 244, "max_len_1": 481, "tube_dia_mm": 125, "cgp_amp_range": "250", "conductor_amp_rating": 95},
-    {"power_kw": 75, "phase_mm2": 95, "neutral_mm2": 50, "ground_mm2": 50, "max_len_0_5": 275, "max_len_1": 531, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 120},
-    {"power_kw": 100, "phase_mm2": 120, "neutral_mm2": 70, "ground_mm2": 70, "max_len_0_5": 295, "max_len_1": 571, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 150},
-    {"power_kw": 156, "phase_mm2": 150, "neutral_mm2": 95, "ground_mm2": 95, "max_len_0_5": 332, "max_len_1": 641, "tube_dia_mm": 160, "cgp_amp_range": "250-400", "conductor_amp_rating": 185},
-    {"power_kw": 223, "phase_mm2": 185, "neutral_mm2": 95, "ground_mm2": 95, "max_len_0_5": 352, "max_len_1": 691, "tube_dia_mm": 180, "cgp_amp_range": "250-400", "conductor_amp_rating": 240},
-    {"power_kw": 312, "phase_mm2": 240, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 382, "max_len_1": 761, "tube_dia_mm": 200, "cgp_amp_range": "250-400", "conductor_amp_rating": 300},
+# Endesa NRZ103 Annex Table (Page 69) - Main reference for Endesa
+# Potencia prevista (kW) for 400V 3-phase, corresponding Nominal Current (A) for Main Breaker/Fuse
+endesa_contracted_power_data = [
+    # Power_kW, Base_Contractual_A, Nom_Int_A
+    {"power_kw": 3.46, "base_contractual_a": 5, "nom_int_a": 63},
+    {"power_kw": 5.19, "base_contractual_a": 7.5, "nom_int_a": 63},
+    {"power_kw": 6.92, "base_contractual_a": 10, "nom_int_a": 63},
+    {"power_kw": 10.39, "base_contractual_a": 15, "nom_int_a": 63},
+    {"power_kw": 13.85, "base_contractual_a": 20, "nom_int_a": 63},
+    {"power_kw": 17.32, "base_contractual_a": 25, "nom_int_a": 63},
+    {"power_kw": 20.78, "base_contractual_a": 30, "nom_int_a": 63},
+    {"power_kw": 24.24, "base_contractual_a": 35, "nom_int_a": 63},
+    {"power_kw": 27.71, "base_contractual_a": 40, "nom_int_a": 63},
+    {"power_kw": 31.17, "base_contractual_a": 45, "nom_int_a": 63},
+    {"power_kw": 34.64, "base_contractual_a": 50, "nom_int_a": 63},
+    {"power_kw": 43.64, "base_contractual_a": 63, "nom_int_a": 63},
+    {"power_kw": 55.42, "base_contractual_a": 80, "nom_int_a": 100},
+    {"power_kw": 69.30, "base_contractual_a": 100, "nom_int_a": 100},
+    {"power_kw": 88.60, "base_contractual_a": 125, "nom_int_a": 160},
+    {"power_kw": 103.92, "base_contractual_a": 150, "nom_int_a": 160},
+    {"power_kw": 138.60, "base_contractual_a": 200, "nom_int_a": 250},
+    {"power_kw": 173.20, "base_contractual_a": 250, "nom_int_a": 250},
+    {"power_kw": 207.84, "base_contractual_a": 300, "nom_int_a": 400},
+    {"power_kw": 218.30, "base_contractual_a": 315, "nom_int_a": 400},
+    {"power_kw": 277.10, "base_contractual_a": 400, "nom_int_a": 400},
+    {"power_kw": 346.40, "base_contractual_a": 500, "nom_int_a": 630},
 ]
 
-# Unión Fenosa (ufd) Table Data
+# Endesa NRZ103 IGM Sizing Rule (Page 54)
+def get_endesa_igm_capacity(power_kw):
+    if power_kw <= 90:
+        return "160 A"
+    elif power_kw <= 150:
+        return "250 A"
+    else:
+        return "Appropriate switch/disconnector (consult EDE for >400A)"
+
+# Endesa NRZ103 CGP Type Mapping (Page 21, Section 5.4)
+endesa_cgp_types = [
+    {"max_current_a": 100, "type": "BUC - esquema 7-100 A"},
+    {"max_current_a": 160, "type": "BUC - esquema 7-160 A or 9-160 A"},
+    {"max_current_a": 250, "type": "BUC - esquema 7-250 A or 9-250 A"},
+    {"max_current_a": 400, "type": "BUC - esquema 7-400 A or 9-400 A"},
+]
+
+# Union Fenosa (ufd) Table Data
 ufd_table = [
     {"power_kw": 24.9, "phase_mm2": 10, "neutral_mm2": 10, "ground_mm2": 10, "max_len_0_5": 18, "max_len_1": 35, "tube_dia_mm": 75},
     {"power_kw": 37.4, "phase_mm2": 16, "neutral_mm2": 10, "ground_mm2": 10, "max_len_0_5": 12, "max_len_1": 24, "tube_dia_mm": 75},
@@ -36,22 +64,19 @@ ufd_table = [
     {"power_kw": 277.8, "phase_mm2": 240, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 38, "max_len_1": 76, "tube_dia_mm": 200},
 ]
 
-# Iberdrola (IDE) Table Data - NOW POPULATED
+# Iberdrola (IDE) Table Data
 iberdrola_ide_table = [
-    # Potencia prevista (kW), Phase (mm²), Neutral (mm²), Ground (mm²), Max_Len_0.5% (m), Max_Len_1% (m), Tube_Dia (mm), CGP_Amp_Range, Conductor_Amp_Rating (used for Fuse/Breaker)
-    # Interpretation of your provided IDE table:
-    # Some power_kw values (like 25, 78, 95, 240, 315) are inferred from AMP values or context as they were not explicitly in the "Potencia prevista" column next to the rows.
     {"power_kw": 3, "phase_mm2": 9, "neutral_mm2": 16, "ground_mm2": 10, "max_len_0_5": 101, "max_len_1": 428, "tube_dia_mm": 75, "cgp_amp_range": "60", "conductor_amp_rating": 10},
     {"power_kw": 6, "phase_mm2": 10, "neutral_mm2": 16, "ground_mm2": 10, "max_len_0_5": 106, "max_len_1": 450, "tube_dia_mm": 75, "cgp_amp_range": "80", "conductor_amp_rating": 16},
     {"power_kw": 10, "phase_mm2": 16, "neutral_mm2": 16, "ground_mm2": 16, "max_len_0_5": 173, "max_len_1": 311, "tube_dia_mm": 100, "cgp_amp_range": "100", "conductor_amp_rating": 25},
-    {"power_kw": 25, "phase_mm2": 16, "neutral_mm2": 16, "ground_mm2": 16, "max_len_0_5": 173, "max_len_1": 311, "tube_dia_mm": 100, "cgp_amp_range": "100", "conductor_amp_rating": 25}, # Assuming 25kW maps to same row as 10kW based on your table layout
+    {"power_kw": 25, "phase_mm2": 16, "neutral_mm2": 16, "ground_mm2": 16, "max_len_0_5": 173, "max_len_1": 311, "tube_dia_mm": 100, "cgp_amp_range": "100", "conductor_amp_rating": 25},
     {"power_kw": 50, "phase_mm2": 25, "neutral_mm2": 25, "ground_mm2": 25, "max_len_0_5": 204, "max_len_1": 411, "tube_dia_mm": 125, "cgp_amp_range": "160", "conductor_amp_rating": 50},
-    {"power_kw": 78, "phase_mm2": 50, "neutral_mm2": 25, "ground_mm2": 25, "max_len_0_5": 224, "max_len_1": 441, "tube_dia_mm": 125, "cgp_amp_range": "200", "conductor_amp_rating": 70}, # Assuming 78kW is the entry for this row
-    {"power_kw": 95, "phase_mm2": 50, "neutral_mm2": 50, "ground_mm2": 50, "max_len_0_5": 224, "max_len_1": 441, "tube_dia_mm": 125, "cgp_amp_range": "250", "conductor_amp_rating": 95}, # Assuming 95kW is the entry for this row
+    {"power_kw": 78, "phase_mm2": 50, "neutral_mm2": 25, "ground_mm2": 25, "max_len_0_5": 224, "max_len_1": 441, "tube_dia_mm": 125, "cgp_amp_range": "200", "conductor_amp_rating": 70},
+    {"power_kw": 95, "phase_mm2": 50, "neutral_mm2": 50, "ground_mm2": 50, "max_len_0_5": 224, "max_len_1": 441, "tube_dia_mm": 125, "cgp_amp_range": "250", "conductor_amp_rating": 95},
     {"power_kw": 125, "phase_mm2": 95, "neutral_mm2": 50, "ground_mm2": 50, "max_len_0_5": 275, "max_len_1": 531, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 150},
     {"power_kw": 150, "phase_mm2": 95, "neutral_mm2": 95, "ground_mm2": 95, "max_len_0_5": 275, "max_len_1": 531, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 150},
     {"power_kw": 196, "phase_mm2": 150, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 295, "max_len_1": 571, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 240},
-    {"power_kw": 240, "phase_mm2": 150, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 295, "max_len_1": 571, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 240}, # Assuming 240kW is the entry for this row
+    {"power_kw": 240, "phase_mm2": 150, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 295, "max_len_1": 571, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 240},
     {"power_kw": 315, "phase_mm2": 225, "neutral_mm2": 225, "ground_mm2": 225, "max_len_0_5": 332, "max_len_1": 641, "tube_dia_mm": 160, "cgp_amp_range": "250-400", "conductor_amp_rating": 315},
 ]
 
@@ -80,23 +105,20 @@ generic_cable_diameter_data = [
     {"area_mm2": 630, "diameter_mm": 37.6, "three_phase_amps": 611},
 ]
 
-
-def find_cable_data_by_power(power_kw, company_table):
-    """Finds the appropriate cable data in a company-specific table based on power.
-    Assumes table is sorted by power_kw ascending."""
-    for row in company_table:
+# Helper function to find data in tables (assuming sorted by power_kw)
+def find_data_by_power(power_kw, data_table):
+    for row in data_table:
         if power_kw <= row["power_kw"]:
             return row
-    return None # If power exceeds all listed values
+    return data_table[-1] if data_table else None # Return max available if power exceeds known range
 
 
-def get_generic_diameter_from_area(area_mm2):
-    """Finds the approximate overall diameter for a given cross-sectional area."""
-    # This function assumes generic_cable_diameter_data is sorted by area_mm2
-    for cable in generic_cable_diameter_data:
-        if cable["area_mm2"] == area_mm2:
-            return cable["diameter_mm"]
-    return "N/A" # Diameter not found for this exact area
+# Helper function to get CGP Type based on current from Endesa NRZ103 (Page 21)
+def get_endesa_cgp_type(nominal_current_a):
+    for cgp in endesa_cgp_types:
+        if nominal_current_a <= cgp["max_current_a"]:
+            return cgp["type"]
+    return "N/A (Consult EDE for >400A)" # Based on document text
 
 
 def calculate_current(power_kw, voltage_v, phase_number, power_factor):
@@ -112,7 +134,7 @@ def calculate_current(power_kw, voltage_v, phase_number, power_factor):
     return 0 # Should not happen with valid phase_number
 
 # --- Streamlit App ---
-st.set_page_config(page_title="Installation Guide Generator", layout="centered") # Removed icon="⚡"
+st.set_page_config(page_title="Electrical Installation Guide Generator", layout="centered")
 
 st.title("⚡ Electrical Installation Guide Generator")
 st.markdown("Generate tailored electrical requirements based on distribution company standards.")
@@ -127,7 +149,6 @@ with col1:
         options=["Endesa", "Iberdrola", "Unión Fenosa"],
         index=0 # Default to Endesa
     )
-    # Changed to Maximum Contracted Power (kW) based on new data
     power_kw = st.number_input("Maximum Contracted Power (kW)", min_value=0.0, value=100.0, step=1.0, help="The maximum power expected for the installation.")
     voltage_v = st.number_input("Nominal Network Voltage (V)", min_value=0.0, value=400.0, step=1.0, help="Typically 400V for 3-phase, 230V for 1-phase in Spain.")
 
@@ -136,7 +157,6 @@ with col2:
     load_factor = st.slider("Load Factor (Power Factor)", min_value=0.8, max_value=1.0, value=0.9, step=0.01, help="Also known as Power Factor (cos phi).")
     voltage_drop_limit = st.slider("Voltage Drop Limit (%)", min_value=0.5, max_value=5.0, value=0.5, step=0.1, help="Maximum allowed voltage drop in the installation.")
 
-
 st.info("You can also directly input the design current if you have it (overrides power calculation).")
 input_design_current_a = st.number_input("Calculated Design Current (A) (Optional)", min_value=0.0, value=0.0, step=1.0, help="If provided, this current will be used directly for sizing purposes.")
 
@@ -144,13 +164,24 @@ input_design_current_a = st.number_input("Calculated Design Current (A) (Optiona
 # --- Calculations & Logic ---
 st.header("Generated Requirements")
 
-selected_table = []
+selected_company_data = None
+uf_ground_data = None # To store UF ground data for Endesa fallback
+
 if company == "Endesa":
-    selected_table = endesa_aide_table
+    selected_company_data = find_data_by_power(power_kw, endesa_contracted_power_data)
+    # Also find corresponding data from UF table for ground conductor reference
+    uf_ground_data = find_data_by_power(power_kw, ufd_table)
+    if power_kw > 346.40: # Max power in Endesa table
+         st.warning("For contracted power above 346.40 kW with Endesa, consult official Endesa documentation for specific requirements.")
 elif company == "Unión Fenosa":
-    selected_table = ufd_table
+    selected_company_data = find_data_by_power(power_kw, ufd_table)
+    if power_kw > 277.8: # Max power in UF table
+        st.warning("For contracted power above 277.8 kW with Unión Fenosa, consult official Unión Fenosa documentation for specific requirements.")
 elif company == "Iberdrola":
-    selected_table = iberdrola_ide_table # Now populated!
+    selected_company_data = find_data_by_power(power_kw, iberdrola_ide_table)
+    if power_kw > 315: # Max power in IDE table
+        st.warning("For contracted power above 315 kW with Iberdrola, consult official Iberdrola documentation for specific requirements.")
+
 
 # Determine the current to use for sizing
 if input_design_current_a > 0:
@@ -161,38 +192,75 @@ else:
     st.write(f"Calculated Design Current (I_B) based on inputs: **{calculated_current:.2f} A**")
 
 
-# Lookup values from the company-specific table based on Power
-company_specific_results = find_cable_data_by_power(power_kw, selected_table)
-
-if company_specific_results:
-    st.subheader(f"Requirements for {company} (Based on Power)")
+if selected_company_data:
+    st.subheader(f"Requirements for {company} (Based on {power_kw} kW Contracted Power)")
 
     # Cable Sections
     st.markdown("#### Cable Sections (mm²)")
-    st.write(f"- **Phase Wire Section:** {company_specific_results['phase_mm2']} mm²")
-    st.write(f"- **Neutral Section:** {company_specific_results['neutral_mm2']} mm²")
-    st.write(f"- **Protective Earth (Ground) Section:** {company_specific_results['ground_mm2']} mm²")
+    
+    phase_mm2 = "N/A"
+    neutral_mm2 = "N/A"
+    ground_mm2 = "N/A"
 
-    # Overall Cable Diameter (derived from phase wire section if possible)
-    # The company tables directly give tube diameter, but we can also infer cable diameter
-    overall_cable_diameter = get_generic_diameter_from_area(company_specific_results['phase_mm2'])
-    st.write(f"- **Approx. Overall Cable Diameter (derived):** {overall_cable_diameter} mm (Based on Phase Wire Section)")
+    if company == "Endesa":
+        # For Endesa, we derive actual cable sections based on the nominal current found in the table.
+        # Find the generic cable that can carry the 'nom_int_a' from the Endesa table.
+        required_nom_int = selected_company_data['nom_int_a']
+        found_cable_for_nom_int = None
+        for cable in generic_cable_diameter_data:
+            if cable["three_phase_amps"] >= required_nom_int:
+                found_cable_for_nom_int = cable
+                break
 
+        if found_cable_for_nom_int:
+            phase_mm2 = found_cable_for_nom_int['area_mm2']
+            neutral_mm2 = phase_mm2 # Endesa NRZ103 Page 23: Neutral recommended same as phase
+            
+            # Ground (Terra) for Endesa: Use UF table as reference, or specific REBT rule
+            if uf_ground_data and 'ground_mm2' in uf_ground_data:
+                ground_mm2 = uf_ground_data['ground_mm2']
+                st.write(f"- **Phase Wire Section:** {phase_mm2} mm²")
+                st.write(f"- **Neutral Section:** {neutral_mm2} mm²")
+                st.write(f"- **Protective Earth (Ground) Section:** {ground_mm2} mm²")
+                st.info("*(Note: For Endesa, Neutral section is recommended equal to Phase (NRZ103). Ground section is derived from an equivalent power rating in the Unión Fenosa table, as explicit ground sections are not in Endesa's primary tables.)*")
+            else:
+                # Fallback if UF data not found for ground
+                st.write(f"- **Phase Wire Section:** {phase_mm2} mm²")
+                st.write(f"- **Neutral Section:** {neutral_mm2} mm²")
+                st.write(f"- **Protective Earth (Ground) Section:** N/A (Consult REBT ITC-BT 14 or specific Endesa documentation)")
+                st.info("*(Note: For Endesa, Neutral section is recommended equal to Phase (NRZ103). Ground section not explicitly in Endesa's primary tables.)*")
+            
+            overall_cable_diameter = get_generic_diameter_from_area(phase_mm2)
+            st.write(f"- **Approx. Overall Cable Diameter (derived):** {overall_cable_diameter} mm (Based on Phase Wire Section)")
+        else:
+            st.write("- **Cable Sections:** Not determined from available data. Consult Endesa documentation.")
+            overall_cable_diameter = "N/A"
+
+    else: # For Unión Fenosa and Iberdrola (as their tables have explicit sections)
+        phase_mm2 = selected_company_data.get('phase_mm2', 'N/A')
+        neutral_mm2 = selected_company_data.get('neutral_mm2', 'N/A')
+        ground_mm2 = selected_company_data.get('ground_mm2', 'N/A')
+        
+        st.write(f"- **Phase Wire Section:** {phase_mm2} mm²")
+        st.write(f"- **Neutral Section:** {neutral_mm2} mm²")
+        st.write(f"- **Protective Earth (Ground) Section:** {ground_mm2} mm²")
+        
+        overall_cable_diameter = get_generic_diameter_from_area(phase_mm2)
+        st.write(f"- **Approx. Overall Cable Diameter (derived):** {overall_cable_diameter} mm (Based on Phase Wire Section)")
 
     # Installation Details
     st.markdown("#### Installation Specifics")
-    st.write(f"- **Minimum Tube Diameter:** {company_specific_results['tube_dia_mm']} mm")
+    st.write(f"- **Minimum Tube Diameter:** {selected_company_data.get('tube_dia_mm', 'N/A')} mm")
 
     # Voltage Drop Limits and Max Length
-    if 'max_len_0_5' in company_specific_results and 'max_len_1' in company_specific_results:
-        # Determine which max length to show based on user's voltage drop limit
+    if 'max_len_0_5' in selected_company_data and 'max_len_1' in selected_company_data:
         if voltage_drop_limit <= 0.5:
-             st.write(f"- **Maximum Recommended Length (for {voltage_drop_limit:.1f}% voltage drop):** {company_specific_results['max_len_0_5']} m")
+             st.write(f"- **Maximum Recommended Length (for {voltage_drop_limit:.1f}% voltage drop):** {selected_company_data['max_len_0_5']} m")
         elif voltage_drop_limit <= 1.0:
-            st.write(f"- **Maximum Recommended Length (for {voltage_drop_limit:.1f}% voltage drop):** {company_specific_results['max_len_1']} m")
+            st.write(f"- **Maximum Recommended Length (for {voltage_drop_limit:.1f}% voltage drop):** {selected_company_data['max_len_1']} m")
         else:
-            st.write(f"- **Maximum Length @ 0.5% Voltage Drop:** {company_specific_results['max_len_0_5']} m")
-            st.write(f"- **Maximum Length @ 1.0% Voltage Drop:** {company_specific_results['max_len_1']} m")
+            st.write(f"- **Maximum Length @ 0.5% Voltage Drop:** {selected_company_data['max_len_0_5']} m")
+            st.write(f"- **Maximum Length @ 1.0% Voltage Drop:** {selected_company_data['max_len_1']} m")
             st.info("*(Note: For voltage drop limits above 1.0%, you might need to consult specific company guidelines for longer lengths.)*")
     else:
         st.info(f"Max length data for {company} not directly available in selected table for various voltage drops.")
@@ -202,25 +270,49 @@ if company_specific_results:
     st.markdown("#### Electrical Devices & Capacities")
 
     # CGP (Caja General de Protección) and Fuse/Breaker
-    if 'cgp_amp_range' in company_specific_results:
-        cgp_info = company_specific_results.get('cgp_amp_range', 'N/A')
-        st.write(f"- **Tipo De CGP (General Protection Box):** Related to **{cgp_info} Amps**")
-    else:
-        st.write("- **Tipo De CGP (General Protection Box):** Information not directly available in this company's table.")
+    if company == "Endesa":
+        # IGM Capacity (from Page 54)
+        igm_capacity = get_endesa_igm_capacity(power_kw)
+        st.write(f"- **Interruptor General de Maniobra (IGM) Capacity:** {igm_capacity}")
+        if power_kw > 150:
+            st.info("*(Note: For power above 150kW, IGM capacity requires agreement with Endesa.)*")
 
-    if 'conductor_amp_rating' in company_specific_results:
-        st.write(f"- **Recommended Fuse Capacity:** {company_specific_results.get('conductor_amp_rating', 'N/A')} A")
-        st.write(f"- **Recommended Breaker Capacity:** {company_specific_results.get('conductor_amp_rating', 'N/A')} A")
-        st.info("*(Note: Fuse and Breaker capacities are typically based on the associated conductor's current rating from the selected company's table.)*")
-    else:
-        # Fallback for companies where 'conductor_amp_rating' isn't explicitly in the table
-        st.write(f"- **Recommended Fuse Capacity (Min):** Approx. {calculated_current * 1.25:.2f} A (needs company-specific lookup)")
-        st.write(f"- **Recommended Breaker Capacity (Min):** Approx. {calculated_current * 1.25:.2f} A (needs company-specific lookup)")
-        st.info("*(Note: Fuse/Breaker capacities are not directly in this company's table; general sizing rule used.)*")
+        # CGP Type (from Page 21)
+        cgp_type = get_endesa_cgp_type(selected_company_data['nom_int_a'])
+        st.write(f"- **Tipo De CGP (General Protection Box):** {cgp_type}")
 
-else:
+        # Fuse/Breaker Capacity (from Page 69, 'nom_int_a')
+        fuse_breaker_capacity = selected_company_data.get('nom_int_a', 'N/A')
+        st.write(f"- **Recommended Fuse Capacity:** {fuse_breaker_capacity} A")
+        st.write(f"- **Recommended Breaker Capacity:** {fuse_breaker_capacity} A")
+        st.info("*(Note: Fuse and Breaker capacities for Endesa are typically based on the 'Intensidad Nominal' from the contracted power table.)*")
+
+        # LGA Capacity Check (Page 22)
+        lga_max_current = 250
+        if calculated_current > lga_max_current:
+            st.warning(f"LGA maximum capacity for Endesa is typically 250A. Your calculated current ({calculated_current:.2f} A) exceeds this. Consult Endesa for exceptions up to 400A.")
+
+
+    elif company in ["Iberdrola", "Unión Fenosa"]:
+        # For Iberdrola and Union Fenosa, we use the `conductor_amp_rating` or fallback to calculated.
+        if 'conductor_amp_rating' in selected_company_data: # If the table has this specific field (like Endesa's original & Iberdrola's IDE)
+            st.write(f"- **Recommended Fuse Capacity:** {selected_company_data['conductor_amp_rating']} A")
+            st.write(f"- **Recommended Breaker Capacity:** {selected_company_data['conductor_amp_rating']} A")
+            st.info("*(Note: Fuse and Breaker capacities for this company are based on specific table values.)*")
+        else: # Fallback if not explicitly in the table (like current UF data)
+            st.write(f"- **Recommended Fuse Capacity (Min):** Approx. {calculated_current * 1.25:.2f} A (needs company-specific lookup)")
+            st.write(f"- **Recommended Breaker Capacity (Min):** Approx. {calculated_current * 1.25:.2f} A (needs company-specific lookup)")
+            st.info("*(Note: Fuse/Breaker capacities are not directly in this company's provided table; general sizing rule used as a placeholder.)*")
+        
+        if 'cgp_amp_range' in selected_company_data:
+            st.write(f"- **Tipo De CGP (General Protection Box):** Related to **{selected_company_data['cgp_amp_range']} Amps**")
+        else:
+            st.write("- **Tipo De CGP (General Protection Box):** Information not directly available in this company's table.")
+
+
+else: # If no data found for the selected company and power
     st.warning(f"No specific data found for {company} for a contracted power of {power_kw} kW. Please check the input power or consult official company tables.")
-    # Fallback to generic cable diameter if no company-specific data
+    # Fallback to generic cable diameter based on calculated current
     found_generic_cable = None
     for cable in generic_cable_diameter_data:
         if cable["three_phase_amps"] >= calculated_current:
@@ -238,10 +330,10 @@ else:
 st.markdown("""
 ---
 ### Reference Tables:
-* [Endesa Table AIDE (Provided by User)]
+* [Endesa Guía NRZ103 (Provided by User)]
 * [Unión Fenosa Table (Provided by User)]
 * [Iberdrola IDE Table (Provided by User)]
-* [Electrical Wiring Guide Cable Size Calculator Current Rating Chart Amps](https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html)
-* [Cable Size Current Rating Chart](https://www.spwales.com/cable-size-current-rating-chart)
-* [Table 4E1A](https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html)
+* [General Cable Size Chart 1](https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html)
+* [General Cable Size Chart 2](https://www.spwales.com/cable-size-current-rating-chart)
+* [General Cable Size Chart 3](https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html)
 """)
