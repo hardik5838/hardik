@@ -75,10 +75,10 @@ iberdrola_ide_table = [
 
 # Iberdrola NI 76.50.01 Table 1 (Page 5) - Maps Max Fuse Current to CGP Type
 iberdrola_cgp_types = [
-    {"max_fuse_a": 100, "type": "CGP-1-100/BUC, CGP-7-100/BUC"}, [cite: 82]
-    {"max_fuse_a": 160, "type": "CGP-7-160/BUC"}, [cite: 82]
-    {"max_fuse_a": 250, "type": "CGP-7-250/BUC, CGP-9-250/BUC, CGP-10-250/BUC, CGP-11-250/BUC"}, [cite: 82]
-    {"max_fuse_a": 400, "type": "CGP-7-400/BUC, CGP-9-400/BUC"}, [cite: 82]
+    {"max_fuse_a": 100, "type": "CGP-1-100/BUC, CGP-7-100/BUC"}, 
+    {"max_fuse_a": 160, "type": "CGP-7-160/BUC"},
+    {"max_fuse_a": 250, "type": "CGP-7-250/BUC, CGP-9-250/BUC, CGP-10-250/BUC, CGP-11-250/BUC"}, 
+    {"max_fuse_a": 400, "type": "CGP-7-400/BUC, CGP-9-400/BUC"}, 
 ]
 
 def get_iberdrola_cgp_type(max_fuse_a):
