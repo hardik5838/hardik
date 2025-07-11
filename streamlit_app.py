@@ -410,6 +410,3 @@ st.markdown("""
 * General Cable Size Chart 2: https://www.spwales.com/cable-size-current-rating-chart
 * General Cable Size Chart 3: https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html
 """)
-
-
-
