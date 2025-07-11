@@ -96,7 +96,7 @@ def calculate_current(power_kw, voltage_v, phase_number, power_factor):
 # --- Streamlit App ---
 st.set_page_config(page_title="Installation Guide Generator", layout="centered", icon="⚡")
 
-st.title("⚡ Electrical Installation Guide Generator")
+st.title(" Electrical Installation Guide Generator")
 st.markdown("Generate tailored electrical requirements based on distribution company standards.")
 
 # --- Input Section ---
