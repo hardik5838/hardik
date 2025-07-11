@@ -47,7 +47,12 @@ endesa_cgp_types = [
     {"max_current_a": 250, "type": "BUC - esquema 7-250 A or 9-250 A"},
     {"max_current_a": 400, "type": "BUC - esquema 7-400 A or 9-400 A"},
 ]
-
+# Helper function to get CGP Type based on current from Endesa NRZ103 (Page 21)
+def get_endesa_cgp_type(nominal_current_a):
+    for cgp in endesa_cgp_types:
+        if nominal_current_a <= cgp["max_current_a"]:
+            return cgp["type"]
+    return "N/A (Consult EDE for >400A)" # Based on document text
 # Union Fenosa (ufd) Table Data - Contains explicit phase, neutral, ground sections
 ufd_table = [
     {"power_kw": 24.9, "phase_mm2": 10, "neutral_mm2": 10, "ground_mm2": 10, "max_len_0_5": 18, "max_len_1": 35, "tube_dia_mm": 75},
