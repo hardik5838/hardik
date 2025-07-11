@@ -4,7 +4,6 @@ import math
 # --- Data for Distribution Companies ---
 
 # Endesa NRZ103 Annex Table (Page 69) - Main reference for Endesa's contracted power to nominal current mapping
-# This table maps Potencia prevista (kW) for 400V 3-phase to corresponding Nominal Current (A) for Main Breaker/Fuse
 endesa_contracted_power_data = [
     # Power_kW, Base_Contractual_A, Nom_Int_A (Nominal Intensity of protection devices)
     {"power_kw": 3.46, "base_contractual_a": 5, "nom_int_a": 63},
@@ -47,12 +46,7 @@ endesa_cgp_types = [
     {"max_current_a": 250, "type": "BUC - esquema 7-250 A or 9-250 A"},
     {"max_current_a": 400, "type": "BUC - esquema 7-400 A or 9-400 A"},
 ]
-# Helper function to get CGP Type based on current from Endesa NRZ103 (Page 21)
-def get_endesa_cgp_type(nominal_current_a):
-    for cgp in endesa_cgp_types:
-        if nominal_current_a <= cgp["max_current_a"]:
-            return cgp["type"]
-    return "N/A (Consult EDE for >400A)" # Based on document text
+
 # Union Fenosa (ufd) Table Data - Contains explicit phase, neutral, ground sections
 ufd_table = [
     {"power_kw": 24.9, "phase_mm2": 10, "neutral_mm2": 10, "ground_mm2": 10, "max_len_0_5": 18, "max_len_1": 35, "tube_dia_mm": 75},
@@ -69,24 +63,30 @@ ufd_table = [
     {"power_kw": 277.8, "phase_mm2": 240, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 38, "max_len_1": 76, "tube_dia_mm": 200},
 ]
 
-# Iberdrola (IDE) Table Data - Parsed from your provided Excel snippet
+# Iberdrola (IDE) Table Data - Confirmed to be MT 2.80.12 Table 1 (Page 17)
 iberdrola_ide_table = [
-    # Power_kW, Phase (mm²), Neutral (mm²), Ground (mm²), Max_Len_0.5% (m), Max_Len_1% (m), Tube_Dia (mm), CGP_Amp_Range, Conductor_Amp_Rating (used for Fuse/Breaker)
-    # Note: Power_kw values were inferred for some rows based on the AMP column or context.
-    {"power_kw": 3, "phase_mm2": 9, "neutral_mm2": 16, "ground_mm2": 10, "max_len_0_5": 101, "max_len_1": 428, "tube_dia_mm": 75, "cgp_amp_range": "60", "conductor_amp_rating": 10},
-    {"power_kw": 6, "phase_mm2": 10, "neutral_mm2": 16, "ground_mm2": 10, "max_len_0_5": 106, "max_len_1": 450, "tube_dia_mm": 75, "cgp_amp_range": "80", "conductor_amp_rating": 16},
-    {"power_kw": 10, "phase_mm2": 16, "neutral_mm2": 16, "ground_mm2": 16, "max_len_0_5": 173, "max_len_1": 311, "tube_dia_mm": 100, "cgp_amp_range": "100", "conductor_amp_rating": 25},
-    {"power_kw": 25, "phase_mm2": 16, "neutral_mm2": 16, "ground_mm2": 16, "max_len_0_5": 173, "max_len_1": 311, "tube_dia_mm": 100, "cgp_amp_range": "100", "conductor_amp_rating": 25},
-    {"power_kw": 50, "phase_mm2": 25, "neutral_mm2": 25, "ground_mm2": 25, "max_len_0_5": 204, "max_len_1": 411, "tube_dia_mm": 125, "cgp_amp_range": "160", "conductor_amp_rating": 50},
-    {"power_kw": 78, "phase_mm2": 50, "neutral_mm2": 25, "ground_mm2": 25, "max_len_0_5": 224, "max_len_1": 441, "tube_dia_mm": 125, "cgp_amp_range": "200", "conductor_amp_rating": 70},
-    {"power_kw": 95, "phase_mm2": 50, "neutral_mm2": 50, "ground_mm2": 50, "max_len_0_5": 224, "max_len_1": 441, "tube_dia_mm": 125, "cgp_amp_range": "250", "conductor_amp_rating": 95},
-    {"power_kw": 125, "phase_mm2": 95, "neutral_mm2": 50, "ground_mm2": 50, "max_len_0_5": 275, "max_len_1": 531, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 150},
-    {"power_kw": 150, "phase_mm2": 95, "neutral_mm2": 95, "ground_mm2": 95, "max_len_0_5": 275, "max_len_1": 531, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 150},
-    {"power_kw": 196, "phase_mm2": 150, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 295, "max_len_1": 571, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 240},
-    {"power_kw": 240, "phase_mm2": 150, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 295, "max_len_1": 571, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 240},
-    {"power_kw": 315, "phase_mm2": 225, "neutral_mm2": 225, "ground_mm2": 225, "max_len_0_5": 332, "max_len_1": 641, "tube_dia_mm": 160, "cgp_amp_range": "250-400", "conductor_amp_rating": 315},
+    {"power_kw": 3, "phase_mm2": 9, "neutral_mm2": 16, "ground_mm2": 10, "max_len_0_5": 101, "max_len_1": 428, "tube_dia_mm": 75, "cgp_amp_range": "63", "conductor_amp_rating": 63}, # "63" from table 1
+    {"power_kw": 50, "phase_mm2": 25, "neutral_mm2": 16, "ground_mm2": 16, "max_len_0_5": 17, "max_len_1": 33, "tube_dia_mm": 110, "cgp_amp_range": "80", "conductor_amp_rating": 80}, # "80" from table 1
+    {"power_kw": 78, "phase_mm2": 50, "neutral_mm2": 25, "ground_mm2": 25, "max_len_0_5": 20, "max_len_1": 41, "tube_dia_mm": 125, "cgp_amp_range": "125", "conductor_amp_rating": 125}, # "125" from table 1
+    {"power_kw": 125, "phase_mm2": 95, "neutral_mm2": 50, "ground_mm2": 50, "max_len_0_5": 22, "max_len_1": 44, "tube_dia_mm": 140, "cgp_amp_range": "200", "conductor_amp_rating": 200}, # "200" from table 1
+    {"power_kw": 156, "phase_mm2": 150, "neutral_mm2": 95, "ground_mm2": 95, "max_len_0_5": 27, "max_len_1": 53, "tube_dia_mm": 180, "cgp_amp_range": "250-400", "conductor_amp_rating": 250}, # "250-400" from table 1
+    {"power_kw": 196, "phase_mm2": 240, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 29, "max_len_1": 57, "tube_dia_mm": 225, "cgp_amp_range": "400", "conductor_amp_rating": 315}, # "400" from table 1
 ]
 
+# Iberdrola NI 76.50.01 Table 1 (Page 5) - Maps Max Fuse Current to CGP Type
+iberdrola_cgp_types = [
+    {"max_fuse_a": 100, "type": "CGP-1-100/BUC, CGP-7-100/BUC"}, [cite: 82]
+    {"max_fuse_a": 160, "type": "CGP-7-160/BUC"}, [cite: 82]
+    {"max_fuse_a": 250, "type": "CGP-7-250/BUC, CGP-9-250/BUC, CGP-10-250/BUC, CGP-11-250/BUC"}, [cite: 82]
+    {"max_fuse_a": 400, "type": "CGP-7-400/BUC, CGP-9-400/BUC"}, [cite: 82]
+]
+
+def get_iberdrola_cgp_type(max_fuse_a):
+    """Gets the specific Iberdrola CGP type based on max fuse current."""
+    for cgp in iberdrola_cgp_types:
+        if max_fuse_a <= cgp["max_fuse_a"]:
+            return cgp["type"]
+    return "N/A (Consult i-DE for >400A)"
 
 # Generic Cable Diameter Lookup - Used as a fallback or for deriving diameter from section
 generic_cable_diameter_data = [
@@ -221,8 +221,9 @@ elif company == "Unión Fenosa":
         st.warning("For contracted power above 277.8 kW with Unión Fenosa, consult official Unión Fenosa documentation for specific requirements.")
 elif company == "Iberdrola":
     selected_company_data = find_data_by_power(power_kw, iberdrola_ide_table)
-    if power_kw > 315: # Max power in Iberdrola's table
-        st.warning("For contracted power above 315 kW with Iberdrola, consult official Iberdrola documentation for specific requirements.")
+    if power_kw > 196: # Max power in Iberdrola's table (from MT 2.80.12 Table 1)
+        st.warning("For contracted power above 196 kW with Iberdrola, consult official Iberdrola documentation (MT 2.80.12) for specific requirements.")
+
 
 # Determine the current (I_B) to use for sizing
 if input_design_current_a > 0:
@@ -338,8 +339,33 @@ if selected_company_data:
             st.warning(f"LGA maximum capacity for Endesa is typically 250A. Your calculated current ({calculated_current:.2f} A) exceeds this. Consult Endesa for exceptions up to 400A.")
 
 
-    elif company in ["Iberdrola", "Unión Fenosa"]:
-        # For Iberdrola and Union Fenosa, use 'conductor_amp_rating' if available, else general rule
+    elif company == "Iberdrola": # Specific logic for Iberdrola based on MT 2.80.12 and NI 76.50.01
+        # IGM Capacity (from MT 2.80.12 Page 19, same rule as Endesa)
+        igm_capacity = get_endesa_igm_capacity(power_kw) # Reusing this function as the rule is identical
+        st.write(f"- **Interruptor General de Maniobra (IGM) Capacity:** {igm_capacity}")
+        if power_kw > 150:
+            st.info("*(Note: For contracted power above 150kW with Iberdrola, IGM capacity requires agreement with i-DE.)*")
+
+        # CGP Type for Iberdrola (from NI 76.50.01 Table 1)
+        # Use the 'conductor_amp_rating' from the IDE table to find the CGP type.
+        max_fuse_for_cgp = selected_company_data.get('conductor_amp_rating', 0)
+        cgp_type = get_iberdrola_cgp_type(max_fuse_for_cgp)
+        st.write(f"- **Tipo De CGP (General Protection Box):** {cgp_type}")
+        st.info("*(Note: For Iberdrola, CGP type is derived from the maximum fuse current (Intensidad nominal CGP) in NI 76.50.01 Table 1.)*")
+
+        # Fuse/Breaker Capacity for Iberdrola (from MT 2.80.12 Table 1, "Intensidad nominal CGP" column)
+        fuse_breaker_capacity = selected_company_data.get('conductor_amp_rating', 'N/A')
+        st.write(f"- **Recommended Fuse Capacity:** {fuse_breaker_capacity} A")
+        st.write(f"- **Recommended Breaker Capacity:** {fuse_breaker_capacity} A")
+        st.info("*(Note: Fuse and Breaker capacities for Iberdrola are typically based on the 'Intensidad nominal CGP' from MT 2.80.12 Table 1.)*")
+        
+        # LGA Capacity (MT 2.80.12 Page 17, Table 1 suggests 400A is max in table)
+        if calculated_current > 400: # Max value in their table 1 for CGP
+             st.warning(f"LGA maximum capacity for Iberdrola is typically up to 400A. Your calculated current ({calculated_current:.2f} A) exceeds this. Consult i-DE for specific requirements for higher currents.")
+
+
+    elif company == "Unión Fenosa": # Existing logic for Union Fenosa
+        # For Union Fenosa, we use the `conductor_amp_rating` or fallback to calculated.
         if 'conductor_amp_rating' in selected_company_data:
             st.write(f"- **Recommended Fuse Capacity:** {selected_company_data['conductor_amp_rating']} A")
             st.write(f"- **Recommended Breaker Capacity:** {selected_company_data['conductor_amp_rating']} A")
@@ -349,7 +375,6 @@ if selected_company_data:
             st.write(f"- **Recommended Breaker Capacity (Min):** Approx. {calculated_current * 1.25:.2f} A (needs company-specific lookup)")
             st.info("*(Note: Fuse/Breaker capacities are not directly in this company's provided table; general sizing rule used as a placeholder.)*")
         
-        # CGP for Iberdrola/Union Fenosa
         if 'cgp_amp_range' in selected_company_data:
             st.write(f"- **Tipo De CGP (General Protection Box):** Related to **{selected_company_data['cgp_amp_range']} Amps**")
         else:
@@ -376,13 +401,14 @@ else: # If no data found for the selected company and power (should ideally not 
 
 st.markdown("""
 ---
-### Reference Tables:
-* [Endesa Guía NRZ103 (Provided by User)]
-* [Unión Fenosa Table (Provided by User)]
-* [Iberdrola IDE Table (Provided by User)]
-* [General Cable Size Chart 1](https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html)
-* [General Cable Size Chart 2](https://www.spwales.com/cable-size-current-rating-chart)
-* [General Cable Size Chart 3](https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html)
+### Reference Documents:
+* Endesa Guía NRZ103 (Provided by User)
+* Unión Fenosa Table (Provided by User)
+* Iberdrola MT 2.80.12 (Provided by User)
+* Iberdrola NI 76.50.01 (Provided by User)
+* General Cable Size Chart 1: https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html
+* General Cable Size Chart 2: https://www.spwales.com/cable-size-current-rating-chart
+* General Cable Size Chart 3: https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html
 """)
 
 
