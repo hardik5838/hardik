@@ -36,8 +36,22 @@ ufd_table = [
     {"power_kw": 277.8, "phase_mm2": 240, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 38, "max_len_1": 76, "tube_dia_mm": 200},
 ]
 
-# Iberdrola (IDE Table) - Placeholder. Needs data.
-iberdrola_ide_table = [] # This will be filled when you provide the data
+# Iberdrola (IDE Table) 
+iberdrola_ide_table = [
+    # Potencia prevista (kW), Phase (mm²), Neutral (mm²), Ground (mm²), Max_Len_0.5% (m), Max_Len_1% (m), Tube_Dia (mm), CGP_Amp_Range, Conductor_Amp (This is the "AMP" in the table)
+    {"power_kw": 3, "phase_mm2": 9, "neutral_mm2": 16, "ground_mm2": 10, "max_len_0_5": 101, "max_len_1": 428, "tube_dia_mm": 75, "cgp_amp_range": "60", "conductor_amp_rating": 10},
+    {"power_kw": 6, "phase_mm2": 10, "neutral_mm2": 16, "ground_mm2": 10, "max_len_0_5": 106, "max_len_1": 450, "tube_dia_mm": 75, "cgp_amp_range": "80", "conductor_amp_rating": 16},
+    {"power_kw": 10, "phase_mm2": 16, "neutral_mm2": 16, "ground_mm2": 16, "max_len_0_5": 173, "max_len_1": 311, "tube_dia_mm": 100, "cgp_amp_range": "100", "conductor_amp_rating": 25},
+    {"power_kw": 25, "phase_mm2": 16, "neutral_mm2": 16, "ground_mm2": 16, "max_len_0_5": 173, "max_len_1": 311, "tube_dia_mm": 100, "cgp_amp_range": "100", "conductor_amp_rating": 25}, # Assuming 25kW maps to same row as 10kW based on your table layout
+    {"power_kw": 50, "phase_mm2": 25, "neutral_mm2": 25, "ground_mm2": 25, "max_len_0_5": 204, "max_len_1": 411, "tube_dia_mm": 125, "cgp_amp_range": "160", "conductor_amp_rating": 50},
+    {"power_kw": 78, "phase_mm2": 50, "neutral_mm2": 25, "ground_mm2": 25, "max_len_0_5": 224, "max_len_1": 441, "tube_dia_mm": 125, "cgp_amp_range": "200", "conductor_amp_rating": 70}, # Assuming 78kW is the entry for this row
+    {"power_kw": 95, "phase_mm2": 50, "neutral_mm2": 50, "ground_mm2": 50, "max_len_0_5": 224, "max_len_1": 441, "tube_dia_mm": 125, "cgp_amp_range": "250", "conductor_amp_rating": 95}, # Assuming 95kW is the entry for this row
+    {"power_kw": 125, "phase_mm2": 95, "neutral_mm2": 50, "ground_mm2": 50, "max_len_0_5": 275, "max_len_1": 531, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 150},
+    {"power_kw": 150, "phase_mm2": 95, "neutral_mm2": 95, "ground_mm2": 95, "max_len_0_5": 275, "max_len_1": 531, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 150},
+    {"power_kw": 196, "phase_mm2": 150, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 295, "max_len_1": 571, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 240},
+    {"power_kw": 240, "phase_mm2": 150, "neutral_mm2": 150, "ground_mm2": 150, "max_len_0_5": 295, "max_len_1": 571, "tube_dia_mm": 140, "cgp_amp_range": "250-400", "conductor_amp_rating": 240}, # Assuming 240kW is the entry for this row
+    {"power_kw": 315, "phase_mm2": 225, "neutral_mm2": 225, "ground_mm2": 225, "max_len_0_5": 332, "max_len_1": 641, "tube_dia_mm": 160, "cgp_amp_range": "250-400", "conductor_amp_rating": 315}, # Assuming 315kW is the entry for this row
+]
 
 # Generic Cable Diameter Lookup (from previous version, simplified for demonstration)
 # This table is used if a direct company lookup doesn't give diameter, or for general reference.
