@@ -250,6 +250,8 @@ def calculate_current(power_kw, voltage_v, phase_number, power_factor):
 
 st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="centered")
 
+st.image("Logo_ASEPEYO.png", width=150) # Puedes ajustar el 'width' para cambiar el tamaño del logo
+
 st.title("⚡ Generador de Guía de Instalaciones Eléctricas")
 st.markdown("Genere requisitos eléctricos detallados según las normas de las compañías distribuidoras.")
 
