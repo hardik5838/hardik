@@ -10,43 +10,47 @@ FUENTE_ENDESA_NRZ103_PG22_LGA_LIMITE = "Endesa Guía NRZ103, Pág. 22, 'LGA'"
 
 FUENTE_UF_TABLA = "Tabla Unión Fenosa (Proporcionada por Usuario)"
 FUENTE_UF_TABLA_SUELO = "Tabla Unión Fenosa (Proporcionada por Usuario)" # Específico para diferenciar si se usa solo para suelo
+FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2 = "Unión Fenosa ES.0100.ES.RE.EIC, Pág. 14, 'Tabla 2 CGP'"
+FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA3 = "Unión Fenosa ES.0100.ES.RE.EIC, Pág. 14, 'Tabla 3 CP/BTVC'"
+FUENTE_UF_ES_0100_ES_RE_EIC_PG35_TABLA10 = "Unión Fenosa ES.0100.ES.RE.EIC, Pág. 35, 'Tabla 10 LGA'" # This is the main UF table
 
 FUENTE_IBERDROLA_MT_PG17_TABLA1 = "Iberdrola MT 2.80.12, Pág. 17, 'Tabla 1'"
 FUENTE_IBERDROLA_MT_PG19_IGM_REGLA = "Iberdrola MT 2.80.12, Pág. 19, 'Unidad IGM'"
 FUENTE_IBERDROLA_NI_PG5_TABLA1 = "Iberdrola NI 76.50.01, Pág. 5, 'Tabla 1'"
 
 FUENTE_GUIA_BT_14_PG9_TABLA1 = "GUÍA - BT-14, Pág. 9, 'Tabla 1'"
-FUENTE_GUIA_BT_14_PG9_NEUTRO_REGLA = "GUÍA - BT-14, Pág. 9, 'Sección Conductor Neutro'" # Regla de 50% fase para neutro
-FUENTE_GUIA_BT_14_GENERAL_REBT_TIERRA = "GUÍA - BT-14, Pág. 9 (Regla General REBT para PE)" # Regla general para tierra
+FUENTE_GUIA_BT_15_PG56_TABLA14 = "GUÍA - BT-15, Pág. 56, 'Tabla 14 PE'" # Corrected source for PE rule
 
 FUENTE_GENERICO_CABLE = "Tabla General de Calibres de Cable"
 
 # --- Datos para Compañías Distribuidoras (con citación granular) ---
 
-# Datos de Endesa (NRZ103, Anexo Pág. 69)
+# Datos de Endesa (NRZ103, Anexo Pág. 69) - Re-evaluado y corregido según el auditor
+# La tabla tiene la potencia solicitada, la base de contratación (A) y la intensidad nominal (A) para protección
+# Aquí interpretamos 'nom_int_a' como la Intensidad Nominal (A) de protección/fusible
 endesa_contracted_power_data = [
-    {"power_kw": {"valor": 3.46, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 5, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 5.19, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 7.5, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 6.92, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 10, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 10.39, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 15, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 13.85, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 20, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 17.32, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 25, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 20.78, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 30, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 24.24, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 35, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 27.71, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 40, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 31.17, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 45, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 34.64, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 50, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 43.64, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 55.42, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 80, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 100, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 69.30, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 100, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 100, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 88.60, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 125, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 160, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 103.92, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 150, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 160, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 138.60, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 200, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 250, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 173.20, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 250, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 250, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 207.84, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 300, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 400, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 218.30, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 315, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 400, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 277.10, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 400, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 400, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
-    {"power_kw": {"valor": 346.40, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 500, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nom_int_a": {"valor": 630, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 3.46, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 5, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 5.19, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 7.5, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 6.92, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 10, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 10.39, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 15, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 13.85, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 20, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 17.32, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 25, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 20.78, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 30, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 24.24, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 35, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 27.71, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 40, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 31.17, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 45, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 34.64, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 50, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 43.64, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 63, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 55.42, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 80, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 100, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 69.30, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 100, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 100, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 88.60, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 125, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 160, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 103.92, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 150, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 160, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 138.60, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 200, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 250, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 173.20, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 250, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 250, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 207.84, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 300, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 400, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 218.30, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 315, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 400, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 277.10, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 400, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 400, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
+    {"power_kw": {"valor": 346.40, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "base_contractual_a": {"valor": 500, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}, "nominal_protection_current_a": {"valor": 630, "fuente": FUENTE_ENDESA_NRZ103_PG69_CONTRATACION}},
 ]
 
 # Regla de Dimensionamiento del IGM de Endesa (NRZ103, Pág. 54)
@@ -67,6 +71,8 @@ endesa_cgp_types = [
 ]
 
 # Datos de la Tabla de Unión Fenosa (proporcionada por el usuario)
+# Nota: La tabla original de UF tiene potencias que parecen específicas de ciertos puntos de la curva,
+# y las secciones de tierra son explícitas.
 ufd_table = [
     {"power_kw": {"valor": 24.9, "fuente": FUENTE_UF_TABLA}, "phase_mm2": {"valor": 10, "fuente": FUENTE_UF_TABLA}, "neutral_mm2": {"valor": 10, "fuente": FUENTE_UF_TABLA}, "ground_mm2": {"valor": 10, "fuente": FUENTE_UF_TABLA_SUELO}, "max_len_0_5": {"valor": 18, "fuente": FUENTE_UF_TABLA}, "max_len_1": {"valor": 35, "fuente": FUENTE_UF_TABLA}, "tube_dia_mm": {"valor": 75, "fuente": FUENTE_UF_TABLA}},
     {"power_kw": {"valor": 37.4, "fuente": FUENTE_UF_TABLA}, "phase_mm2": {"valor": 16, "fuente": FUENTE_UF_TABLA}, "neutral_mm2": {"valor": 10, "fuente": FUENTE_UF_TABLA}, "ground_mm2": {"valor": 10, "fuente": FUENTE_UF_TABLA_SUELO}, "max_len_0_5": {"valor": 12, "fuente": FUENTE_UF_TABLA}, "max_len_1": {"valor": 24, "fuente": FUENTE_UF_TABLA}, "tube_dia_mm": {"valor": 75, "fuente": FUENTE_UF_TABLA}},
@@ -101,20 +107,40 @@ iberdrola_cgp_types = [
 ]
 
 # GUIA - BT-14 Tabla 1 (Pág. 9) - Secciones generales y diámetros de tubo para LGA
+# Esta tabla es una referencia general para secciones de cables de cobre y diámetros de tubos.
 guia_bt_14_table_1 = [
-    {"power_kw_ref": 10, "phase_mm2_cu": 10, "neutral_mm2": 10, "tube_dia_mm": 75, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1},
-    {"power_kw_ref": 16, "phase_mm2_cu": 16, "neutral_mm2": 10, "tube_dia_mm": 75, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1},
-    {"power_kw_ref": 16, "phase_mm2_al": 16, "neutral_mm2": 16, "tube_dia_mm": 75, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, # Opción de Aluminio
-    {"power_kw_ref": 25, "phase_mm2_cu": 25, "neutral_mm2": 16, "tube_dia_mm": 110, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1},
-    {"power_kw_ref": 35, "phase_mm2_cu": 35, "neutral_mm2": 16, "tube_dia_mm": 110, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1},
-    {"power_kw_ref": 50, "phase_mm2_cu": 50, "neutral_mm2": 25, "tube_dia_mm": 125, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1},
-    {"power_kw_ref": 70, "phase_mm2_cu": 70, "neutral_mm2": 35, "tube_dia_mm": 140, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1},
-    {"power_kw_ref": 95, "phase_mm2_cu": 95, "neutral_mm2": 50, "tube_dia_mm": 140, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1},
-    {"power_kw_ref": 120, "phase_mm2_cu": 120, "neutral_mm2": 70, "tube_dia_mm": 160, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1},
-    {"power_kw_ref": 150, "phase_mm2_cu": 150, "neutral_mm2": 70, "tube_dia_mm": 160, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1},
-    {"power_kw_ref": 185, "phase_mm2_cu": 185, "neutral_mm2": 95, "tube_dia_mm": 180, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1},
-    {"power_kw_ref": 240, "phase_mm2_cu": 240, "neutral_mm2": 120, "tube_dia_mm": 200, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1},
+    {"phase_mm2_cu": {"valor": 10, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 10, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 75, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
+    {"phase_mm2_cu": {"valor": 16, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 10, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 75, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
+    {"phase_mm2_al": {"valor": 16, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 16, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 75, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}}, # Opción de Aluminio
+    {"phase_mm2_cu": {"valor": 25, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 16, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 110, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
+    {"phase_mm2_cu": {"valor": 35, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 16, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 110, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
+    {"phase_mm2_cu": {"valor": 50, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 25, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 125, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
+    {"phase_mm2_cu": {"valor": 70, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 35, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 140, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
+    {"phase_mm2_cu": {"valor": 95, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 50, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 140, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
+    {"phase_mm2_cu": {"valor": 120, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 70, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 160, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
+    {"phase_mm2_cu": {"valor": 150, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 70, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 160, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
+    {"phase_mm2_cu": {"valor": 185, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 95, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 180, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
+    {"phase_mm2_cu": {"valor": 240, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 120, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 200, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
 ]
+
+# Tablas para Capacidad de Fusibles y CGP de Unión Fenosa (ES.0100.ES.RE.EIC, Pág. 14)
+uf_cgp_fuse_data = [
+    # Designación de CGP, Imax(A) Fusible, Potencia disipada (W), Tipo
+    {"designacion": {"valor": "CGP1-100-/BUC", "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "imax_a": {"valor": 100, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "potencia_disipada_w": {"valor": 7, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}}, # Assuming 7W from table's layout
+    {"designacion": {"valor": "CGP-7-160/BUC", "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "imax_a": {"valor": 160, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "potencia_disipada_w": {"valor": 12, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}}, # Assuming 12W from table's layout
+    {"designacion": {"valor": "CGP-7-250/BUC", "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "imax_a": {"valor": 250, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "potencia_disipada_w": {"valor": 20, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}},
+    {"designacion": {"valor": "CGP-7-400/BUC", "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "imax_a": {"valor": 400, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "potencia_disipada_w": {"valor": 30, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}},
+    {"designacion": {"valor": "CGP-9-250/BUC", "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "imax_a": {"valor": 250, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "potencia_disipada_w": {"valor": 20, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}},
+    {"designacion": {"valor": "CGP-9-400/BUC", "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "imax_a": {"valor": 400, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "potencia_disipada_w": {"valor": 30, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}},
+    # Note: CGP10 and CGP11/12/14 types also exist in Table 2, but mapping to a single Imax(A) is ambiguous (e.g. 250/250) or refers to a passthrough current.
+    # We will prioritize direct CGP types with single current ratings.
+]
+# Mapping Imax to CGP type based on UF document
+def get_uf_cgp_type_and_fuse(nominal_current_a):
+    for cgp_entry in uf_cgp_fuse_data:
+        if nominal_current_a <= cgp_entry["imax_a"]["valor"]:
+            return cgp_entry["designacion"]["valor"], cgp_entry["imax_a"]["valor"], cgp_entry["fuente"]
+    return "N/A (Consult UF Dist.)", "N/A", FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2
 
 
 # Búsqueda de Diámetro de Cable Genérico - Usado como respaldo o para derivar el diámetro de la sección
@@ -153,6 +179,20 @@ def find_data_by_power(power_kw, data_table):
     # Si la potencia supera todos los valores listados, devuelve el último elemento o None si la tabla está vacía
     return data_table[-1] if data_table else None
 
+
+def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
+    """Busca el diámetro de tubo en GUÍA BT-14 Tabla 1 (Pág. 9) basado en secciones de fase y neutro."""
+    # Intentar buscar por cobre
+    for row in guia_bt_14_table_1:
+        if row.get("phase_mm2_cu") and row["phase_mm2_cu"]["valor"] == phase_mm2 and \
+           row.get("neutral_mm2") and row["neutral_mm2"]["valor"] == neutral_mm2:
+            return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
+        if row.get("phase_mm2_al") and row["phase_mm2_al"]["valor"] == phase_mm2 and \
+           row.get("neutral_mm2") and row["neutral_mm2"]["valor"] == neutral_mm2:
+            return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
+    return "N/A", FUENTE_GUIA_BT_14_PG9_TABLA1 # No encontrado
+
+
 def get_endesa_cgp_type(nominal_current_a):
     """Obtiene el tipo específico de CGP de Endesa basado en la corriente nominal."""
     for cgp in endesa_cgp_types:
@@ -167,19 +207,26 @@ def get_iberdrola_cgp_type(max_fuse_a):
             return cgp["tipo"], cgp["fuente"] # Devuelve el tipo y la fuente
     return "N/A (Consultar i-DE para >400A)", FUENTE_IBERDROLA_NI_PG5_TABLA1
 
-def get_guia_bt_14_ground_size_by_phase(phase_mm2_ref):
-    """Estima la sección del conductor de tierra según GUÍA BT-14, Pág. 9 (regla general REBT para PE).
-    La GUÍA BT-14 se refiere a la ITC-BT-18 para PE sizing. Regla común es 50% de fase, mínimo 16mm2 si fase > 35mm2.
-    O 100% de fase si fase <= 16mm2."""
+def get_uf_cgp_type_and_fuse(nominal_current_a):
+    """Obtiene el tipo de CGP y capacidad de fusible para Unión Fenosa. (ES.0100.ES.RE.EIC, Pág. 14, Tabla 2)."""
+    for cgp_entry in uf_cgp_fuse_data:
+        if nominal_current_a <= cgp_entry["imax_a"]["valor"]:
+            # Las Designaciones de CGP pueden ser múltiples, simplificamos a la Designación.
+            return cgp_entry["designacion"]["valor"], cgp_entry["imax_a"]["valor"], cgp_entry["fuente"]
+    return "N/A (Consultar UF)", "N/A", FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2
+
+
+def get_guia_bt_15_ground_size_by_phase(phase_mm2_ref):
+    """Estima la sección del conductor de tierra según GUÍA BT-15, Pág. 56, Tabla 14 (PE).
+    Regla: S<=16mm2 -> Igual S; 16<S<=35mm2 -> 16mm2; S>35mm2 -> Mitad de S (mínimo 16mm2)."""
     if not isinstance(phase_mm2_ref, (int, float)):
         return "N/A"
 
-    # Regla simplificada basada en ITC-BT-18 y prácticas comunes:
     if phase_mm2_ref <= 16:
-        return phase_mm2_ref # O 10mm2 como mínimo absoluto, pero por simplicidad se usa el mismo.
-    elif phase_mm2_ref <= 35: # Ej: fase 25 o 35mm2, tierra 16mm2
+        return phase_mm2_ref
+    elif phase_mm2_ref <= 35:
         return 16
-    else: # Fase > 35mm2, tierra = 0.5 * fase, no menor que 16mm2
+    else:
         return max(16, math.ceil(phase_mm2_ref / 2)) # Redondea hacia arriba al entero más cercano
 
 
@@ -189,7 +236,7 @@ def get_generic_diameter_from_area(area_mm2):
         return {"valor": "N/A", "fuente": FUENTE_GENERICO_CABLE}
 
     for cable in generic_cable_diameter_data:
-        if cable["area_mm2"]["valor"] == area_mm2: # Acceder al valor numérico
+        if cable["area_mm2"]["valor"] == area_mm2:
             return {"valor": cable["diameter_mm"]["valor"], "fuente": cable["diameter_mm"]["fuente"]}
     return {"valor": "N/A", "fuente": FUENTE_GENERICO_CABLE}
 
@@ -201,10 +248,8 @@ def calculate_current(power_kw, voltage_v, phase_number, power_factor):
 
     power_w = power_kw * 1000 
     if phase_number == 3:
-        # Formula for 3-phase: I = P / (sqrt(3) * V * PF)
         return power_w / (math.sqrt(3) * voltage_v * power_factor)
     elif phase_number == 1:
-        # Formula for 1-phase: I = P / (V * PF)
         return power_w / (voltage_v * power_factor)
     return 0
 
@@ -223,7 +268,7 @@ with col1:
     company = st.selectbox(
         "Seleccione Compañía Distribuidora",
         options=["Endesa", "Iberdrola", "Unión Fenosa"],
-        index=0, # Por defecto Endesa
+        index=0,
         help="Elija la compañía distribuidora de electricidad para obtener regulaciones específicas."
     )
     power_kw = st.number_input(
@@ -275,18 +320,18 @@ if company == "Endesa":
     # Para Endesa, referenciamos datos de Unión Fenosa para el dimensionamiento del cable de tierra,
     # ya que la tabla de Endesa no lo proporciona explícitamente.
     uf_ref_data_for_ground = find_data_by_power(power_kw, ufd_table)
-    if power_kw > 346.40:
-         st.warning(f"Para potencias contratadas superiores a 346.40 kW con Endesa, consulte la documentación oficial de Endesa para requisitos específicos.")
+    if power_kw > endesa_contracted_power_data[-1]['power_kw']['valor']: # Max power from table
+         st.warning(f"Para potencias contratadas superiores a {endesa_contracted_power_data[-1]['power_kw']['valor']} kW con Endesa, consulte la documentación oficial de Endesa para requisitos específicos.")
 
 elif company == "Unión Fenosa":
     selected_company_data = find_data_by_power(power_kw, ufd_table)
-    if power_kw > 277.8:
-        st.warning(f"Para potencias contratadas superiores a 277.8 kW con Unión Fenosa, consulte la documentación oficial de Unión Fenosa para requisitos específicos.")
+    if power_kw > ufd_table[-1]['power_kw']['valor']: # Max power from table
+        st.warning(f"Para potencias contratadas superiores a {ufd_table[-1]['power_kw']['valor']} kW con Unión Fenosa, consulte la documentación oficial de Unión Fenosa para requisitos específicos.")
 
 elif company == "Iberdrola":
     selected_company_data = find_data_by_power(power_kw, iberdrola_ide_table)
-    if power_kw > 196:
-        st.warning(f"Para potencias contratadas superiores a 196 kW con Iberdrola, consulte la documentación oficial de Iberdrola (MT 2.80.12) para requisitos específicos.")
+    if power_kw > iberdrola_ide_table[-1]['power_kw']['valor']: # Max power from table
+        st.warning(f"Para potencias contratadas superiores a {iberdrola_ide_table[-1]['power_kw']['valor']} kW con Iberdrola, consulte la documentación oficial de Iberdrola (MT 2.80.12) para requisitos específicos.")
 
 
 # Determinar la corriente (I_B) a utilizar para el dimensionamiento
@@ -311,7 +356,7 @@ if selected_company_data:
 
     if company == "Endesa":
         # Para Endesa, derivamos las secciones de cable de la corriente nominal encontrada en la tabla.
-        required_nom_int_val = selected_company_data['nom_int_a']['valor']
+        required_nom_int_val = selected_company_data['nominal_protection_current_a']['valor']
         found_generic_cable_for_nom_int = None
         for cable in generic_cable_diameter_data:
             if cable["three_phase_amps"]["valor"] >= required_nom_int_val:
@@ -322,22 +367,22 @@ if selected_company_data:
             phase_mm2 = found_generic_cable_for_nom_int['area_mm2']
             neutral_mm2 = {"valor": phase_mm2['valor'], "fuente": FUENTE_ENDESA_NRZ103_PG23_NEUTRO_REGLA} # Neutro igual a fase para Endesa
 
-            # Tierra para Endesa: Priorizar UF, luego GUIA BT-14 (regla general REBT para PE)
+            # Tierra para Endesa: Priorizar UF, luego GUIA BT-15 (regla general REBT para PE)
             if uf_ref_data_for_ground and uf_ref_data_for_ground.get('ground_mm2'):
                 ground_mm2 = uf_ref_data_for_ground['ground_mm2']
                 ground_mm2['fuente'] = FUENTE_UF_TABLA_SUELO # Asegurar la fuente correcta
             else:
-                ground_mm2_valor_fallback = get_guia_bt_14_ground_size_by_phase(phase_mm2['valor'])
-                ground_mm2 = {"valor": ground_mm2_valor_fallback, "fuente": FUENTE_GUIA_BT_14_GENERAL_REBT_TIERRA}
+                ground_mm2_valor_fallback = get_guia_bt_15_ground_size_by_phase(phase_mm2['valor'])
+                ground_mm2 = {"valor": ground_mm2_valor_fallback, "fuente": FUENTE_GUIA_BT_15_PG56_TABLA14}
                 
-            st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²")
-            st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²")
-            st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²")
-            st.info("*(Nota: Para Endesa, la sección del Neutro se recomienda igual a la de Fase (NRZ103). La sección de Tierra se deriva de una tabla de referencia general (GUÍA BT-14) o de Unión Fenosa, ya que las tablas primarias de Endesa no la especifican explícitamente.)*")
+            st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²}]")
+            st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²}]")
+            st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²}]")
+            st.info("*(Nota: Para Endesa, la sección del Neutro se recomienda igual a la de Fase (NRZ103). La sección de Tierra se deriva de una tabla de referencia general (GUÍA BT-15) o de Unión Fenosa, ya que las tablas primarias de Endesa no la especifican explícitamente.)*")
             
             if isinstance(phase_mm2['valor'], (int, float)):
                 overall_cable_diameter_info = get_generic_diameter_from_area(phase_mm2['valor'])
-            st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)")
+            st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)}]")
         else:
             st.write("- **Secciones de Cable:** No determinadas con los datos disponibles. Consulte la documentación de Endesa.")
 
@@ -346,18 +391,32 @@ if selected_company_data:
         neutral_mm2 = selected_company_data.get('neutral_mm2', {"valor": "N/A", "fuente": "N/A"})
         ground_mm2 = selected_company_data.get('ground_mm2', {"valor": "N/A", "fuente": "N/A"})
         
-        st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²")
-        st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²")
-        st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²")
+        st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²}]")
+        st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²}]")
+        st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²}]")
         
         if isinstance(phase_mm2['valor'], (int, float)):
             overall_cable_diameter_info = get_generic_diameter_from_area(phase_mm2['valor'])
-        st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)")
+        st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)}]")
 
     # --- Detalles de Instalación ---
     st.markdown("#### Detalles de Instalación")
-    tube_dia_mm_info = selected_company_data.get('tube_dia_mm', {"valor": "N/A", "fuente": "N/A"})
-    st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm")
+    
+    # Tubo para Endesa se obtiene de GUIA-BT-14
+    if company == "Endesa":
+        # Usar la fase y neutral determinada para Endesa para buscar en GUIA BT-14
+        # Asegurarse de que phase_mm2 y neutral_mm2 son numéricos antes de pasar
+        phase_for_tube = phase_mm2['valor'] if isinstance(phase_mm2['valor'], (int, float)) else 0
+        neutral_for_tube = neutral_mm2['valor'] if isinstance(neutral_mm2['valor'], (int, float)) else 0
+
+        tube_dia_val, tube_dia_fuente = find_guia_bt_14_tube_diameter_by_sections(phase_for_tube, neutral_for_tube)
+        tube_dia_mm_info = {"valor": tube_dia_val, "fuente": tube_dia_fuente}
+        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm}]")
+
+    else: # Para Unión Fenosa e Iberdrola (sus tablas sí tienen tube_dia_mm)
+        tube_dia_mm_info = selected_company_data.get('tube_dia_mm', {"valor": "N/A", "fuente": "N/A"})
+        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm}]")
+
 
     # Límites de Caída de Tensión y Longitud Máxima
     max_len_0_5_info = selected_company_data.get('max_len_0_5', {"valor": "N/A", "fuente": "N/A"})
@@ -365,12 +424,12 @@ if selected_company_data:
 
     if max_len_0_5_info['valor'] != "N/A" and max_len_1_info['valor'] != "N/A":
         if voltage_drop_limit <= 0.5:
-             st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_0_5_info['valor']} m")
+             st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_0_5_info['valor']} m}]")
         elif voltage_drop_limit <= 1.0:
-            st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_1_info['valor']} m")
+            st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_1_info['valor']} m}]")
         else:
-            st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5_info['valor']} m")
-            st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_1_info['valor']} m")
+            st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5_info['valor']} m}]")
+            st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_1_info['valor']} m}]")
             st.info("*(Nota: Para límites de caída de tensión superiores al 1.0%, es posible que deba consultar las guías específicas de la compañía para longitudes mayores.)*")
     else:
         st.info(f"Datos de longitud máxima para {company} no disponibles directamente en la tabla seleccionada para varias caídas de tensión.")
@@ -383,19 +442,19 @@ if selected_company_data:
     if company == "Endesa":
         # Capacidad IGM (de Endesa NRZ103 Pág. 54)
         igm_capacity_info = get_endesa_igm_capacity(power_kw)
-        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}")
+        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}}]")
         if power_kw > 150:
             st.info("*(Nota: Para potencias contratadas superiores a 150kW con Endesa, la capacidad del IGM requiere acuerdo con Endesa.)*")
 
         # Tipo de CGP (de Endesa NRZ103 Pág. 21)
-        nominal_current_for_cgp = selected_company_data.get('nom_int_a', {"valor": 0})['valor']
+        nominal_current_for_cgp = selected_company_data.get('nominal_protection_current_a', {"valor": 0})['valor']
         cgp_type, cgp_source = get_endesa_cgp_type(nominal_current_for_cgp)
         st.write(f"- **Tipo de CGP (Caja General de Protección):** {cgp_type}")
 
-        # Capacidad de Fusible/Interruptor (de Endesa NRZ103 Pág. 69, 'nom_int_a')
-        fuse_breaker_capacity_info = selected_company_data.get('nom_int_a', {"valor": "N/A", "fuente": "N/A"})
-        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A")
-        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A")
+        # Capacidad de Fusible/Interruptor (de Endesa NRZ103 Pág. 69, 'nominal_protection_current_a')
+        fuse_breaker_capacity_info = selected_company_data.get('nominal_protection_current_a', {"valor": "N/A", "fuente": "N/A"})
+        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
+        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
         st.info("*(Nota: Las capacidades de Fusibles e Interruptores para Endesa se basan típicamente en la 'Intensidad Nominal' de la tabla de potencia contratada.)*")
 
         # Verificación de Capacidad de LGA (Endesa NRZ103 Pág. 22)
@@ -407,7 +466,7 @@ if selected_company_data:
     elif company == "Iberdrola": # Lógica específica para Iberdrola basada en MT 2.80.12 y NI 76.50.01
         # Capacidad IGM (de MT 2.80.12 Pág. 19, misma regla que Endesa)
         igm_capacity_info = get_endesa_igm_capacity(power_kw) # Reutilizando esta función ya que la regla es idéntica
-        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}")
+        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}}]")
         if power_kw > 150:
             st.info("*(Nota: Para potencias contratadas superiores a 150kW con Iberdrola, la capacidad del IGM requiere acuerdo con i-DE.)*")
 
@@ -419,8 +478,8 @@ if selected_company_data:
 
         # Capacidad de Fusible/Interruptor para Iberdrola (de MT 2.80.12 Tabla 1, columna "Intensidad nominal CGP")
         fuse_breaker_capacity_info = selected_company_data.get('conductor_amp_rating', {"valor": "N/A", "fuente": "N/A"})
-        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A")
-        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A")
+        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
+        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
         st.info("*(Nota: Las capacidades de Fusibles e Interruptores para Iberdrola se basan típicamente en la 'Intensidad nominal CGP' de MT 2.80.12 Tabla 1.)*")
         
         # Capacidad de LGA (MT 2.80.12 Pág. 17, Tabla 1 sugiere 400A es el máximo en tabla)
@@ -428,24 +487,19 @@ if selected_company_data:
              st.warning(f"La capacidad máxima de LGA para Iberdrola es típicamente de hasta 400A. Su corriente calculada ({calculated_current:.2f} A) excede esto. Consulte a i-DE para requisitos específicos para corrientes más altas.")
 
 
-    elif company == "Unión Fenosa": # Lógica existente para Union Fenosa
-        # Para Unión Fenosa, usamos el 'conductor_amp_rating' o el respaldo calculado.
-        fuse_breaker_capacity_info = selected_company_data.get('conductor_amp_rating', {"valor": "N/A", "fuente": "N/A"})
-        if fuse_breaker_capacity_info['valor'] != "N/A":
-            st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A")
-            st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A")
-            st.info("*(Nota: Las capacidades de Fusibles e Interruptores para esta compañía se basan en valores de tabla específicos.)*")
-        else:
-            st.write(f"- **Capacidad de Fusible Recomendada (Mín.):** Aprox. {calculated_current * 1.25:.2f} A (requiere consulta a tabla específica de la compañía)")
-            st.write(f"- **Capacidad de Interruptor Recomendada (Mín.):** Aprox. {calculated_current * 1.25:.2f} A (requiere consulta a tabla específica de la compañía)")
-            st.info("*(Nota: Las capacidades de Fusibles/Interruptores no están directamente en la tabla proporcionada por esta compañía; se utiliza una regla de dimensionamiento general como marcador de posición.)*")
-        
-        cgp_info = selected_company_data.get('cgp_amp_range', {"valor": "N/A", "fuente": "N/A"})
-        if cgp_info['valor'] != "N/A":
-            st.write(f"- **Tipo de CGP (Caja General de Protección):** Relacionado con **{cgp_info['valor']} Amps**")
-        else:
-            st.write("- **Tipo de CGP (Caja General de Protección):** Información no disponible directamente en la tabla de esta compañía.")
+    elif company == "Unión Fenosa": # Lógica para Unión Fenosa - Ahora usa tablas específicas UF
+        # Capacidad de Fusible y Tipo de CGP de UF (ES.0100.ES.RE.EIC, Pág. 14, Tabla 2)
+        uf_nominal_current = calculated_current # Usamos la corriente calculada para buscar
+        uf_cgp_type_val, uf_fuse_capacity_val, uf_cgp_source = get_uf_cgp_type_and_fuse(uf_nominal_current)
 
+        st.write(f"- **Tipo de CGP (Caja General de Protección):** {uf_cgp_type_val}")
+        st.write(f"- **Capacidad de Fusible Recomendada:** {uf_fuse_capacity_val} A")
+        st.write(f"- **Capacidad de Interruptor Recomendada:** {uf_fuse_capacity_val} A") # Asumiendo igual que fusible por simplicidad
+        st.info("*(Nota: Las capacidades de Fusibles e Interruptores para Unión Fenosa se basan en la Tabla 2 de ES.0100.ES.RE.EIC, vinculada a la corriente nominal.)*")
+
+        # Union Fenosa no tiene una regla IGM como Endesa/Iberdrola en el extracto, pero sí tiene una IGA en Pág. 57, Tabla 16
+        # Si se necesita el IGM de centralización, necesitaríamos su regla específica.
+        st.markdown("- **Interruptor General de Maniobra (IGM) Capacity:** N/A (Consulte la documentación de Unión Fenosa para IGM de centralización).")
 
 else: # Si no se encuentran datos para la compañía y potencia seleccionadas
     st.warning(f"No se encontraron datos específicos para {company} para una potencia contratada de {power_kw} kW. Por favor, verifique la potencia de entrada o consulte las tablas oficiales de la compañía.")
@@ -458,8 +512,8 @@ else: # Si no se encuentran datos para la compañía y potencia seleccionadas
             break
     if found_generic_cable:
         st.markdown("#### Recomendación Genérica de Cable (Respaldo)")
-        st.write(f"- **Área de Sección Transversal de Cable Requerida (aprox.):** {found_generic_cable['area_mm2']['valor']} mm²['fuente']")
-        st.write(f"- **Diámetro Total Aproximado del Cable:** {found_generic_cable['diameter_mm']['valor']} mm (Basado en la Sección de Fase)['fuente']")
+        st.write(f"- **Área de Sección Transversal de Cable Requerida (aprox.):** {found_generic_cable['area_mm2']['valor']} mm²['fuente']}]")
+        st.write(f"- **Diámetro Total Aproximado del Cable:** {found_generic_cable['diameter_mm']['valor']} mm (Basado en la Sección de Fase)['fuente']}]")
         st.write(f"*(Basado en la corriente calculada {calculated_current:.2f} A)*")
     else:
         st.error("No se encontró un cable genérico adecuado para la corriente calculada en los datos disponibles.")
@@ -470,14 +524,25 @@ st.markdown("""
 ### Documentos de Referencia:
 * **Endesa:** [Guía de Interpretación NRZ103, Edición 6.1, 03-2024]
     * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de Endesa NRZ103)]
-* **Unión Fenosa:** [Referencia de tabla proporcionada por el usuario]
+* **Unión Fenosa:** [Especificaciones Particulares para Instalaciones de Conexión ES.0100.ES.RE.EIC, Edición: 5, 08/09/2011]
     * [**Enlace a Google Drive:** (Añada aquí su enlace a la tabla/documento de Unión Fenosa)]
 * **Iberdrola (i-DE):** [Manual Técnico de Distribución MT 2.80.12, Edición 05, Mayo 2019]
     * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de Iberdrola MT 2.80.12)]
 * **Iberdrola (i-DE) Tipos de CGP:** [NORMA NI 76.50.01, Edición 6a, Julio 2010]
     * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de Iberdrola NI 76.50.01)]
-* **Guía Técnica de Aplicación:** [GUÍA - BT-14, Ministerio de Ciencia y Tecnología, Edición: sep 03, Revisión: 1]
-    * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA - BT-14)]
+* **Guías Técnicas de Aplicación (Ministerio de Ciencia y Tecnología):**
+    * [GUÍA-BT-10: Previsión de Cargas, Edición: sep 03, Revisión: 1]
+        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-10)]
+    * [GUÍA-BT-12: Esquemas, Edición: sep 03, Revisión: 1]
+        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-12)]
+    * [GUÍA-BT-13: Cajas Generales de Protección, Edición: sep 03, Revisión: 1]
+        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-13)]
+    * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1]
+        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-14)]
+    * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1]
+        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-15)]
+    * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1]
+        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-16)]
 * **Tablas Generales de Calibre de Cable:**
     * [Tabla 1]: https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html
     * [Tabla 2]: https://www.spwales.com/cable-size-current-rating-chart
