@@ -7,6 +7,42 @@ from iberdrola_data import iberdrola_ide_table, get_iberdrola_cgp_type
 from union_fenosa_data import ufd_table, get_uf_cgp_type_and_fuse
 from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
+
+st.markdown("""
+<style>
+/* Main app container styling */
+.main .block-container {
+    border: 3px solid #4682B4;  /* Steel Blue border */
+    padding: 1.5rem;
+    border-radius: 15px;
+}
+
+/* --- Slider Styling --- */
+
+/* Change the color of the slider label and value text */
+div[data-testid="stSlider"] label {
+    color: #00008B !important; /* Dark Blue for better readability */
+}
+
+/* This is the gray track that sits behind the colored track (the trail) */
+div[data-baseweb="slider"] > div:nth-of-type(1) {
+    background-color: #D3D3D3; /* A neutral light gray for the trail */
+}
+
+/* This is the colored (filled) part of the track */
+div[data-baseweb="slider"] > div:nth-of-type(2) {
+    background-color: #4682B4; /* Steel Blue to match the border */
+}
+
+/* This is the slider handle (the button) */
+div[data-baseweb="slider"] > div:nth-of-type(3) {
+    background-color: #1E90FF; /* A brighter Dodger Blue for the handle */
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
 # --- Helper Functions ---
 def find_data_by_power(power_kw, data_table):
     for row in data_table:
@@ -48,30 +84,6 @@ def calculate_current(power_kw, voltage_v, phase_number, power_factor):
     padding: 1.5rem;
     border-radius: 15px;
 }
-
-/* --- Slider Styling --- */
-
-/* Change the color of the slider label and value text */
-div[data-testid="stSlider"] label {
-    color: #00008B !important; /* Dark Blue for better readability */
-}
-
-/* This is the gray track that sits behind the colored track (the trail) */
-div[data-baseweb="slider"] > div:nth-of-type(1) {
-    background-color: #D3D3D3; /* A neutral light gray for the trail */
-}
-
-/* This is the colored (filled) part of the track */
-div[data-baseweb="slider"] > div:nth-of-type(2) {
-    background-color: #4682B4; /* Steel Blue to match the border */
-}
-
-/* This is the slider handle (the button) */
-div[data-baseweb="slider"] > div:nth-of-type(3) {
-    background-color: #1E90FF; /* A brighter Dodger Blue for the handle */
-}
-</style>
-""", unsafe_allow_html=True)
 
 
 
