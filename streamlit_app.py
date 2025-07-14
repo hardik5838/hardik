@@ -195,8 +195,5 @@ st.markdown("""
     * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1]
     * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1]
     * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1]
-* **Tablas Generales de Calibre de Cable:**
-    * [Tabla 1]: https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html
-    * [Tabla 2]: https://www.spwales.com/cable-size-current-rating-chart
-    * [Tabla 3]: https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html
+
 """)
