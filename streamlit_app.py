@@ -330,9 +330,9 @@ if selected_company_data:
                 ground_mm2_valor_fallback = get_guia_bt_14_ground_size_by_phase(phase_mm2['valor'])
                 ground_mm2 = {"valor": ground_mm2_valor_fallback, "fuente": FUENTE_GUIA_BT_14_GENERAL_REBT_TIERRA}
                 
-            st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²}]")
-            st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²}]")
-            st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²}]")
+            st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²")
+            st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²")
+            st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²")
             st.info("*(Nota: Para Endesa, la sección del Neutro se recomienda igual a la de Fase (NRZ103). La sección de Tierra se deriva de una tabla de referencia general (GUÍA BT-14) o de Unión Fenosa, ya que las tablas primarias de Endesa no la especifican explícitamente.)*")
             
             if isinstance(phase_mm2['valor'], (int, float)):
