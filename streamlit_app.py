@@ -15,14 +15,14 @@ st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas",
 # This CSS creates the medium layout and a soft border.
 st.markdown("""
 <style>
-.main .block-container {
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 2rem;
-    border: 10px solid #ADD8E6;
-    border-radius: 10px;
-}
+    .main .block-container {
+        /* This sets the "medium" width */
+        max-width: 1100px;
+
+        /* This centers the container with the new width */
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
 """, unsafe_allow_html=True)
 
