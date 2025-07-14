@@ -383,7 +383,7 @@ if selected_company_data:
     if company == "Endesa":
         # Capacidad IGM (de Endesa NRZ103 Pág. 54)
         igm_capacity_info = get_endesa_igm_capacity(power_kw)
-        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}}]")
+        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}")
         if power_kw > 150:
             st.info("*(Nota: Para potencias contratadas superiores a 150kW con Endesa, la capacidad del IGM requiere acuerdo con Endesa.)*")
 
