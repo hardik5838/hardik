@@ -395,7 +395,7 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
         ground_mm2 = selected_company_data.get('ground_mm2', {"valor": "N/A", "fuente": "N/A"})
         
         st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²")
-        st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²}]")
+        st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²")
         st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²")
         
         if isinstance(phase_mm2['valor'], (int, float)):
