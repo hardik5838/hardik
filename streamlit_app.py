@@ -10,49 +10,16 @@ from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 # --- Streamlit App UI Setup ---
 st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="centered")
 
-# --- CSS Styling (Final Corrected Block) ---
+# --- CSS Styling (Simplified for Border Only) ---
+# Theming is now handled by .streamlit/config.toml
+# This CSS is only for the custom border around the app.
 st.markdown("""
 <style>
-/* Main app container styling */
 .main .block-container {
     border: 3px solid #4682B4;  /* Steel Blue border */
     padding: 1.5rem;
     border-radius: 15px;
 }
-
-/* --- Slider Styling --- */
-
-/* Change the color of the slider label and its static value text to black */
-div[data-testid="stSlider"] label {
-    color: black !important;
-}
-
-/* Target the rail (the full background track) of the slider */
-div[data-testid="stSlider"] div[data-baseweb="slider"] > div:nth-of-type(1) {
-    background-color: #d3d3d3; /* A neutral light gray for the trail */
-}
-
-/* Target the track (the filled part) of the slider */
-div[data-testid="stSlider"] div[data-baseweb="slider"] > div:nth-of-type(2) {
-    background-color: #4682B4; /* Steel Blue to match the border */
-}
-
-/* Target the slider handle (the button) */
-div[data-testid="stSlider"] div[data-baseweb="slider"] > div:nth-of-type(3) {
-    background-color: #1E90FF; /* A brighter Dodger Blue */
-}
-
-/* Target the popup value (tooltip) that appears on hover/drag */
-div[data-baseweb="tooltip"] {
-    background-color: #1E90FF !important; /* Blue background for the popup */
-    color: white !important;             /* White text for readability */
-}
-
-/* Ensure the little arrow on the tooltip is also blue */
-div[data-baseweb="tooltip"] > div:nth-of-type(2) > div {
-    background-color: #1E90FF !important;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -211,49 +178,21 @@ else:
     st.write("- **Tipo de CGP y Capacidad IGM:** N/A (Consulte al distribuidor)")
 
 st.markdown("""
-
 ---
-
 ### Documentos de Referencia:
-
 * **Endesa:** [Guía de Interpretación NRZ103, Edición 6.1, 03-2024]
-
-
 * **Unión Fenosa:** [Especificaciones Particulares para Instalaciones de Conexión ES.0100.ES.RE.EIC, Edición: 5, 08/09/2011]
-
-
 * **Iberdrola (i-DE):** [Manual Técnico de Distribución MT 2.80.12, Edición 05, Mayo 2019]
-
-
 * **Iberdrola (i-DE) Tipos de CGP:** [NORMA NI 76.50.01, Edición 6a, Julio 2010]
-
-
 * **Guías Técnicas de Aplicación (Ministerio para la Transición Ecológica y el Reto Demográfico):**
-
-    * [GUÍA-BT-10: Previsión de Cargas, Edición: sep 03, Revisión: 1]
-
-
-    * [GUÍA-BT-12: Esquemas, Edición: sep 03, Revisión: 1]
-
-
-    * [GUÍA-BT-13: Cajas Generales de Protección, Edición: sep 03, Revisión: 1]
-
-
-    * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1]
-
-
-    * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1]
-
-
-    * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1]
-
-
+    * [GUÍA-BT-10: Previsión de Cargas, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-12: Esquemas, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-13: Cajas Generales de Protección, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1]
 * **Tablas Generales de Calibre de Cable:**
-
-    * [Tabla 1]: https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html
-
-    * [Tabla 2]: https://www.spwales.com/cable-size-current-rating-chart
-
-    * [Tabla 3]: https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html
-
+    * [Tabla 1]: https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html
+    * [Tabla 2]: https://www.spwales.com/cable-size-current-rating-chart
+    * [Tabla 3]: https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html
 """)
