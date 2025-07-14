@@ -8,10 +8,9 @@ from union_fenosa_data import ufd_table, get_uf_cgp_type_and_fuse
 from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
 # --- Streamlit App UI Setup ---
-# st.set_page_config must be the first Streamlit command used.
 st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="centered")
 
-# This is the single, corrected block for all styling.
+# --- CSS Styling (Final Corrected Block) ---
 st.markdown("""
 <style>
 /* Main app container styling */
@@ -23,25 +22,37 @@ st.markdown("""
 
 /* --- Slider Styling --- */
 
-/* Change the color of the slider label and value text */
+/* Change the color of the slider label and its static value text to black */
 div[data-testid="stSlider"] label {
-    color: #00008B !important; /* Dark Blue for better readability */
+    color: black !important;
 }
 
-/* This is the gray track that sits behind the colored track (the trail) */
-div[data-baseweb="slider"] > div:nth-of-type(1) {
-    background-color: #D3D3D3; /* A neutral light gray for the trail */
+/* Target the rail (the full background track) of the slider */
+div[data-testid="stSlider"] div[data-baseweb="slider"] > div:nth-of-type(1) {
+    background-color: #d3d3d3; /* A neutral light gray for the trail */
 }
 
-/* This is the colored (filled) part of the track */
-div[data-baseweb="slider"] > div:nth-of-type(2) {
+/* Target the track (the filled part) of the slider */
+div[data-testid="stSlider"] div[data-baseweb="slider"] > div:nth-of-type(2) {
     background-color: #4682B4; /* Steel Blue to match the border */
 }
 
-/* This is the slider handle (the button) */
-div[data-baseweb="slider"] > div:nth-of-type(3) {
-    background-color: #1E90FF; /* A brighter Dodger Blue for the handle */
+/* Target the slider handle (the button) */
+div[data-testid="stSlider"] div[data-baseweb="slider"] > div:nth-of-type(3) {
+    background-color: #1E90FF; /* A brighter Dodger Blue */
 }
+
+/* Target the popup value (tooltip) that appears on hover/drag */
+div[data-baseweb="tooltip"] {
+    background-color: #1E90FF !important; /* Blue background for the popup */
+    color: white !important;             /* White text for readability */
+}
+
+/* Ensure the little arrow on the tooltip is also blue */
+div[data-baseweb="tooltip"] > div:nth-of-type(2) > div {
+    background-color: #1E90FF !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
