@@ -523,28 +523,23 @@ st.markdown("""
 ---
 ### Documentos de Referencia:
 * **Endesa:** [Guía de Interpretación NRZ103, Edición 6.1, 03-2024]
-    * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de Endesa NRZ103)]
+   
 * **Unión Fenosa:** [Especificaciones Particulares para Instalaciones de Conexión ES.0100.ES.RE.EIC, Edición: 5, 08/09/2011]
-    * [**Enlace a Google Drive:** (Añada aquí su enlace a la tabla/documento de Unión Fenosa)]
+  
 * **Iberdrola (i-DE):** [Manual Técnico de Distribución MT 2.80.12, Edición 05, Mayo 2019]
-    * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de Iberdrola MT 2.80.12)]
+    
 * **Iberdrola (i-DE) Tipos de CGP:** [NORMA NI 76.50.01, Edición 6a, Julio 2010]
-    * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de Iberdrola NI 76.50.01)]
+   
 * **Guías Técnicas de Aplicación (Ministerio de Ciencia y Tecnología):**
     * [GUÍA-BT-10: Previsión de Cargas, Edición: sep 03, Revisión: 1]
-        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-10)]
+       
     * [GUÍA-BT-12: Esquemas, Edición: sep 03, Revisión: 1]
-        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-12)]
+     
     * [GUÍA-BT-13: Cajas Generales de Protección, Edición: sep 03, Revisión: 1]
-        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-13)]
+       
     * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1]
-        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-14)]
+      
     * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1]
-        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-15)]
+       
     * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1]
-        * [**Enlace a Google Drive:** (Añada aquí su enlace al PDF de GUÍA-BT-16)]
-* **Tablas Generales de Calibre de Cable:**
-    * [Tabla 1]: https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html
-    * [Tabla 2]: https://www.spwales.com/cable-size-current-rating-chart
-    * [Tabla 3]: https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html
-""")
+       )
