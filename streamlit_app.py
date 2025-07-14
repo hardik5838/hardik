@@ -7,25 +7,6 @@ from iberdrola_data import iberdrola_ide_table, get_iberdrola_cgp_type
 from union_fenosa_data import ufd_table, get_uf_cgp_type_and_fuse
 from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
-# --- Streamlit App UI Setup ---
-# Set the base layout to "wide" to allow our custom width to take effect.
-st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="wide")
-
-# --- CSS Styling for "Medium" Layout ---
-# This CSS creates the medium layout and a soft border.
-st.markdown("""
-<style>
-    .main .block-container {
-        /* This sets the "medium" width */
-        max-width: 1100px;
-
-        /* This centers the container with the new width */
-        margin-left: auto;
-        margin-right: auto;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 
 # --- Helper Functions ---
 def find_data_by_power(power_kw, data_table):
