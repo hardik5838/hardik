@@ -9,7 +9,7 @@ from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
 # --- Streamlit App UI Setup ---
 # We use "wide" layout as a base, and then control the exact width with CSS below.
-st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="wide")
+st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="centered")
 
 # --- CSS Styling ---
 # This block sets a custom "medium" width for the app and adds the blue border.
