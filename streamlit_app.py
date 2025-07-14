@@ -1,4 +1,3 @@
-# main_app.py
 import streamlit as st
 import math
 
@@ -8,7 +7,7 @@ from iberdrola_data import iberdrola_ide_table, get_iberdrola_cgp_type
 from union_fenosa_data import ufd_table, get_uf_cgp_type_and_fuse
 from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
-# --- Helper Functions (can also be moved to a 'utils.py' file for further cleanup) ---
+# --- Helper Functions ---
 def find_data_by_power(power_kw, data_table):
     for row in data_table:
         if row["power_kw"]["valor"] >= power_kw:
@@ -20,7 +19,7 @@ def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
         if row.get("phase_mm2_cu") and row["phase_mm2_cu"]["valor"] == phase_mm2 and \
            row.get("neutral_mm2") and row["neutral_mm2"]["valor"] == neutral_mm2:
             return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
-    return "N/A", guia_bt_14_table_1[0]["tube_dia_mm"]["fuente"]
+    return "N/A", guia_bt_14_table_1[0]["tube_dia_mm"]["fuente"] if guia_bt_14_table_1 else "N/A"
 
 def get_guia_bt_15_ground_size_by_phase(phase_mm2_ref):
     if not isinstance(phase_mm2_ref, (int, float)): return "N/A"
@@ -29,11 +28,11 @@ def get_guia_bt_15_ground_size_by_phase(phase_mm2_ref):
     else: return max(16, math.ceil(phase_mm2_ref / 2))
 
 def get_generic_diameter_from_area(area_mm2):
-    if not isinstance(area_mm2, (int, float)): return {"valor": "N/A"}
+    if not isinstance(area_mm2, (int, float)): return {"valor": "N/A", "fuente": "N/A"}
     for cable in generic_cable_diameter_data:
         if cable["area_mm2"]["valor"] == area_mm2:
             return {"valor": cable["diameter_mm"]["valor"], "fuente": cable["diameter_mm"]["fuente"]}
-    return {"valor": "N/A"}
+    return {"valor": "N/A", "fuente": "N/A"}
 
 def calculate_current(power_kw, voltage_v, phase_number, power_factor):
     if voltage_v == 0 or power_factor == 0: return 0
@@ -84,7 +83,6 @@ input_design_current_a = st.number_input("Corriente de Diseño Calculada (A) (Op
 # --- Calculation & Logic ---
 st.header("Requisitos Generados")
 
-# Determine which current to use
 if input_design_current_a > 0:
     calculated_current = input_design_current_a
     current_source_note = "Corriente de Diseño proporcionada."
@@ -93,32 +91,55 @@ else:
     current_source_note = f"Calculada (Basada en {power_kw} kW)."
 st.write(f"Corriente de Diseño (I_B): **{calculated_current:.2f} A** ({current_source_note})")
 
-# Logic to select and display data
 use_company_power_tables = not (power_kw == 0.0 and input_design_current_a > 0)
-if not use_company_power_tables:
-    st.warning("Potencia contratada es 0 kW. Los resultados se basarán en la corriente de diseño y datos genéricos.")
-
 selected_company_data = None
+uf_ref_data_for_ground = None
+
 if use_company_power_tables:
     if company == "Endesa":
         selected_company_data = find_data_by_power(power_kw, endesa_contracted_power_data)
+        uf_ref_data_for_ground = find_data_by_power(power_kw, ufd_table)
     elif company == "Unión Fenosa":
         selected_company_data = find_data_by_power(power_kw, ufd_table)
     elif company == "Iberdrola":
         selected_company_data = find_data_by_power(power_kw, iberdrola_ide_table)
 
 if selected_company_data and use_company_power_tables:
-    st.subheader(f"Requisitos para {company} (Basado en {power_kw} kW)")
-    # (The rest of the display logic from your original file goes here)
-    # This part is simplified for brevity but you would include all your `st.write` calls
-    # for cable sections, installation details, and electrical devices.
-    st.success("Datos específicos de la compañía cargados y mostrados.") # Placeholder
-else:
-    st.warning(f"No se encontraron datos para {power_kw} kW. Mostrando recomendaciones genéricas.")
-    # (The generic fallback logic from your original file goes here)
-    st.info("Recomendaciones genéricas mostradas.") # Placeholder
+    st.subheader(f"Requisitos para {company} (Basado en {power_kw} kW de Potencia Contratada)")
+    
+    # --- Cable Sections ---
+    st.markdown("#### Secciones de Cables (mm²)")
+    phase_mm2, neutral_mm2, ground_mm2 = {"valor": "N/A"}, {"valor": "N/A"}, {"valor": "N/A"}
+    
+    if company == "Endesa":
+        required_nom_int_val = selected_company_data['nominal_protection_current_a']['valor']
+        found_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= required_nom_int_val), None)
+        if found_cable:
+            phase_mm2 = found_cable['area_mm2']
+            neutral_mm2 = {"valor": phase_mm2['valor'], "fuente": "Endesa NRZ103, Pág. 23"}
+            if uf_ref_data_for_ground:
+                ground_mm2 = uf_ref_data_for_ground.get('ground_mm2', {"valor": "N/A"})
+            else:
+                ground_mm2 = {"valor": get_guia_bt_15_ground_size_by_phase(phase_mm2['valor'])}
+    else:
+        phase_mm2 = selected_company_data.get('phase_mm2', {"valor": "N/A"})
+        neutral_mm2 = selected_company_data.get('neutral_mm2', {"valor": "N/A"})
+        ground_mm2 = selected_company_data.get('ground_mm2', {"valor": "N/A"})
 
-# --- Footer with References ---
-st.markdown("---")
-st.header("Documentos de Referencia")
-# (Your reference markdown section)
+    st.write(f"- **Sección de Cable de Fase:** {phase_mm2.get('valor', 'N/A')} mm²")
+    st.write(f"- **Sección de Neutro:** {neutral_mm2.get('valor', 'N/A')} mm²")
+    st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2.get('valor', 'N/A')} mm²")
+    
+    # --- Installation Details ---
+    st.markdown("#### Detalles de Instalación")
+    if company == "Endesa":
+        tube_dia_val, _ = find_guia_bt_14_tube_diameter_by_sections(phase_mm2.get('valor'), neutral_mm2.get('valor'))
+        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_val} mm")
+    else:
+        st.write(f"- **Diámetro Mínimo del Tubo:** {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm")
+
+    max_len_0_5 = selected_company_data.get('max_len_0_5', {}).get('valor', 'N/A')
+    max_len_1 = selected_company_data.get('max_len_1', {}).get('valor', 'N/A')
+    if max_len_0_5 != 'N/A':
+         st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5} m")
+         st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_
