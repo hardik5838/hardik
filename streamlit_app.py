@@ -411,11 +411,11 @@ if selected_company_data:
 
         tube_dia_val, tube_dia_fuente = find_guia_bt_14_tube_diameter_by_sections(phase_for_tube, neutral_for_tube)
         tube_dia_mm_info = {"valor": tube_dia_val, "fuente": tube_dia_fuente}
-        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm}]")
+        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm")
 
     else: # Para Unión Fenosa e Iberdrola (sus tablas sí tienen tube_dia_mm)
         tube_dia_mm_info = selected_company_data.get('tube_dia_mm', {"valor": "N/A", "fuente": "N/A"})
-        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm}]")
+        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm")
 
 
     # Límites de Caída de Tensión y Longitud Máxima
