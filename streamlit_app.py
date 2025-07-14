@@ -27,6 +27,39 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* Target the main app container to act as a reference for positioning */
+.main {
+    position: relative;
+}
+
+/* Create the left vertical line using a pseudo-element */
+.main::before {
+    content: '';
+    position: absolute;
+    left: 20%;  /* Position 20% from the left edge */
+    top: 0;
+    bottom: 0;
+    width: 2px; /* Line thickness */
+    background-color: #ADD8E6; /* A soft, light blue */
+    z-index: -1; /* Place it behind the main content */
+}
+
+/* Create the right vertical line using a pseudo-element */
+.main::after {
+    content: '';
+    position: absolute;
+    right: 20%; /* Position 20% from the right edge */
+    top: 0;
+    bottom: 0;
+    width: 2px; /* Line thickness */
+    background-color: #ADD8E6; /* A soft, light blue */
+    z-index: -1; /* Place it behind the main content */
+}
+</style>
+""", unsafe_allow_html=True)
+
 
 # --- Helper Functions ---
 def find_data_by_power(power_kw, data_table):
