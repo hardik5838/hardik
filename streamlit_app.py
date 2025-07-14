@@ -1,4 +1,4 @@
-import streamlit as st
+iuimport streamlit as st
 import math
 
 # Import data and functions from the new modules
@@ -8,7 +8,7 @@ from union_fenosa_data import ufd_table, get_uf_cgp_type_and_fuse
 from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
 # --- Streamlit App UI Setup ---
-st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="wide")
+st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="medium")
 
 # --- CSS Styling (Simplified for Border Only) ---
 # Theming is now handled by .streamlit/config.toml
