@@ -384,7 +384,7 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
             
             if isinstance(phase_mm2['valor'], (int, float)):
                 overall_cable_diameter_info = get_generic_diameter_from_area(phase_mm2['valor'])
-            st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)}]")
+            st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)")
         else:
             st.write("- **Secciones de Cable:** No determinadas con los datos disponibles. Consulte la documentación de Endesa.")
 
