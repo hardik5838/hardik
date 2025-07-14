@@ -136,8 +136,6 @@ uf_cgp_fuse_data = [
     {"designacion": {"valor": "CGP-7-400/BUC", "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "imax_a": {"valor": 400, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "potencia_disipada_w": {"valor": 30, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}},
     {"designacion": {"valor": "CGP-9-250/BUC", "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "imax_a": {"valor": 250, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "potencia_disipada_w": {"valor": 20, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}},
     {"designacion": {"valor": "CGP-9-400/BUC", "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "imax_a": {"valor": 400, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}, "potencia_disipada_w": {"valor": 30, "fuente": FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2}},
-    # Note: CGP10 and CGP11/12/14 types also exist in Table 2, but mapping to a single Imax(A) is ambiguous or refers to passthrough current.
-    # We will prioritize direct CGP types with single current ratings for simplicity here.
 ]
 
 # Búsqueda de Diámetro de Cable Genérico - Usado como respaldo o para derivar el diámetro de la sección
@@ -170,36 +168,37 @@ def find_data_by_power(power_kw, data_table):
     Asume que la tabla está ordenada por power_kw de forma ascendente.
     Devuelve la fila donde power_kw del usuario es <= power_kw de la fila."""
     for row in data_table:
-        if power_kw <= row["power_kw"]["valor"]:
+        # Acceder al valor numérico de power_kw dentro del diccionario anidado
+        if row["power_kw"]["valor"] >= power_kw: # Corrected comparison
             return row
     # Si la potencia supera todos los valores listados, devuelve el último elemento o None si la tabla está vacía
-    return data_table[-1] if data_table else None
+    return data_table[-1] if data_table else None # Fallback to largest size if input exceeds table range
+
 
 def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
     """Busca el diámetro de tubo en GUÍA BT-14 Tabla 1 (Pág. 9) basado en secciones de fase y neutro."""
-    # Intentar buscar por cobre (phase_mm2_cu)
     for row in guia_bt_14_table_1:
         if row.get("phase_mm2_cu") and row["phase_mm2_cu"]["valor"] == phase_mm2 and \
            row.get("neutral_mm2") and row["neutral_mm2"]["valor"] == neutral_mm2:
             return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
-        # Intentar buscar por aluminio (phase_mm2_al) si existe en la fila
         if row.get("phase_mm2_al") and row["phase_mm2_al"]["valor"] == phase_mm2 and \
            row.get("neutral_mm2") and row["neutral_mm2"]["valor"] == neutral_mm2:
             return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
-    return "N/A", FUENTE_GUIA_BT_14_PG9_TABLA1 # No encontrado
+    return "N/A", FUENTE_GUIA_BT_14_PG9_TABLA1 # Not found in this table
+
 
 def get_endesa_cgp_type(nominal_current_a):
     """Obtiene el tipo específico de CGP de Endesa basado en la corriente nominal."""
     for cgp in endesa_cgp_types:
         if nominal_current_a <= cgp["max_current_a"]:
-            return cgp["tipo"], cgp["fuente"] # Devuelve el tipo y la fuente
+            return cgp["tipo"], cgp["fuente"] # Returns type and source
     return "N/A (Consultar EDE para >400A)", FUENTE_ENDESA_NRZ103_PG21_CGP_TIPOS
 
 def get_iberdrola_cgp_type(max_fuse_a):
     """Obtiene el tipo específico de CGP de Iberdrola basado en la corriente máxima del fusible."""
     for cgp in iberdrola_cgp_types:
         if max_fuse_a <= cgp["max_fuse_a"]:
-            return cgp["tipo"], cgp["fuente"] # Devuelve el tipo y la fuente
+            return cgp["tipo"], cgp["fuente"] # Returns type and source
     return "N/A (Consultar i-DE para >400A)", FUENTE_IBERDROLA_NI_PG5_TABLA1
 
 def get_uf_cgp_type_and_fuse(nominal_current_a):
@@ -262,7 +261,7 @@ with col1:
     company = st.selectbox(
         "Seleccione Compañía Distribuidora",
         options=["Endesa", "Iberdrola", "Unión Fenosa"],
-        index=0,
+        index=0, # Por defecto Endesa
         help="Elija la compañía distribuidora de electricidad para obtener regulaciones específicas."
     )
     power_kw = st.number_input(
@@ -320,17 +319,17 @@ if use_company_power_tables:
     if company == "Endesa":
         selected_company_data = find_data_by_power(power_kw, endesa_contracted_power_data)
         uf_ref_data_for_ground = find_data_by_power(power_kw, ufd_table) # Referencia para tierra
-        if power_kw > endesa_contracted_power_data[-1]['power_kw']['valor']:
-            st.warning(f"Para potencias contratadas superiores a {endesa_contracted_power_data[-1]['power_kw']['valor']} kW con Endesa, consulte la documentación oficial de Endesa para requisitos específicos.")
+        if power_kw > endesa_contracted_power_data[-1]['power_kw']['valor']: # Max power from table
+             st.warning(f"Para potencias contratadas superiores a {endesa_contracted_power_data[-1]['power_kw']['valor']} kW con Endesa, consulte la documentación oficial de Endesa para requisitos específicos.")
 
     elif company == "Unión Fenosa":
         selected_company_data = find_data_by_power(power_kw, ufd_table)
-        if power_kw > ufd_table[-1]['power_kw']['valor']:
+        if power_kw > ufd_table[-1]['power_kw']['valor']: # Max power from table
             st.warning(f"Para potencias contratadas superiores a {ufd_table[-1]['power_kw']['valor']} kW con Unión Fenosa, consulte la documentación oficial de Unión Fenosa para requisitos específicos.")
 
     elif company == "Iberdrola":
         selected_company_data = find_data_by_power(power_kw, iberdrola_ide_table)
-        if power_kw > iberdrola_ide_table[-1]['power_kw']['valor']:
+        if power_kw > iberdrola_ide_table[-1]['power_kw']['valor']: # Max power from table
             st.warning(f"Para potencias contratadas superiores a {iberdrola_ide_table[-1]['power_kw']['valor']} kW con Iberdrola, consulte la documentación oficial de Iberdrola (MT 2.80.12) para requisitos específicos.")
 else: # Scenario where power_kw is 0 and current is provided
     # selected_company_data remains None or is not used for primary lookup for company-specific data
@@ -342,7 +341,7 @@ if input_design_current_a > 0:
     current_source_note = "Corriente de Diseño proporcionada."
 else:
     calculated_current = calculate_current(power_kw, voltage_v, phase_number, load_factor)
-    current_source_note = f"Calculada (Basado en {power_kw} kW)."
+    current_source_note = f"Calculada (Basada en {power_kw} kW)."
 
 st.write(f"Corriente de Diseño (I_B): **{calculated_current:.2f} A** ({current_source_note})")
 
@@ -359,6 +358,7 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
     overall_cable_diameter_info = {"valor": "N/A", "fuente": "N/A"}
 
     if company == "Endesa":
+        # Para Endesa, derivamos las secciones de cable de la corriente nominal encontrada en la tabla.
         required_nom_int_val = selected_company_data['nominal_protection_current_a']['valor']
         found_generic_cable_for_nom_int = None
         for cable in generic_cable_diameter_data:
@@ -368,23 +368,24 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
 
         if found_generic_cable_for_nom_int:
             phase_mm2 = found_generic_cable_for_nom_int['area_mm2']
-            neutral_mm2 = {"valor": phase_mm2['valor'], "fuente": FUENTE_ENDESA_NRZ103_PG23_NEUTRO_REGLA}
-            
+            neutral_mm2 = {"valor": phase_mm2['valor'], "fuente": FUENTE_ENDESA_NRZ103_PG23_NEUTRO_REGLA} # Neutro igual a fase para Endesa
+
+            # Tierra para Endesa: Priorizar UF, luego GUIA BT-15 (regla general REBT para PE)
             if uf_ref_data_for_ground and uf_ref_data_for_ground.get('ground_mm2'):
                 ground_mm2 = uf_ref_data_for_ground['ground_mm2']
-                ground_mm2['fuente'] = FUENTE_UF_TABLA_SUELO 
+                ground_mm2['fuente'] = FUENTE_UF_TABLA_SUELO # Asegurar la fuente correcta
             else:
                 ground_mm2_valor_fallback = get_guia_bt_15_ground_size_by_phase(phase_mm2['valor'])
                 ground_mm2 = {"valor": ground_mm2_valor_fallback, "fuente": FUENTE_GUIA_BT_15_PG56_TABLA14}
                 
-            st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²")
-            st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²")
-            st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²")
+            st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²}]")
+            st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²}]")
+            st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²}]")
             st.info("*(Nota: Para Endesa, la sección del Neutro se recomienda igual a la de Fase (NRZ103). La sección de Tierra se deriva de una tabla de referencia general (GUÍA BT-15) o de Unión Fenosa, ya que las tablas primarias de Endesa no la especifican explícitamente.)*")
             
             if isinstance(phase_mm2['valor'], (int, float)):
                 overall_cable_diameter_info = get_generic_diameter_from_area(phase_mm2['valor'])
-            st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)")
+            st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)}]")
         else:
             st.write("- **Secciones de Cable:** No determinadas con los datos disponibles. Consulte la documentación de Endesa.")
 
@@ -393,13 +394,13 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
         neutral_mm2 = selected_company_data.get('neutral_mm2', {"valor": "N/A", "fuente": "N/A"})
         ground_mm2 = selected_company_data.get('ground_mm2', {"valor": "N/A", "fuente": "N/A"})
         
-        st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²")
-        st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²")
-        st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²")
+        st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²}]")
+        st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²}]")
+        st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²}]")
         
         if isinstance(phase_mm2['valor'], (int, float)):
             overall_cable_diameter_info = get_generic_diameter_from_area(phase_mm2['valor'])
-        st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)")
+        st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)}]")
 
     # --- Detalles de Instalación ---
     st.markdown("#### Detalles de Instalación")
@@ -411,11 +412,11 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
 
         tube_dia_val, tube_dia_fuente = find_guia_bt_14_tube_diameter_by_sections(phase_for_tube, neutral_for_tube)
         tube_dia_mm_info = {"valor": tube_dia_val, "fuente": tube_dia_fuente}
-        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm")
+        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm}]")
 
     else: # Para Unión Fenosa e Iberdrola (sus tablas sí tienen tube_dia_mm)
         tube_dia_mm_info = selected_company_data.get('tube_dia_mm', {"valor": "N/A", "fuente": "N/A"})
-        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} m]")
+        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm}]")
 
 
     # Límites de Caída de Tensión y Longitud Máxima
@@ -424,12 +425,12 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
 
     if max_len_0_5_info['valor'] != "N/A" and max_len_1_info['valor'] != "N/A":
         if voltage_drop_limit <= 0.5:
-             st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_0_5_info['valor']} m")
+             st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_0_5_info['valor']} m}]")
         elif voltage_drop_limit <= 1.0:
-            st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_1_info['valor']} m")
+            st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_1_info['valor']} m}]")
         else:
-            st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5_info['valor']} m")
-            st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_1_info['valor']} m")
+            st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5_info['valor']} m}]")
+            st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_1_info['valor']} m}]")
             st.info("*(Nota: Para límites de caída de tensión superiores al 1.0%, es posible que deba consultar las guías específicas de la compañía para longitudes mayores.)*")
     else:
         st.info(f"Datos de longitud máxima para {company} no disponibles directamente en la tabla seleccionada para varias caídas de tensión.")
@@ -442,7 +443,7 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
     if company == "Endesa":
         # Capacidad IGM (de Endesa NRZ103 Pág. 54)
         igm_capacity_info = get_endesa_igm_capacity(power_kw)
-        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}")
+        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}}]")
         if power_kw > 150:
             st.info("*(Nota: Para potencias contratadas superiores a 150kW con Endesa, la capacidad del IGM requiere acuerdo con Endesa.)*")
 
@@ -453,8 +454,8 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
 
         # Capacidad de Fusible/Interruptor (de Endesa NRZ103 Pág. 69, 'nominal_protection_current_a')
         fuse_breaker_capacity_info = selected_company_data.get('nominal_protection_current_a', {"valor": "N/A", "fuente": "N/A"})
-        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A")
-        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A")
+        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
+        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
         st.info("*(Nota: Las capacidades de Fusibles e Interruptores para Endesa se basan típicamente en la 'Intensidad Nominal' de la tabla de potencia contratada.)*")
 
         # Verificación de Capacidad de LGA (Endesa NRZ103 Pág. 22)
@@ -466,7 +467,7 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
     elif company == "Iberdrola": # Lógica específica para Iberdrola basada en MT 2.80.12 y NI 76.50.01
         # Capacidad IGM (de MT 2.80.12 Pág. 19, misma regla que Endesa)
         igm_capacity_info = get_endesa_igm_capacity(power_kw) # Reutilizando esta función ya que la regla es idéntica
-        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}")
+        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}}]")
         if power_kw > 150:
             st.info("*(Nota: Para potencias contratadas superiores a 150kW con Iberdrola, la capacidad del IGM requiere acuerdo con i-DE.)*")
 
@@ -483,8 +484,8 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
 
         # Capacidad de Fusible/Interruptor para Iberdrola (de MT 2.80.12 Tabla 1, columna "Intensidad nominal CGP")
         fuse_breaker_capacity_info = selected_company_data.get('conductor_amp_rating', {"valor": "N/A", "fuente": "N/A"})
-        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A")
-        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A")
+        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
+        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
         st.info("*(Nota: Las capacidades de Fusibles e Interruptores para Iberdrola se basan típicamente en la 'Intensidad nominal CGP' de MT 2.80.12 Tabla 1.)*")
         
         # Capacidad de LGA (MT 2.80.12 Pág. 17, Tabla 1 sugiere 400A es el máximo en tabla)
@@ -524,8 +525,8 @@ else: # Si no se encuentran datos específicos de la compañía o power_kw es 0 
             found_generic_cable = cable
             break
     if found_generic_cable:
-        st.write(f"- **Área de Sección Transversal de Cable Requerida (aprox.):** {found_generic_cable['area_mm2']['valor']} mm²['fuente']")
-        st.write(f"- **Diámetro Total Aproximado del Cable:** {found_generic_cable['diameter_mm']['valor']} mm (Basado en la Sección de Fase)['fuente']")
+        st.write(f"- **Área de Sección Transversal de Cable Requerida (aprox.):** {found_generic_cable['area_mm2']['valor']} mm²['fuente']}]")
+        st.write(f"- **Diámetro Total Aproximado del Cable:** {found_generic_cable['diameter_mm']['valor']} mm (Basado en la Sección de Fase)['fuente']}]")
         st.write(f"*(Basado en la corriente calculada {calculated_current:.2f} A)*")
     else:
         st.error("No se encontró un cable genérico adecuado para la corriente calculada en los datos disponibles.")
