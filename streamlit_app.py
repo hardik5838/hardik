@@ -12,23 +12,25 @@ from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="wide")
 
 # --- CSS Styling for "Medium" Layout ---
+# This CSS creates the medium layout and a soft border.
 st.markdown("""
 <style>
 .main .block-container {
-    /* 1. Set a "medium" width */
-    max-width: 3000px;
+    /* Create a "medium" width */
+    max-width: 1100px;
 
-    /* 2. Center the container */
+    /* Center the "medium" width container */
     margin-left: auto;
     margin-right: auto;
     
-    /* 3. Add padding and a soft border */
+    /* Add padding and a soft border */
     padding: 2rem;
     border: 2px solid #ADD8E6;
     border-radius: 10px;
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 # --- Helper Functions ---
 def find_data_by_power(power_kw, data_table):
@@ -197,8 +199,4 @@ st.markdown("""
     * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1]
     * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1]
     * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1]
-* **Tablas Generales de Calibre de Cable:**
-    * [Tabla 1]: https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html
-    * [Tabla 2]: https://www.spwales.com/cable-size-current-rating-chart
-    * [Tabla 3]: https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html
 """)
