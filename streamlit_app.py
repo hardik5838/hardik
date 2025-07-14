@@ -7,11 +7,16 @@ from iberdrola_data import iberdrola_ide_table, get_iberdrola_cgp_type
 from union_fenosa_data import ufd_table, get_uf_cgp_type_and_fuse
 from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
-
 # --- Helper Functions ---
-def find_data_by_power(power_kw, data_table):
+def find_data_by_power(lookup_value, data_table, lookup_key='power_kw'):
+    """
+    Finds the appropriate row in a data table based on a lookup value.
+    Can search by power ('power_kw') or current ('conductor_amp_rating').
+    """
     for row in data_table:
-        if row["power_kw"]["valor"] >= power_kw:
+        
+# Check if the key exists in the row to avoid errors
+        if lookup_key in row and row[lookup_key]["valor"] >= lookup_value:
             return row
     return data_table[-1] if data_table else None
 
@@ -63,28 +68,55 @@ st.info("También puede introducir directamente la corriente de diseño si la co
 input_design_current_a = st.number_input("Corriente de Diseño Calculada (A) (Opcional)", 0.0, value=0.0, step=1.0)
 
 # --- Calculation & Logic ---
+# --- Calculation & Logic ---
 st.header("Requisitos Generados")
 
+# This section is now updated to handle custom current correctly.
+# First, determine the final current to be used for all lookups.
 if input_design_current_a > 0:
     calculated_current = input_design_current_a
     current_source_note = "Corriente de Diseño proporcionada."
+    # Reverse-calculate an approximate power to use for lookups in power-based tables.
+    power_kw_for_lookup = (calculated_current * voltage_v * math.sqrt(phase_number) * load_factor) / 1000
 else:
     calculated_current = calculate_current(power_kw, voltage_v, phase_number, load_factor)
     current_source_note = f"Calculada (Basada en {power_kw} kW)."
+    power_kw_for_lookup = power_kw
+
 st.write(f"Corriente de Diseño (I_B): **{calculated_current:.2f} A** ({current_source_note})")
 
-use_company_power_tables = not (power_kw == 0.0 and input_design_current_a > 0)
+# --- Data Lookup Logic ---
 selected_company_data = None
-uf_ref_data_for_ground = None
+if company == "Endesa":
+    # Endesa's table is based on power, so we use the calculated or approximate power.
+    selected_company_data = find_data_by_power(power_kw_for_lookup, endesa_contracted_power_data)
+    # Get a reference from the UF table for the ground conductor size lookup.
+    uf_ref_data_for_ground = find_data_by_power(power_kw_for_lookup, ufd_table)
+elif company == "Unión Fenosa":
+    # UF's table is also based on power.
+    selected_company_data = find_data_by_power(power_kw_for_lookup, ufd_table)
+elif company == "Iberdrola":
+    # Iberdrola's table is special; we can look up by power OR current.
+    if input_design_current_a > 0:
+        # If custom current is given, use it to search the 'conductor_amp_rating' column.
+        selected_company_data = find_data_by_power(calculated_current, iberdrola_ide_table, lookup_key='conductor_amp_rating')
+    else:
+        # Otherwise, use power.
+        selected_company_data = find_data_by_power(power_kw_for_lookup, iberdrola_ide_table)
 
-if use_company_power_tables:
-    if company == "Endesa":
-        selected_company_data = find_data_by_power(power_kw, endesa_contracted_power_data)
-        uf_ref_data_for_ground = find_data_by_power(power_kw, ufd_table)
-    elif company == "Unión Fenosa":
-        selected_company_data = find_data_by_power(power_kw, ufd_table)
-    elif company == "Iberdrola":
-        selected_company_data = find_data_by_power(power_kw, iberdrola_ide_table)
+# --- Display Logic ---
+if selected_company_data:
+    # This subheader now correctly reflects what the data is based on.
+    display_basis = f"{calculated_current:.2f} A de Corriente de Diseño" if input_design_current_a > 0 else f"{power_kw} kW de Potencia Contratada"
+    st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
+    
+    # (The rest of your display logic for Cable Sections, Installation Details, etc.
+    # remains exactly the same as before and should follow here.)
+    
+    # --- Cable Sections ---
+    st.markdown("#### Secciones de Cables (mm²)")
+else:
+    st.warning(f"No se encontraron datos para los parámetros introducidos. Mostrando recomendaciones genéricas.")
 
 if selected_company_data and use_company_power_tables:
     st.subheader(f"Requisitos para {company} (Basado en {power_kw} kW de Potencia Contratada)")
