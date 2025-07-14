@@ -415,7 +415,7 @@ if selected_company_data and use_company_power_tables: # Only show company-speci
 
     else: # Para Unión Fenosa e Iberdrola (sus tablas sí tienen tube_dia_mm)
         tube_dia_mm_info = selected_company_data.get('tube_dia_mm', {"valor": "N/A", "fuente": "N/A"})
-        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm}]")
+        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} m]")
 
 
     # Límites de Caída de Tensión y Longitud Máxima
