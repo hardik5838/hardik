@@ -346,18 +346,18 @@ if selected_company_data:
         neutral_mm2 = selected_company_data.get('neutral_mm2', {"valor": "N/A", "fuente": "N/A"})
         ground_mm2 = selected_company_data.get('ground_mm2', {"valor": "N/A", "fuente": "N/A"})
         
-        st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²}]")
-        st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²}]")
-        st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²}]")
+        st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²")
+        st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²")
+        st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²")
         
         if isinstance(phase_mm2['valor'], (int, float)):
             overall_cable_diameter_info = get_generic_diameter_from_area(phase_mm2['valor'])
-        st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)}]")
+        st.write(f"- **Diámetro Total Aproximado del Cable:** {overall_cable_diameter_info['valor']} mm (Basado en la Sección de Fase)")
 
     # --- Detalles de Instalación ---
     st.markdown("#### Detalles de Instalación")
     tube_dia_mm_info = selected_company_data.get('tube_dia_mm', {"valor": "N/A", "fuente": "N/A"})
-    st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm}]")
+    st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_mm_info['valor']} mm")
 
     # Límites de Caída de Tensión y Longitud Máxima
     max_len_0_5_info = selected_company_data.get('max_len_0_5', {"valor": "N/A", "fuente": "N/A"})
@@ -365,12 +365,12 @@ if selected_company_data:
 
     if max_len_0_5_info['valor'] != "N/A" and max_len_1_info['valor'] != "N/A":
         if voltage_drop_limit <= 0.5:
-             st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_0_5_info['valor']} m}]")
+             st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_0_5_info['valor']} m")
         elif voltage_drop_limit <= 1.0:
-            st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_1_info['valor']} m}]")
+            st.write(f"- **Longitud Máxima Recomendada (para {voltage_drop_limit:.1f}% de caída de tensión):** {max_len_1_info['valor']} m")
         else:
-            st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5_info['valor']} m}]")
-            st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_1_info['valor']} m}]")
+            st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5_info['valor']} m")
+            st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_1_info['valor']} m")
             st.info("*(Nota: Para límites de caída de tensión superiores al 1.0%, es posible que deba consultar las guías específicas de la compañía para longitudes mayores.)*")
     else:
         st.info(f"Datos de longitud máxima para {company} no disponibles directamente en la tabla seleccionada para varias caídas de tensión.")
@@ -419,8 +419,8 @@ if selected_company_data:
 
         # Capacidad de Fusible/Interruptor para Iberdrola (de MT 2.80.12 Tabla 1, columna "Intensidad nominal CGP")
         fuse_breaker_capacity_info = selected_company_data.get('conductor_amp_rating', {"valor": "N/A", "fuente": "N/A"})
-        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
-        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
+        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A")
+        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A")
         st.info("*(Nota: Las capacidades de Fusibles e Interruptores para Iberdrola se basan típicamente en la 'Intensidad nominal CGP' de MT 2.80.12 Tabla 1.)*")
         
         # Capacidad de LGA (MT 2.80.12 Pág. 17, Tabla 1 sugiere 400A es el máximo en tabla)
@@ -432,8 +432,8 @@ if selected_company_data:
         # Para Unión Fenosa, usamos el 'conductor_amp_rating' o el respaldo calculado.
         fuse_breaker_capacity_info = selected_company_data.get('conductor_amp_rating', {"valor": "N/A", "fuente": "N/A"})
         if fuse_breaker_capacity_info['valor'] != "N/A":
-            st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
-            st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
+            st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A")
+            st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A")
             st.info("*(Nota: Las capacidades de Fusibles e Interruptores para esta compañía se basan en valores de tabla específicos.)*")
         else:
             st.write(f"- **Capacidad de Fusible Recomendada (Mín.):** Aprox. {calculated_current * 1.25:.2f} A (requiere consulta a tabla específica de la compañía)")
@@ -442,7 +442,7 @@ if selected_company_data:
         
         cgp_info = selected_company_data.get('cgp_amp_range', {"valor": "N/A", "fuente": "N/A"})
         if cgp_info['valor'] != "N/A":
-            st.write(f"- **Tipo de CGP (Caja General de Protección):** Relacionado con **{cgp_info['valor']} Amps**}]")
+            st.write(f"- **Tipo de CGP (Caja General de Protección):** Relacionado con **{cgp_info['valor']} Amps**")
         else:
             st.write("- **Tipo de CGP (Caja General de Protección):** Información no disponible directamente en la tabla de esta compañía.")
 
@@ -458,8 +458,8 @@ else: # Si no se encuentran datos para la compañía y potencia seleccionadas
             break
     if found_generic_cable:
         st.markdown("#### Recomendación Genérica de Cable (Respaldo)")
-        st.write(f"- **Área de Sección Transversal de Cable Requerida (aprox.):** {found_generic_cable['area_mm2']['valor']} mm²['fuente']}]")
-        st.write(f"- **Diámetro Total Aproximado del Cable:** {found_generic_cable['diameter_mm']['valor']} mm (Basado en la Sección de Fase)['fuente']}]")
+        st.write(f"- **Área de Sección Transversal de Cable Requerida (aprox.):** {found_generic_cable['area_mm2']['valor']} mm²['fuente']")
+        st.write(f"- **Diámetro Total Aproximado del Cable:** {found_generic_cable['diameter_mm']['valor']} mm (Basado en la Sección de Fase)['fuente']")
         st.write(f"*(Basado en la corriente calculada {calculated_current:.2f} A)*")
     else:
         st.error("No se encontró un cable genérico adecuado para la corriente calculada en los datos disponibles.")
