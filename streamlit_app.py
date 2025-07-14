@@ -1,4 +1,4 @@
-iuimport streamlit as st
+import streamlit as st
 import math
 
 # Import data and functions from the new modules
@@ -8,16 +8,20 @@ from union_fenosa_data import ufd_table, get_uf_cgp_type_and_fuse
 from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
 # --- Streamlit App UI Setup ---
+# We use "wide" layout as a base, and then control the exact width with CSS below.
 st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="wide")
 
-# --- CSS Styling (Simplified for Border Only) ---
-# Theming is now handled by .streamlit/config.toml
-# This CSS is only for the custom border around the app.
+# --- CSS Styling ---
+# This block sets a custom "medium" width for the app and adds the blue border.
 st.markdown("""
 <style>
 .main .block-container {
+    max-width: 1200px; /* Sets a 'medium' width */
+    padding-left: 2rem;
+    padding-right: 2rem;
     border: 3px solid #4682B4;  /* Steel Blue border */
-    padding: 1.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
     border-radius: 15px;
 }
 </style>
@@ -191,5 +195,8 @@ st.markdown("""
     * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1]
     * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1]
     * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1]
-
+* **Tablas Generales de Calibre de Cable:**
+    * [Tabla 1]: https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html
+    * [Tabla 2]: https://www.spwales.com/cable-size-current-rating-chart
+    * [Tabla 3]: https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html
 """)
