@@ -34,5 +34,5 @@ uf_cgp_fuse_data = [
 def get_uf_cgp_type_and_fuse(nominal_current_a):
     for cgp_entry in uf_cgp_fuse_data:
         if nominal_current_a <= cgp_entry["imax_a"]["valor"]:
-            return cgp_entry["designacion"]["valor"], cgp_entry["imax_a"]["valor"], cgp_entry["fuente"]
+            return cgp_entry["designacion"]["valor"], cgp_entry["imax_a"]["valor"], cgp_entry["designacion"]["fuente"]
     return "N/A (Consultar UF Dist.)", "N/A", FUENTE_UF_ES_0100_ES_RE_EIC_PG14_TABLA2
