@@ -276,17 +276,17 @@ if company == "Endesa":
     # ya que la tabla de Endesa no lo proporciona explícitamente.
     uf_ref_data_for_ground = find_data_by_power(power_kw, ufd_table)
     if power_kw > 346.40:
-         st.warning("Para potencias contratadas superiores a 346.40 kW con Endesa, consulte la documentación oficial de Endesa para requisitos específicos.")
+         st.warning(f"Para potencias contratadas superiores a 346.40 kW con Endesa, consulte la documentación oficial de Endesa para requisitos específicos.")
 
 elif company == "Unión Fenosa":
     selected_company_data = find_data_by_power(power_kw, ufd_table)
     if power_kw > 277.8:
-        st.warning("Para potencias contratadas superiores a 277.8 kW con Unión Fenosa, consulte la documentación oficial de Unión Fenosa para requisitos específicos.")
+        st.warning(f"Para potencias contratadas superiores a 277.8 kW con Unión Fenosa, consulte la documentación oficial de Unión Fenosa para requisitos específicos.")
 
 elif company == "Iberdrola":
     selected_company_data = find_data_by_power(power_kw, iberdrola_ide_table)
     if power_kw > 196:
-        st.warning("Para potencias contratadas superiores a 196 kW con Iberdrola, consulte la documentación oficial de Iberdrola (MT 2.80.12) para requisitos específicos.")
+        st.warning(f"Para potencias contratadas superiores a 196 kW con Iberdrola, consulte la documentación oficial de Iberdrola (MT 2.80.12) para requisitos específicos.")
 
 
 # Determinar la corriente (I_B) a utilizar para el dimensionamiento
@@ -330,9 +330,9 @@ if selected_company_data:
                 ground_mm2_valor_fallback = get_guia_bt_14_ground_size_by_phase(phase_mm2['valor'])
                 ground_mm2 = {"valor": ground_mm2_valor_fallback, "fuente": FUENTE_GUIA_BT_14_GENERAL_REBT_TIERRA}
                 
-            st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²")
-            st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²")
-            st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²")
+            st.write(f"- **Sección de Cable de Fase:** {phase_mm2['valor']} mm²}]")
+            st.write(f"- **Sección de Neutro:** {neutral_mm2['valor']} mm²}]")
+            st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2['valor']} mm²}]")
             st.info("*(Nota: Para Endesa, la sección del Neutro se recomienda igual a la de Fase (NRZ103). La sección de Tierra se deriva de una tabla de referencia general (GUÍA BT-14) o de Unión Fenosa, ya que las tablas primarias de Endesa no la especifican explícitamente.)*")
             
             if isinstance(phase_mm2['valor'], (int, float)):
@@ -428,7 +428,7 @@ if selected_company_data:
              st.warning(f"La capacidad máxima de LGA para Iberdrola es típicamente de hasta 400A. Su corriente calculada ({calculated_current:.2f} A) excede esto. Consulte a i-DE para requisitos específicos para corrientes más altas.")
 
 
-    elif company == "Unión Fenosa": # Lógica existente para Unión Fenosa
+    elif company == "Unión Fenosa": # Lógica existente para Union Fenosa
         # Para Unión Fenosa, usamos el 'conductor_amp_rating' o el respaldo calculado.
         fuse_breaker_capacity_info = selected_company_data.get('conductor_amp_rating', {"valor": "N/A", "fuente": "N/A"})
         if fuse_breaker_capacity_info['valor'] != "N/A":
