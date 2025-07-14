@@ -7,7 +7,11 @@ from iberdrola_data import iberdrola_ide_table, get_iberdrola_cgp_type
 from union_fenosa_data import ufd_table, get_uf_cgp_type_and_fuse
 from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
+# --- Streamlit App UI Setup ---
+# st.set_page_config must be the first Streamlit command used.
+st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="centered")
 
+# This is the single, corrected block for all styling.
 st.markdown("""
 <style>
 /* Main app container styling */
@@ -40,7 +44,6 @@ div[data-baseweb="slider"] > div:nth-of-type(3) {
 }
 </style>
 """, unsafe_allow_html=True)
-
 
 
 # --- Helper Functions ---
@@ -77,36 +80,7 @@ def calculate_current(power_kw, voltage_v, phase_number, power_factor):
     elif phase_number == 1: return power_w / (voltage_v * power_factor)
     return 0
 
-<style>
-/* Main app container styling */
-.main .block-container {
-    border: 3px solid #4682B4;  /* Steel Blue border */
-    padding: 1.5rem;
-    border-radius: 15px;
-}
-
-
-
-# --- Streamlit App ---
-st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="centered")
-
-st.markdown("""
-<style>
-.main .block-container {
-    border: 3px solid #4682B4; padding: 1.5rem; border-radius: 15px;
-}
-div[data-testid="stSlider"] div[role="slider"] + div > div {
-    background-color: #4682B4;
-}
-div[data-testid="stSlider"] div[role="slider"] {
-    background-color: #1E90FF;
-}
-div[data-testid="stSlider"] div[role="slider"]:hover {
-    background-color: #4169E1;
-}
-</style>
-""", unsafe_allow_html=True)
-
+# --- App Body ---
 st.image("Logo_ASEPEYO.png", width=300)
 st.title("Generador de Guía de Instalaciones Eléctricas")
 st.markdown("Genere requisitos eléctricos detallados según las normas de las compañías distribuidoras.")
@@ -225,5 +199,50 @@ else:
     st.write(f"- **Capacidad de Fusible/Interruptor Recomendada (Mín.):** Aprox. {calculated_current * 1.25:.2f} A (Regla general de seguridad)")
     st.write("- **Tipo de CGP y Capacidad IGM:** N/A (Consulte al distribuidor)")
 
-st.markdown("---")
-# (Your reference markdown section)
+st.markdown("""
+
+---
+
+### Documentos de Referencia:
+
+* **Endesa:** [Guía de Interpretación NRZ103, Edición 6.1, 03-2024]
+
+
+* **Unión Fenosa:** [Especificaciones Particulares para Instalaciones de Conexión ES.0100.ES.RE.EIC, Edición: 5, 08/09/2011]
+
+
+* **Iberdrola (i-DE):** [Manual Técnico de Distribución MT 2.80.12, Edición 05, Mayo 2019]
+
+
+* **Iberdrola (i-DE) Tipos de CGP:** [NORMA NI 76.50.01, Edición 6a, Julio 2010]
+
+
+* **Guías Técnicas de Aplicación (Ministerio para la Transición Ecológica y el Reto Demográfico):**
+
+    * [GUÍA-BT-10: Previsión de Cargas, Edición: sep 03, Revisión: 1]
+
+
+    * [GUÍA-BT-12: Esquemas, Edición: sep 03, Revisión: 1]
+
+
+    * [GUÍA-BT-13: Cajas Generales de Protección, Edición: sep 03, Revisión: 1]
+
+
+    * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1]
+
+
+    * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1]
+
+
+    * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1]
+
+
+* **Tablas Generales de Calibre de Cable:**
+
+    * [Tabla 1]: https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html
+
+    * [Tabla 2]: https://www.spwales.com/cable-size-current-rating-chart
+
+    * [Tabla 3]: https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html
+
+""")
