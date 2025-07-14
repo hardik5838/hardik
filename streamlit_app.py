@@ -16,14 +16,9 @@ st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas",
 st.markdown("""
 <style>
 .main .block-container {
-    /* Create a "medium" width */
-    max-width: 1800px;
-
-    /* Center the "medium" width container */
+    max-width: 1100px;
     margin-left: auto;
     margin-right: auto;
-    
-    /* Add padding and a soft border */
     padding: 2rem;
     border: 2px solid #ADD8E6;
     border-radius: 10px;
