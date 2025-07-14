@@ -142,4 +142,42 @@ if selected_company_data and use_company_power_tables:
     max_len_1 = selected_company_data.get('max_len_1', {}).get('valor', 'N/A')
     if max_len_0_5 != 'N/A':
          st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5} m")
-         st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_
+         st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_1} m")
+
+    # --- Electrical Devices ---
+    st.markdown("#### Dispositivos Eléctricos y Capacidades")
+    if company == "Endesa":
+        igm_cap = get_endesa_igm_capacity(power_kw)
+        cgp_type, _ = get_endesa_cgp_type(selected_company_data['nominal_protection_current_a']['valor'])
+        fuse_cap = selected_company_data['nominal_protection_current_a']['valor']
+        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_cap.get('valor')}")
+        st.write(f"- **Tipo de CGP (Caja General de Protección):** {cgp_type}")
+        st.write(f"- **Capacidad de Fusible/Interruptor Recomendada:** {fuse_cap} A")
+    elif company == "Iberdrola":
+        igm_cap = get_endesa_igm_capacity(power_kw) # Same rule as Endesa
+        cgp_type, _ = get_iberdrola_cgp_type(selected_company_data['conductor_amp_rating']['valor'])
+        fuse_cap = selected_company_data['conductor_amp_rating']['valor']
+        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_cap.get('valor')}")
+        st.write(f"- **Tipo de CGP (Caja General de Protección):** {cgp_type}")
+        st.write(f"- **Capacidad de Fusible/Interruptor Recomendada:** {fuse_cap} A")
+    elif company == "Unión Fenosa":
+        cgp_type, fuse_cap, _ = get_uf_cgp_type_and_fuse(calculated_current)
+        st.write(f"- **Tipo de CGP (Caja General de Protección):** {cgp_type}")
+        st.write(f"- **Capacidad de Fusible/Interruptor Recomendada:** {fuse_cap} A")
+        st.write("- **Interruptor General de Maniobra (IGM) Capacity:** N/A (Consulte la documentación de Unión Fenosa)")
+
+else:
+    st.warning(f"No se encontraron datos para {power_kw} kW. Mostrando recomendaciones genéricas.")
+    st.markdown("#### Recomendación Genérica de Cable (Respaldo)")
+    found_generic_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= calculated_current), None)
+    if found_generic_cable:
+        st.write(f"- **Área de Sección Transversal de Cable Requerida (aprox.):** {found_generic_cable['area_mm2']['valor']} mm²")
+        st.write(f"- **Diámetro Total Aproximado del Cable:** {found_generic_cable['diameter_mm']['valor']} mm")
+    else:
+        st.error("No se encontró un cable genérico adecuado para la corriente calculada.")
+    st.markdown("#### Dispositivos Eléctricos y Capacidades (Genéricos)")
+    st.write(f"- **Capacidad de Fusible/Interruptor Recomendada (Mín.):** Aprox. {calculated_current * 1.25:.2f} A (Regla general de seguridad)")
+    st.write("- **Tipo de CGP y Capacidad IGM:** N/A (Consulte al distribuidor)")
+
+st.markdown("---")
+# (Your reference markdown section)
