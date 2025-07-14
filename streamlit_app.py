@@ -16,7 +16,7 @@ st.markdown("""
 <style>
 .main .block-container {
     /* 1. Set a "medium" width */
-    max-width: 400px;
+    max-width: 3000px;
 
     /* 2. Center the container */
     margin-left: auto;
