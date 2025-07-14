@@ -8,21 +8,21 @@ from union_fenosa_data import ufd_table, get_uf_cgp_type_and_fuse
 from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
 # --- Streamlit App UI Setup ---
-# We use "wide" layout as a base, and then control the exact width with CSS below.
-st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="centered")
+# Set the base layout to "wide" to allow our custom width to take effect.
+st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="wide")
 
-
-
-# --- CSS Styling (Updated for a soft blue glow) ---
+# --- CSS Styling for "Medium" Layout ---
+# This CSS block creates the medium layout and a soft border.
 st.markdown("""
 <style>
 .main .block-container {
-    /* Add a soft blue glow effect */
-    box-shadow: 0 0 15px 5px rgba(70, 130, 180, 0.5); /* SteelBlue with 50% opacity */
-    
-    /* Keep the rounded corners and padding */
-    border-radius: 15px;
-    padding: 2rem;
+    max-width: 1100px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    border: 2px solid #ADD8E6; /* Soft blue border */
+    border-radius: 10px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -195,5 +195,8 @@ st.markdown("""
     * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1]
     * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1]
     * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1]
-
+* **Tablas Generales de Calibre de Cable:**
+    * [Tabla 1]: https://smartshop.lk-ea.com/blog-articles/post/electrical-wiring-guide-cable-size-calculator-current-rating-chart-amps.html
+    * [Tabla 2]: https://www.spwales.com/cable-size-current-rating-chart
+    * [Tabla 3]: https://www.cse-distributors.co.uk/cable/technical-tables-useful-info/table-4e1a.html
 """)
