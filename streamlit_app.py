@@ -394,8 +394,8 @@ if selected_company_data:
 
         # Capacidad de Fusible/Interruptor (de Endesa NRZ103 Pág. 69, 'nom_int_a')
         fuse_breaker_capacity_info = selected_company_data.get('nom_int_a', {"valor": "N/A", "fuente": "N/A"})
-        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
-        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A}]")
+        st.write(f"- **Capacidad de Fusible Recomendada:** {fuse_breaker_capacity_info['valor']} A")
+        st.write(f"- **Capacidad de Interruptor Recomendada:** {fuse_breaker_capacity_info['valor']} A")
         st.info("*(Nota: Las capacidades de Fusibles e Interruptores para Endesa se basan típicamente en la 'Intensidad Nominal' de la tabla de potencia contratada.)*")
 
         # Verificación de Capacidad de LGA (Endesa NRZ103 Pág. 22)
@@ -407,7 +407,7 @@ if selected_company_data:
     elif company == "Iberdrola": # Lógica específica para Iberdrola basada en MT 2.80.12 y NI 76.50.01
         # Capacidad IGM (de MT 2.80.12 Pág. 19, misma regla que Endesa)
         igm_capacity_info = get_endesa_igm_capacity(power_kw) # Reutilizando esta función ya que la regla es idéntica
-        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}}]")
+        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_capacity_info['valor']}")
         if power_kw > 150:
             st.info("*(Nota: Para potencias contratadas superiores a 150kW con Iberdrola, la capacidad del IGM requiere acuerdo con i-DE.)*")
 
