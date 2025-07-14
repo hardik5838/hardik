@@ -11,51 +11,18 @@ from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 # We use "wide" layout as a base, and then control the exact width with CSS below.
 st.set_page_config(page_title="Generador de Guía de Instalaciones Eléctricas", layout="centered")
 
-# --- CSS Styling ---
-# This block sets a custom "medium" width for the app and adds the blue border.
+
+
+# --- CSS Styling (Updated for a soft blue glow) ---
 st.markdown("""
 <style>
 .main .block-container {
-    max-width: 1200px; /* Sets a 'medium' width */
-    padding-left: 2rem;
-    padding-right: 2rem;
-    border: 3px solid #4682B4;  /* Steel Blue border */
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    /* Add a soft blue glow effect */
+    box-shadow: 0 0 15px 5px rgba(70, 130, 180, 0.5); /* SteelBlue with 50% opacity */
+    
+    /* Keep the rounded corners and padding */
     border-radius: 15px;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-/* Target the main app container to act as a reference for positioning */
-.main {
-    position: relative;
-}
-
-/* Create the left vertical line using a pseudo-element */
-.main::before {
-    content: '';
-    position: absolute;
-    left: 20%;  /* Position 20% from the left edge */
-    top: 0;
-    bottom: 0;
-    width: 2px; /* Line thickness */
-    background-color: #ADD8E6; /* A soft, light blue */
-    z-index: -1; /* Place it behind the main content */
-}
-
-/* Create the right vertical line using a pseudo-element */
-.main::after {
-    content: '';
-    position: absolute;
-    right: 20%; /* Position 20% from the right edge */
-    top: 0;
-    bottom: 0;
-    width: 2px; /* Line thickness */
-    background-color: #ADD8E6; /* A soft, light blue */
-    z-index: -1; /* Place it behind the main content */
+    padding: 2rem;
 }
 </style>
 """, unsafe_allow_html=True)
