@@ -103,6 +103,14 @@ elif company == "Iberdrola":
 if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
+    # Add this check for out-of-range power values
+if power_kw_for_lookup > selected_company_data.get('power_kw', {}).get('valor', 0):
+    st.warning(
+        "**Advertencia: Límite de la Tabla Excedido**\n\n"
+        "La potencia contratada seleccionada excede los valores máximos definidos en las tablas de referencia de la compañía. "
+        "Los resultados mostrados se basan en la extrapolación al último valor disponible y podrían no ser precisos. "
+        "**Es imprescindible contactar con la compañía distribuidora para un dimensionamiento exacto.**"
+    )
     used_generic_table = False
     # --- Cable Sections ---
     st.markdown("#### Secciones de Cables (mm²)")
