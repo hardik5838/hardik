@@ -140,6 +140,7 @@ if selected_company_data:
     if company == "Endesa":
         tube_dia_val, _ = find_guia_bt_14_tube_diameter_by_sections(phase_mm2)
         st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_val} mm")
+        st.info("*(Nota: El diámetro mínimo del tubo se ha determinado basándose en la GUÍA - BT-14, que proporciona valores de referencia generales.)*")
     else:
         st.write(f"- **Diámetro Mínimo del Tubo:** {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm")
 
