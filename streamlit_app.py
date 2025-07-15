@@ -72,22 +72,22 @@ selected_company_data = None
 uf_ref_data_for_ground = None
 
 if company == "Endesa":
-    selected_company_data = find_data_by_power(power_kw_for_lookup, endesa_contracted_power_data)
+    selected_company_data = find_data(power_kw_for_lookup, endesa_contracted_power_data)
     if selected_company_data:
-        uf_ref_data_for_ground = find_data_by_power(power_kw_for_lookup, ufd_table)
+        uf_ref_data_for_ground = find_data(power_kw_for_lookup, ufd_table)
 elif company == "Unión Fenosa":
-    selected_company_data = find_data_by_power(power_kw_for_lookup, ufd_table)
+    selected_company_data = find_data(power_kw_for_lookup, ufd_table)
 elif company == "Iberdrola":
     if input_design_current_a > 0:
-        selected_company_data = find_data_by_power(calculated_current, iberdrola_ide_table, lookup_key='conductor_amp_rating')
+        selected_company_data = find_data(calculated_current, iberdrola_ide_table, lookup_key='conductor_amp_rating')
     else:
-        selected_company_data = find_data_by_power(power_kw_for_lookup, iberdrola_ide_table)
+        selected_company_data = find_data(power_kw_for_lookup, iberdrola_ide_table)
 
 # --- Display Logic ---
 if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
-    
+
     # --- Cable Sections ---
     st.markdown("#### Secciones de Cables (mm²)")
     phase_mm2, neutral_mm2, ground_mm2 = "N/A", "N/A", "N/A"
@@ -113,11 +113,11 @@ if selected_company_data:
     
     # --- Installation Details ---
     st.markdown("#### Detalles de Instalación")
-    if company == "Unión Fenosa" or company == "Iberdrola":
-        st.write(f"- **Diámetro Mínimo del Tubo:** {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm")
-    elif company == "Endesa":
+    if company == "Endesa":
         tube_dia_val, _ = find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2)
         st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_val} mm")
+    else:
+        st.write(f"- **Diámetro Mínimo del Tubo:** {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm")
 
     max_len_0_5 = selected_company_data.get('max_len_0_5', {}).get('valor', 'N/A')
     max_len_1 = selected_company_data.get('max_len_1', {}).get('valor', 'N/A')
@@ -149,13 +149,14 @@ if selected_company_data:
 
 else:
     st.warning("No se encontraron datos para los parámetros introducidos. Mostrando recomendaciones genéricas.")
-    found_generic_cable = find_data_by_power(calculated_current, generic_cable_diameter_data, lookup_key='three_phase_amps')
+    found_generic_cable = find_data(calculated_current, generic_cable_diameter_data, lookup_key='three_phase_amps')
     if found_generic_cable:
         st.markdown("#### Recomendación Genérica de Cable (Respaldo)")
         st.write(f"- **Área de Sección Transversal de Cable Requerida (aprox.):** {found_generic_cable['area_mm2']['valor']} mm²")
     else:
         st.error("No se encontró un cable genérico adecuado para la corriente calculada.")
 
+# --- References Section ---
 st.markdown("""
 ---
 ### Documentos de Referencia:
