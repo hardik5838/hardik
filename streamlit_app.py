@@ -14,11 +14,28 @@ def find_data(lookup_value, data_table, lookup_key='power_kw'):
             return row
     return data_table[-1] if data_table else None
 
-def get_guia_bt_15_ground_size_by_phase(phase_mm2_ref):
-    if not isinstance(phase_mm2_ref, (int, float)): return "N/A"
-    if phase_mm2_ref <= 16: return phase_mm2_ref
-    elif phase_mm2_ref <= 35: return 16
-    else: return max(16, math.ceil(phase_mm2_ref / 2))
+def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
+    """
+    Finds the tube diameter from GUIA-BT-14 based on phase and neutral conductor sections.
+    This version is corrected to match the data structure.
+    """
+    if not isinstance(phase_mm2, (int, float)):
+        return "N/A", "Sección de fase no válida"
+
+    # Search the table for a matching row
+    for row in guia_bt_14_table_1:
+        # Check for copper conductors
+        if row.get("phase_mm2_cu") and row["phase_mm2_cu"]["valor"] == phase_mm2:
+            # Check if the neutral section also matches
+            if row.get("neutral_mm2") and row["neutral_mm2"]["valor"] == neutral_mm2:
+                return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
+        # Check for aluminum conductors (if applicable)
+        if row.get("phase_mm2_al") and row["phase_mm2_al"]["valor"] == phase_mm2:
+             if row.get("neutral_mm2") and row["neutral_mm2"]["valor"] == neutral_mm2:
+                return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
+
+    # Fallback if no exact match is found
+    return "N/A", "No se encontraron datos aplicables en la tabla GUIA-BT-14."
 
 def calculate_current(power_kw, voltage_v, phase_number, power_factor):
     if voltage_v == 0 or power_factor == 0: return 0
