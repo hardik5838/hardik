@@ -18,6 +18,7 @@ def find_data(lookup_value, data_table, lookup_key='power_kw'):
             return row
     return data_table[-1] if data_table else None
 
+
 def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
     """
     Finds the tube diameter from GUIA-BT-14 based on the phase conductor section.
@@ -108,20 +109,31 @@ if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
 
+    # --- Cable Sections ---
     st.markdown("#### Secciones de Cables (mm²)")
     phase_mm2, neutral_mm2, ground_mm2 = "N/A", "N/A", "N/A"
     
     if company == "Endesa":
+        # Specific logic for Endesa
         required_nom_int_val = selected_company_data['nominal_protection_current_a']['valor']
-        found_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= required_nom_int_val), None)
+        found_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= required_nom_int_val), generic_cable_diameter_data[-1])
+        
         if found_cable:
+            if required_nom_int_val > found_cable['three_phase_amps']['valor']:
+                 st.warning(f"Advertencia: La corriente requerida ({required_nom_int_val}A) excede la capacidad del cable más grande en la tabla. Se requiere un estudio específico.")
+            
             phase_mm2 = found_cable['area_mm2']['valor']
-            neutral_mm2 = phase_mm2
+            neutral_mm2 = phase_mm2  # Endesa rule
+            
+            # This is the corrected logic for the NameError
+            uf_ref_data_for_ground = find_data(power_kw_for_lookup, ufd_table)
             if uf_ref_data_for_ground and 'ground_mm2' in uf_ref_data_for_ground:
                 ground_mm2 = uf_ref_data_for_ground['ground_mm2'].get('valor', 'N/A')
             else:
                 ground_mm2 = get_guia_bt_15_ground_size_by_phase(phase_mm2)
-    else:
+                
+    elif company == "Iberdrola" or company == "Unión Fenosa":
+        # Logic for Iberdrola and Unión Fenosa
         phase_mm2 = selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')
         neutral_mm2 = selected_company_data.get('neutral_mm2', {}).get('valor', 'N/A')
         ground_mm2 = selected_company_data.get('ground_mm2', {}).get('valor', 'N/A')
@@ -130,11 +142,12 @@ if selected_company_data:
     st.write(f"- **Sección de Neutro:** {neutral_mm2} mm²")
     st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2} mm²")
     
+    # --- Installation Details ---
     st.markdown("#### Detalles de Instalación")
     if company == "Endesa":
         tube_dia_val, _ = find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2)
         st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_val} mm")
-    else:
+    else: # For Iberdrola and Unión Fenosa
         st.write(f"- **Diámetro Mínimo del Tubo:** {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm")
 
     max_len_0_5 = selected_company_data.get('max_len_0_5', {}).get('valor', 'N/A')
@@ -143,6 +156,7 @@ if selected_company_data:
         st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5} m")
         st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_1} m")
 
+    # --- Electrical Devices ---
     st.markdown("#### Dispositivos Eléctricos y Capacidades")
     if company == "Endesa":
         igm_cap = get_endesa_igm_capacity(power_kw_for_lookup)
