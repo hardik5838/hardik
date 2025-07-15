@@ -72,23 +72,22 @@ selected_company_data = None
 uf_ref_data_for_ground = None
 
 if company == "Endesa":
-    selected_company_data = find_data(power_kw_for_lookup, endesa_contracted_power_data)
+    selected_company_data = find_data_by_power(power_kw_for_lookup, endesa_contracted_power_data)
     if selected_company_data:
-        uf_ref_data_for_ground = find_data(power_kw_for_lookup, ufd_table)
+        uf_ref_data_for_ground = find_data_by_power(power_kw_for_lookup, ufd_table)
 elif company == "Unión Fenosa":
-    selected_company_data = find_data(power_kw_for_lookup, ufd_table)
+    selected_company_data = find_data_by_power(power_kw_for_lookup, ufd_table)
 elif company == "Iberdrola":
-    # For Iberdrola, we can search by current if it's provided.
     if input_design_current_a > 0:
-        selected_company_data = find_data(calculated_current, iberdrola_ide_table, lookup_key='conductor_amp_rating')
+        selected_company_data = find_data_by_power(calculated_current, iberdrola_ide_table, lookup_key='conductor_amp_rating')
     else:
-        selected_company_data = find_data(power_kw_for_lookup, iberdrola_ide_table)
+        selected_company_data = find_data_by_power(power_kw_for_lookup, iberdrola_ide_table)
 
 # --- Display Logic ---
 if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
-
+    
     # --- Cable Sections ---
     st.markdown("#### Secciones de Cables (mm²)")
     phase_mm2, neutral_mm2, ground_mm2 = "N/A", "N/A", "N/A"
@@ -111,11 +110,15 @@ if selected_company_data:
     st.write(f"- **Sección de Cable de Fase:** {phase_mm2} mm²")
     st.write(f"- **Sección de Neutro:** {neutral_mm2} mm²")
     st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2} mm²")
-
+    
     # --- Installation Details ---
     st.markdown("#### Detalles de Instalación")
-    st.write(f"- **Diámetro Mínimo del Tubo:** {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm")
-    
+    if company == "Unión Fenosa" or company == "Iberdrola":
+        st.write(f"- **Diámetro Mínimo del Tubo:** {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm")
+    elif company == "Endesa":
+        tube_dia_val, _ = find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2)
+        st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_val} mm")
+
     max_len_0_5 = selected_company_data.get('max_len_0_5', {}).get('valor', 'N/A')
     max_len_1 = selected_company_data.get('max_len_1', {}).get('valor', 'N/A')
     if max_len_0_5 != 'N/A':
@@ -125,13 +128,19 @@ if selected_company_data:
     # --- Electrical Devices ---
     st.markdown("#### Dispositivos Eléctricos y Capacidades")
     if company == "Endesa":
-        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {get_endesa_igm_capacity(power_kw_for_lookup).get('valor')}")
-        st.write(f"- **Tipo de CGP (Caja General de Protección):** {get_endesa_cgp_type(selected_company_data['nominal_protection_current_a']['valor'])[0]}")
-        st.write(f"- **Capacidad de Fusible/Interruptor Recomendada:** {selected_company_data['nominal_protection_current_a']['valor']} A")
+        igm_cap = get_endesa_igm_capacity(power_kw_for_lookup)
+        cgp_type, _ = get_endesa_cgp_type(selected_company_data['nominal_protection_current_a']['valor'])
+        fuse_cap = selected_company_data['nominal_protection_current_a']['valor']
+        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_cap.get('valor')}")
+        st.write(f"- **Tipo de CGP (Caja General de Protección):** {cgp_type}")
+        st.write(f"- **Capacidad de Fusible/Interruptor Recomendada:** {fuse_cap} A")
     elif company == "Iberdrola":
-        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {get_endesa_igm_capacity(power_kw_for_lookup).get('valor')}")
-        st.write(f"- **Tipo de CGP (Caja General de Protección):** {get_iberdrola_cgp_type(selected_company_data['conductor_amp_rating']['valor'])[0]}")
-        st.write(f"- **Capacidad de Fusible/Interruptor Recomendada:** {selected_company_data['conductor_amp_rating']['valor']} A")
+        igm_cap = get_endesa_igm_capacity(power_kw_for_lookup) 
+        cgp_type, _ = get_iberdrola_cgp_type(selected_company_data['conductor_amp_rating']['valor'])
+        fuse_cap = selected_company_data['conductor_amp_rating']['valor']
+        st.write(f"- **Capacidad del Interruptor General de Maniobra (IGM):** {igm_cap.get('valor')}")
+        st.write(f"- **Tipo de CGP (Caja General de Protección):** {cgp_type}")
+        st.write(f"- **Capacidad de Fusible/Interruptor Recomendada:** {fuse_cap} A")
     elif company == "Unión Fenosa":
         cgp_type, fuse_cap, _ = get_uf_cgp_type_and_fuse(calculated_current)
         st.write(f"- **Tipo de CGP (Caja General de Protección):** {cgp_type}")
@@ -140,16 +149,12 @@ if selected_company_data:
 
 else:
     st.warning("No se encontraron datos para los parámetros introducidos. Mostrando recomendaciones genéricas.")
-    # Fallback to generic calculation if no company data is found
-    found_generic_cable = find_data(calculated_current, generic_cable_diameter_data, lookup_key='three_phase_amps')
+    found_generic_cable = find_data_by_power(calculated_current, generic_cable_diameter_data, lookup_key='three_phase_amps')
     if found_generic_cable:
         st.markdown("#### Recomendación Genérica de Cable (Respaldo)")
         st.write(f"- **Área de Sección Transversal de Cable Requerida (aprox.):** {found_generic_cable['area_mm2']['valor']} mm²")
     else:
         st.error("No se encontró un cable genérico adecuado para la corriente calculada.")
-    st.markdown("#### Dispositivos Eléctricos y Capacidades (Genéricos)")
-    st.write(f"- **Capacidad de Fusible/Interruptor Recomendada (Mín.):** Aprox. {calculated_current * 1.25:.2f} A (Regla general de seguridad)")
-    st.write("- **Tipo de CGP y Capacidad IGM:** N/A (Consulte al distribuidor)")
 
 st.markdown("""
 ---
