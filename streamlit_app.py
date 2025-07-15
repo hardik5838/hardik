@@ -149,7 +149,11 @@ if selected_company_data:
 
         ground_mm2_info = {"valor": get_guia_bt_15_ground_size_by_phase(phase_mm2_info.get('valor')), "fuente": "GUÍA - BT-15, Pág. 56, 'Tabla 14 PE'"}
         fuentes_utilizadas["Sección de Tierra"] = ground_mm2_info.get('fuente')
-        
+
+        st.info("Sección de Tierra,Endesa no tiene information en Guia, este reccomendation es de GUÍA-BT-13.")
+
+
+    
     else: # Logic for Iberdrola and Unión Fenosa
         phase_mm2_info = selected_company_data.get('phase_mm2', {})
         neutral_mm2_info = selected_company_data.get('neutral_mm2', {})
