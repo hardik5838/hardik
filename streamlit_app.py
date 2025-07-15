@@ -86,7 +86,8 @@ else:
 
 st.write(f"Corriente de Diseño (I_B): **{calculated_current:.2f} A** ({current_source_note})")
 
-# --- Data Lookup & Display Logic ---
+
+# --- Data Lookup Logic ---
 selected_company_data = None
 if company == "Endesa":
     selected_company_data = find_data(power_kw_for_lookup, endesa_contracted_power_data)
@@ -98,13 +99,16 @@ elif company == "Iberdrola":
     else:
         selected_company_data = find_data(power_kw_for_lookup, iberdrola_ide_table)
 
+# --- Display Logic ---
 if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
 
+    # --- Cable Sections ---
     st.markdown("#### Secciones de Cables (mm²)")
     phase_mm2, neutral_mm2, ground_mm2 = "N/A", "N/A", "N/A"
     
+    # This is the corrected structure for company-specific logic
     if company == "Endesa":
         required_nom_int_val = selected_company_data['nominal_protection_current_a']['valor']
         found_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= required_nom_int_val), generic_cable_diameter_data[-1])
@@ -114,9 +118,10 @@ if selected_company_data:
                 st.warning(f"Advertencia: La corriente requerida ({required_nom_int_val}A) excede la capacidad del cable más grande en la tabla. Se requiere un estudio específico.")
             
             phase_mm2 = found_cable['area_mm2']['valor']
-            neutral_mm2 = phase_mm2
+            neutral_mm2 = phase_mm2  # Endesa rule
             ground_mm2 = get_guia_bt_15_ground_size_by_phase(phase_mm2)
-    else: # Logic for Iberdrola and Unión Fenosa
+
+    elif company == "Iberdrola" or company == "Unión Fenosa":
         phase_mm2 = selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')
         neutral_mm2 = selected_company_data.get('neutral_mm2', {}).get('valor', 'N/A')
         ground_mm2 = selected_company_data.get('ground_mm2', {}).get('valor', 'N/A')
@@ -125,6 +130,7 @@ if selected_company_data:
     st.write(f"- **Sección de Neutro:** {neutral_mm2} mm²")
     st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2} mm²")
     
+    # --- Installation Details ---
     st.markdown("#### Detalles de Instalación")
     if company == "Endesa":
         tube_dia_val, _ = find_guia_bt_14_tube_diameter_by_sections(phase_mm2)
@@ -138,6 +144,7 @@ if selected_company_data:
         st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5} m")
         st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_1} m")
 
+    # --- Electrical Devices ---
     st.markdown("#### Dispositivos Eléctricos y Capacidades")
     if company == "Endesa":
         st.write(f"- **Capacidad del IGM:** {get_endesa_igm_capacity(power_kw_for_lookup).get('valor')}")
@@ -161,4 +168,20 @@ else:
         st.write(f"- **Área de Sección Transversal de Cable Requerida (aprox.):** {found_generic_cable['area_mm2']['valor']} mm²")
     else:
         st.error("No se encontró un cable genérico adecuado para la corriente calculada.")
+
+st.markdown("""
+---
+### Documentos de Referencia:
+* **Endesa:** [Guía de Interpretación NRZ103, Edición 6.1, 03-2024]
+* **Unión Fenosa:** [Especificaciones Particulares para Instalaciones de Conexión ES.0100.ES.RE.EIC, Edición: 5, 08/09/2011]
+* **Iberdrola (i-DE):** [Manual Técnico de Distribución MT 2.80.12, Edición 05, Mayo 2019]
+* **Iberdrola (i-DE) Tipos de CGP:** [NORMA NI 76.50.01, Edición 6a, Julio 2010]
+* **Guías Técnicas de Aplicación (Ministerio para la Transición Ecológica y el Reto Demográfico):**
+    * [GUÍA-BT-10: Previsión de Cargas, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-12: Esquemas, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-13: Cajas Generales de Protección, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1]
+""")
 
