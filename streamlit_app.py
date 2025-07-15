@@ -9,6 +9,10 @@ from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
 # --- Helper Functions ---
 def find_data(lookup_value, data_table, lookup_key='power_kw'):
+    """
+    Finds the appropriate row in a data table based on a lookup value.
+    Can search by power ('power_kw') or by current ('conductor_amp_rating').
+    """
     for row in data_table:
         if lookup_key in row and row[lookup_key]["valor"] >= lookup_value:
             return row
@@ -19,17 +23,17 @@ def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
     Finds the tube diameter from GUIA-BT-14 based on phase and neutral conductor sections.
     This version is corrected to match the data structure.
     """
-    if not isinstance(phase_mm2, (int, float)):
-        return "N/A", "Sección de fase no válida"
+    # Ensure inputs are numbers before proceeding
+    if not isinstance(phase_mm2, (int, float)) or not isinstance(neutral_mm2, (int, float)):
+        return "N/A", "Sección de cable no válida"
 
     # Search the table for a matching row
     for row in guia_bt_14_table_1:
         # Check for copper conductors
         if row.get("phase_mm2_cu") and row["phase_mm2_cu"]["valor"] == phase_mm2:
-            # Check if the neutral section also matches
             if row.get("neutral_mm2") and row["neutral_mm2"]["valor"] == neutral_mm2:
                 return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
-        # Check for aluminum conductors (if applicable)
+        # Check for aluminum conductors
         if row.get("phase_mm2_al") and row["phase_mm2_al"]["valor"] == phase_mm2:
              if row.get("neutral_mm2") and row["neutral_mm2"]["valor"] == neutral_mm2:
                 return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
@@ -37,35 +41,18 @@ def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
     # Fallback if no exact match is found
     return "N/A", "No se encontraron datos aplicables en la tabla GUIA-BT-14."
 
+def get_guia_bt_15_ground_size_by_phase(phase_mm2_ref):
+    if not isinstance(phase_mm2_ref, (int, float)): return "N/A"
+    if phase_mm2_ref <= 16: return phase_mm2_ref
+    elif phase_mm2_ref <= 35: return 16
+    else: return max(16, math.ceil(phase_mm2_ref / 2))
+
 def calculate_current(power_kw, voltage_v, phase_number, power_factor):
     if voltage_v == 0 or power_factor == 0: return 0
     power_w = power_kw * 1000
     if phase_number == 3: return power_w / (math.sqrt(3) * voltage_v * power_factor)
     elif phase_number == 1: return power_w / (voltage_v * power_factor)
     return 0
-
-def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
-    if not isinstance(phase_mm2, (int, float)):
-        return "N/A", "Sección de fase no válida"
-
-    num_conductors = 5
-
-    for row in guia_bt_14_table_1:
-        if 'section_mm2' in row and row['section_mm2']['valor'] >= phase_mm2:
-            tube_diameter = row['conductors'].get(str(num_conductors))
-            if tube_diameter:
-                return tube_diameter, f"Según GUIA-BT-14 para {num_conductors} conductores de {phase_mm2}mm²"
-            else:
-                return "N/A", f"No se encontró diámetro para {num_conductors} conductores de {phase_mm2}mm²"
-
-    if guia_bt_14_table_1:
-         last_row = guia_bt_14_table_1[-1]
-         last_diameter = last_row['conductors'].get(str(num_conductors))
-         if last_diameter:
-             return last_diameter, "Sección de fase excede la tabla; usando el valor más grande como referencia."
-
-    return "N/A", "No se encontraron datos aplicables en la tabla GUIA-BT-14."
-
 
 # --- App Body ---
 st.image("Logo_ASEPEYO.png", width=300)
@@ -77,7 +64,7 @@ st.header("Parámetros de Entrada")
 col1, col2 = st.columns(2)
 with col1:
     company = st.selectbox("Seleccione Compañía Distribuidora", options=["Endesa", "Iberdrola", "Unión Fenosa"], index=0)
-    power_kw = st.number_input("Potencia Máxima Contratada (kW)", min_value=0.0, value=100.0, step=1.0)
+    power_kw = st.number_input("Potencia Máxima Contratada (kW)", min_value=0.0, value=20.0, step=1.0)
     voltage_v = st.number_input("Tensión Nominal de Red (V)", min_value=0.0, value=400.0, step=1.0)
 with col2:
     phase_number = st.selectbox("Número de Fases", options=[1, 3], index=1)
