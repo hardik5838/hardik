@@ -177,6 +177,13 @@ else:
     else:
         st.error("No se encontró un cable genérico adecuado para la corriente calculada.")
 
+# --- Disclaimer ---
+st.markdown("---")
+st.warning(
+    "**Descargo de Responsabilidad:** Esta herramienta es una guía informativa y no sustituye el estudio técnico realizado por un profesional cualificado ni la consulta de la normativa vigente. Siempre verifique los requisitos con la compañía distribuidora local y el Reglamento Electrotécnico para Baja Tensión (REBT)."
+)
+# --- References ---
+
 st.markdown("""
 ---
 ### Documentos de Referencia:
