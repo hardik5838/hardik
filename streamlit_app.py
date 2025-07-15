@@ -180,7 +180,7 @@ if selected_company_data:
         st.write(f"- **Capacidad de Fusible/Interruptor:** {fuse_info.get('valor')} A")
 
     elif company == "Iberdrola":
-        igm_info = get_endesa_igm_capacity(power_kw_for_lookup)
+        igm_info = get_iberdrola_igm_capacity(power_kw_for_lookup)
         fuse_info = selected_company_data.get('conductor_amp_rating', {})
         cgp_info = get_iberdrola_cgp_type(fuse_info.get('valor'))
         
