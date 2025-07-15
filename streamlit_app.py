@@ -113,8 +113,6 @@ st.write(f"Corriente de Diseño (I_B): **{calculated_current:.2f} A** ({current_
 
 # --- Data Lookup & Display Logic ---
 selected_company_data = None
-# This line is moved up to ensure it's always available
-uf_ref_data_for_ground = find_data(power_kw_for_lookup, ufd_table)
 
 if company == "Endesa":
     selected_company_data = find_data(power_kw_for_lookup, endesa_contracted_power_data)
