@@ -119,6 +119,8 @@ if selected_company_data:
             phase_mm2 = found_cable['area_mm2']['valor']
             neutral_mm2 = phase_mm2  # Endesa rule
             ground_mm2 = get_guia_bt_15_ground_size_by_phase(phase_mm2)
+            st.info( "*(Nota: La sección del conductor de protección (tierra) se ha estimado porque Endesa Guía no tiene este specification)*"
+)
             used_generic_table = True
 
     elif company == "Iberdrola" or company == "Unión Fenosa":
