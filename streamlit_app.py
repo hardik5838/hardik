@@ -31,6 +31,47 @@ def calculate_current(power_kw, voltage_v, phase_number, power_factor):
     elif phase_number == 1: return power_w / (voltage_v * power_factor)
     return 0
 
+#input fix 
+
+def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
+    """
+    Finds the minimum tube diameter based on GUIA-BT-14 Table 1.
+    It assumes a three-phase installation (3 phases + 1 neutral + 1 ground = 5 conductors).
+    Args:
+        phase_mm2 (int/float): The cross-sectional area of the phase conductors.
+        neutral_mm2 (int/float): The cross-sectional area of the neutral conductor (not used in this logic but kept for signature consistency).
+    Returns:
+        tuple: A tuple containing the tube diameter and a description string.
+    """
+    # Gracefully handle cases where the phase section is not a valid number.
+    if not isinstance(phase_mm2, (int, float)):
+        return "N/A", "Sección de fase no válida"
+
+    # For a standard three-phase installation, we have 5 conductors:
+    # 3 Phases (3P) + 1 Neutral (N) + 1 Protective Earth (PE)
+    num_conductors = 5
+
+    # Find the first row in the BT-14 table where the section size is >= our phase size.
+    for row in guia_bt_14_table_1:
+        if row['section_mm2'] >= phase_mm2:
+            # The table uses the number of conductors as a string key (e.g., '5').
+            tube_diameter = row['conductors'].get(str(num_conductors))
+            if tube_diameter:
+                return tube_diameter, f"Según GUIA-BT-14 para {num_conductors} conductores de {phase_mm2}mm²"
+            else:
+                # This case might occur if the table doesn't have an entry for 5 conductors at this size.
+                return "N/A", f"No se encontró diámetro para {num_conductors} conductores de {phase_mm2}mm²"
+
+    # If the phase section is larger than any in the table, we can default to the largest available size as a fallback.
+    if guia_bt_14_table_1:
+         last_row = guia_bt_14_table_1[-1]
+         last_diameter = last_row['conductors'].get(str(num_conductors))
+         if last_diameter:
+             return last_diameter, "Sección de fase excede la tabla; usando el valor más grande como referencia."
+
+    return "N/A", "No se encontraron datos aplicables en la tabla GUIA-BT-14."
+
+
 # --- App Body ---
 st.image("Logo_ASEPEYO.png", width=300)
 st.title("Generador de Guía de Instalaciones Eléctricas")
