@@ -130,7 +130,7 @@ if selected_company_data:
     st.write(f"- **Sección de Neutro:** {neutral_mm2} mm²")
     st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2} mm²")
     if used_generic_table:
-        st.info("*(Nota: Las secciones de cable de fase y neutro se han dimensionado utilizando una tabla de calibres de cable genérica.)*")
+        st.info("*(Nota: Las secciones de cable de fase y neutro y terra se han dimensionado utilizando una tabla de GUÍA-BT-13: Cajas Generales de Protección.)*")
 
 
     # --- Installation Details ---
