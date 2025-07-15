@@ -76,7 +76,7 @@ def calculate_current(power_kw, voltage_v, phase_number, power_factor):
     return 0
 
 # --- App Body ---
-st.image("Logo_ASEPEYO.png", width=600)
+st.image("Logo_ASEPEYO.png", width=250)
 st.title("Generador de Guía de Instalaciones Eléctricas")
 st.markdown("Genere requisitos eléctricos detallados según las normas de las compañías distribuidoras.")
 
