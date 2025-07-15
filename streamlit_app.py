@@ -77,9 +77,11 @@ input_design_current_a = st.number_input("Corriente de Diseño Calculada (A) (Op
 # --- Calculation & Logic ---
 st.header("Requisitos Generados")
 
+# Determine the primary values for our lookups.
 if input_design_current_a > 0:
     calculated_current = input_design_current_a
     current_source_note = "Corriente de Diseño proporcionada."
+    # Reverse-calculate an approximate power to use for lookups in power-based tables.
     power_kw_for_lookup = (calculated_current * voltage_v * math.sqrt(3) * load_factor) / 1000 if phase_number == 3 else (calculated_current * voltage_v * load_factor) / 1000
 else:
     calculated_current = calculate_current(power_kw, voltage_v, phase_number, load_factor)
@@ -90,19 +92,17 @@ st.write(f"Corriente de Diseño (I_B): **{calculated_current:.2f} A** ({current_
 
 # --- Data Lookup Logic ---
 selected_company_data = None
-uf_ref_data_for_ground = None
-
 if company == "Endesa":
     selected_company_data = find_data(power_kw_for_lookup, endesa_contracted_power_data)
-    if selected_company_data:
-        uf_ref_data_for_ground = find_data(power_kw_for_lookup, ufd_table)
 elif company == "Unión Fenosa":
     selected_company_data = find_data(power_kw_for_lookup, ufd_table)
 elif company == "Iberdrola":
+    # For Iberdrola, we can search by current if it's provided.
     if input_design_current_a > 0:
         selected_company_data = find_data(calculated_current, iberdrola_ide_table, lookup_key='conductor_amp_rating')
     else:
         selected_company_data = find_data(power_kw_for_lookup, iberdrola_ide_table)
+
 
 # --- Display Logic ---
 if selected_company_data:
