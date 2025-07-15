@@ -151,11 +151,17 @@ if selected_company_data:
         st.write(f"- **Tipo de CGP:** {get_endesa_cgp_type(selected_company_data['nominal_protection_current_a']['valor'])[0]}")
         st.write(f"- **Capacidad de Fusible/Interruptor:** {selected_company_data['nominal_protection_current_a']['valor']} A")
     elif company == "Iberdrola":
-        st.write(f"- **Capacidad del IGM:** {get_endesa_igm_capacity(power_kw_for_lookup).get('valor')}")
-        st.write(f"- **Tipo de CGP:** {get_iberdrola_cgp_type(selected_company_data['conductor_amp_rating']['valor'])[0]}")
+        igm_cap = get_endesa_igm_capacity(power_kw_for_lookup).get('valor')
+        fuse_cap = selected_company_data['conductor_amp_rating']['valor']
+        cgp_type, _ = get_iberdrola_cgp_type(fuse_cap) # Define cgp_type here
+
+        st.write(f"- **Capacidad del IGM:** {igm_cap}")
+        st.write(f"- **Tipo de CGP:** {cgp_type}")
+
         if "CGP-1-100/BUC" in cgp_type:
             st.info("*(Nota: El tipo CGP-1-100/BUC puede estar restringido a mantenimiento. Verifique la normativa local para nuevas instalaciones.)*")
-        st.write(f"- **Capacidad de Fusible/Interruptor:** {selected_company_data['conductor_amp_rating']['valor']} A")
+
+        st.write(f"- **Capacidad de Fusible/Interruptor:** {fuse_cap} A")
     elif company == "Unión Fenosa":
         cgp_type, fuse_cap, _ = get_uf_cgp_type_and_fuse(calculated_current)
         st.write(f"- **Tipo de CGP:** {cgp_type}")
