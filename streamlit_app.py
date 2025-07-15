@@ -103,12 +103,11 @@ elif company == "Iberdrola":
 if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
-
+    used_generic_table = False
     # --- Cable Sections ---
     st.markdown("#### Secciones de Cables (mm²)")
     phase_mm2, neutral_mm2, ground_mm2 = "N/A", "N/A", "N/A"
     
-    # This is the corrected structure for company-specific logic
     if company == "Endesa":
         required_nom_int_val = selected_company_data['nominal_protection_current_a']['valor']
         found_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= required_nom_int_val), generic_cable_diameter_data[-1])
@@ -120,6 +119,7 @@ if selected_company_data:
             phase_mm2 = found_cable['area_mm2']['valor']
             neutral_mm2 = phase_mm2  # Endesa rule
             ground_mm2 = get_guia_bt_15_ground_size_by_phase(phase_mm2)
+            used_generic_table = True
 
     elif company == "Iberdrola" or company == "Unión Fenosa":
         phase_mm2 = selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')
@@ -129,7 +129,10 @@ if selected_company_data:
     st.write(f"- **Sección de Cable de Fase:** {phase_mm2} mm²")
     st.write(f"- **Sección de Neutro:** {neutral_mm2} mm²")
     st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2} mm²")
-    
+    if used_generic_table:
+        st.info("*(Nota: Las secciones de cable de fase y neutro se han dimensionado utilizando una tabla de calibres de cable genérica.)*")
+
+
     # --- Installation Details ---
     st.markdown("#### Detalles de Instalación")
     if company == "Endesa":
