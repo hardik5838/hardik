@@ -9,10 +9,6 @@ from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
 # --- Helper Functions ---
 def find_data(lookup_value, data_table, lookup_key='power_kw'):
-    """
-    Finds the appropriate row in a data table based on a lookup value.
-    Can search by power ('power_kw') or current ('conductor_amp_rating').
-    """
     for row in data_table:
         if lookup_key in row and row[lookup_key]["valor"] >= lookup_value:
             return row
@@ -31,38 +27,20 @@ def calculate_current(power_kw, voltage_v, phase_number, power_factor):
     elif phase_number == 1: return power_w / (voltage_v * power_factor)
     return 0
 
-#input fix 
-
 def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
-    """
-    Finds the minimum tube diameter based on GUIA-BT-14 Table 1.
-    It assumes a three-phase installation (3 phases + 1 neutral + 1 ground = 5 conductors).
-    Args:
-        phase_mm2 (int/float): The cross-sectional area of the phase conductors.
-        neutral_mm2 (int/float): The cross-sectional area of the neutral conductor (not used in this logic but kept for signature consistency).
-    Returns:
-        tuple: A tuple containing the tube diameter and a description string.
-    """
-    # Gracefully handle cases where the phase section is not a valid number.
     if not isinstance(phase_mm2, (int, float)):
         return "N/A", "Sección de fase no válida"
 
-    # For a standard three-phase installation, we have 5 conductors:
-    # 3 Phases (3P) + 1 Neutral (N) + 1 Protective Earth (PE)
     num_conductors = 5
 
-    # Find the first row in the BT-14 table where the section size is >= our phase size.
     for row in guia_bt_14_table_1:
-        if row['section_mm2'] >= phase_mm2:
-            # The table uses the number of conductors as a string key (e.g., '5').
+        if 'section_mm2' in row and row['section_mm2']['valor'] >= phase_mm2:
             tube_diameter = row['conductors'].get(str(num_conductors))
             if tube_diameter:
                 return tube_diameter, f"Según GUIA-BT-14 para {num_conductors} conductores de {phase_mm2}mm²"
             else:
-                # This case might occur if the table doesn't have an entry for 5 conductors at this size.
                 return "N/A", f"No se encontró diámetro para {num_conductors} conductores de {phase_mm2}mm²"
 
-    # If the phase section is larger than any in the table, we can default to the largest available size as a fallback.
     if guia_bt_14_table_1:
          last_row = guia_bt_14_table_1[-1]
          last_diameter = last_row['conductors'].get(str(num_conductors))
@@ -95,11 +73,9 @@ input_design_current_a = st.number_input("Corriente de Diseño Calculada (A) (Op
 # --- Calculation & Logic ---
 st.header("Requisitos Generados")
 
-# Determine the primary values for our lookups.
 if input_design_current_a > 0:
     calculated_current = input_design_current_a
     current_source_note = "Corriente de Diseño proporcionada."
-    # Reverse-calculate an approximate power to use for lookups in power-based tables.
     power_kw_for_lookup = (calculated_current * voltage_v * math.sqrt(3) * load_factor) / 1000 if phase_number == 3 else (calculated_current * voltage_v * load_factor) / 1000
 else:
     calculated_current = calculate_current(power_kw, voltage_v, phase_number, load_factor)
@@ -129,7 +105,6 @@ if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
 
-    # --- Cable Sections ---
     st.markdown("#### Secciones de Cables (mm²)")
     phase_mm2, neutral_mm2, ground_mm2 = "N/A", "N/A", "N/A"
     
@@ -138,7 +113,7 @@ if selected_company_data:
         found_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= required_nom_int_val), None)
         if found_cable:
             phase_mm2 = found_cable['area_mm2']['valor']
-            neutral_mm2 = phase_mm2  # Endesa rule
+            neutral_mm2 = phase_mm2
             if uf_ref_data_for_ground and 'ground_mm2' in uf_ref_data_for_ground:
                 ground_mm2 = uf_ref_data_for_ground['ground_mm2'].get('valor', 'N/A')
             else:
@@ -152,7 +127,6 @@ if selected_company_data:
     st.write(f"- **Sección de Neutro:** {neutral_mm2} mm²")
     st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2} mm²")
     
-    # --- Installation Details ---
     st.markdown("#### Detalles de Instalación")
     if company == "Endesa":
         tube_dia_val, _ = find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2)
@@ -166,7 +140,6 @@ if selected_company_data:
         st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5} m")
         st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {max_len_1} m")
 
-    # --- Electrical Devices ---
     st.markdown("#### Dispositivos Eléctricos y Capacidades")
     if company == "Endesa":
         igm_cap = get_endesa_igm_capacity(power_kw_for_lookup)
