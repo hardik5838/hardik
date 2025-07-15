@@ -20,27 +20,24 @@ def find_data(lookup_value, data_table, lookup_key='power_kw'):
 
 def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
     """
-    Finds the tube diameter from GUIA-BT-14 based on phase and neutral conductor sections.
-    This version is corrected to match the data structure.
+    Finds the tube diameter from GUIA-BT-14 based on the phase conductor section.
+    This version is corrected to be more flexible.
     """
-    # Ensure inputs are numbers before proceeding
-    if not isinstance(phase_mm2, (int, float)) or not isinstance(neutral_mm2, (int, float)):
-        return "N/A", "Sección de cable no válida"
+    if not isinstance(phase_mm2, (int, float)):
+        return "N/A", "Sección de fase no válida"
 
-    # Search the table for a matching row
+    # Search the table for a matching row based on phase size
     for row in guia_bt_14_table_1:
-        # Check for copper conductors
-        if row.get("phase_mm2_cu") and row["phase_mm2_cu"]["valor"] == phase_mm2:
-            if row.get("neutral_mm2") and row["neutral_mm2"]["valor"] == neutral_mm2:
-                return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
-        # Check for aluminum conductors
-        if row.get("phase_mm2_al") and row["phase_mm2_al"]["valor"] == phase_mm2:
-             if row.get("neutral_mm2") and row["neutral_mm2"]["valor"] == neutral_mm2:
-                return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
+        if row.get("phase_mm2_cu") and row["phase_mm2_cu"]["valor"] >= phase_mm2:
+            return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
+        if row.get("phase_mm2_al") and row["phase_mm2_al"]["valor"] >= phase_mm2:
+            return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
 
-    # Fallback if no exact match is found
+    # Fallback if the section is larger than any in the table
+    if guia_bt_14_table_1:
+         return guia_bt_14_table_1[-1]["tube_dia_mm"]["valor"], "Sección excede la tabla; usando el valor más grande."
+
     return "N/A", "No se encontraron datos aplicables en la tabla GUIA-BT-14."
-
 def get_guia_bt_15_ground_size_by_phase(phase_mm2_ref):
     if not isinstance(phase_mm2_ref, (int, float)): return "N/A"
     if phase_mm2_ref <= 16: return phase_mm2_ref
