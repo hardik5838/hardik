@@ -8,16 +8,18 @@ from union_fenosa_data import ufd_table, get_uf_cgp_type_and_fuse
 from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
 
 # --- Helper Functions ---
+
 def find_data(lookup_value, data_table, lookup_key='power_kw'):
     """
     Finds the appropriate row in a data table based on a lookup value.
     Can search by power ('power_kw') or by current ('conductor_amp_rating').
     """
     for row in data_table:
+        # Check if the key exists in the row and if the value is sufficient
         if lookup_key in row and row[lookup_key]["valor"] >= lookup_value:
             return row
-    return data_table[-1] if data_table else None
-
+            
+    return None
 
 def find_guia_bt_14_tube_diameter_by_sections(phase_mm2, neutral_mm2):
     """
