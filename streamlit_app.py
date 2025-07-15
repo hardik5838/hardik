@@ -30,9 +30,19 @@ def find_data(lookup_value, data_table, lookup_key='power_kw'):
         if lookup_key in row and row[lookup_key]["valor"] >= lookup_value:
             return row
             
-    # THIS IS THE KEY FIX: If the lookup_value is too high, this now returns 
-    # nothing (None), which correctly triggers the generic fallback warning.
     return None
+    
+def get_iberdrola_igm_capacity(power_kw):
+    """
+    Determines the IGM capacity for Iberdrola and cites the correct source.
+    """    
+    fuente_iberdrola = "Iberdrola MT 2.80.12, Pág. 19, 'Unidad IGM'"
+    if power_kw <= 90:
+        return {"valor": "160 A", "fuente": fuente_iberdrola}
+    elif power_kw <= 150:
+        return {"valor": "250 A", "fuente": fuente_iberdrola}
+    else:
+        return {"valor": "Consultar i-DE (>250A)", "fuente": fuente_iberdrola}
 
 def find_guia_bt_14_tube_diameter_by_sections(phase_mm2):
     """
