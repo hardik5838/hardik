@@ -232,16 +232,16 @@ if selected_company_data:
     # --- Display All Collected Sources ---
         st.markdown("---")
         st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
-            fuentes_validas = {key: value for key, value in fuentes_utilizadas.items() if value and value != "N/A"}
-            if fuentes_validas:
-                for key, value in fuentes_validas.items():
-                    st.write(f"- **{key}:** *{value}*")
-            else:
-                st.write("No se utilizaron fuentes específicas para esta recomendación.")
+        fuentes_validas = {key: value for key, value in fuentes_utilizadas.items() if value and value != "N/A"}
+        if fuentes_validas:
+            for key, value in fuentes_validas.items():
+                st.write(f"- **{key}:** *{value}*")
+        else:
+             st.write("No se utilizaron fuentes específicas para esta recomendación.")
     
-            else:
-                st.warning(f"No se encontró una entrada en la tabla de {company} para la potencia o corriente especificada. El valor puede exceder los límites de la tabla. Mostrando recomendaciones genéricas.")
-                # ... (Your existing generic fallback code) ...
+        else:
+             st.warning(f"No se encontró una entrada en la tabla de {company} para la potencia o corriente especificada. El valor puede exceder los límites de la tabla. Mostrando recomendaciones genéricas.")
+             # ... (Your existing generic fallback code) ...
 
 
 
