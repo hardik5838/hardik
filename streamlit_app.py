@@ -241,6 +241,47 @@ else:
     st.warning(f"No se encontró una entrada en la tabla de {company} para la potencia o corriente especificada. El valor puede exceder los límites de la tabla. Mostrando recomendaciones genéricas.")
     # ... (Your existing generic fallback code) ...
 
+
+# --- Installation Scheme Section ---
+with st.expander("Ver Esquema de la Instalación de Enlace (Basado en Iberdrola MT 2.80.12)"):
+    st.markdown("""
+    [cite_start]Esta sección describe el recorrido típico de la electricidad desde la red pública hasta una vivienda u oficina, basado en el **Esquema Unifilar de la Instalación de Enlace**[cite: 2711].
+
+    ---
+    #### **1. Red de Distribución y Acometida (Service Drop)**
+    * **Ubicación:** En la vía pública. [cite_start]La `Acometida` (Nº 1 en el esquema) es el cable que conecta la red principal con el edificio[cite: 2731, 2781].
+    * [cite_start]**Propósito:** Traer la energía desde la red de la compañía distribuidora hasta el límite de la propiedad[cite: 2784]. [cite_start]Esta parte es propiedad de i-DE[cite: 2721].
+
+    ---
+    #### **2. Caja General de Protección (CGP)**
+    * [cite_start]**Ubicación:** En la fachada exterior del edificio o en el muro de cerramiento, en un lugar de libre y permanente acceso[cite: 2798, 2838].
+    * **Propósito:** La `CGP` (Nº 2) aloja los fusibles principales que protegen toda la instalación del edificio. [cite_start]Marca el inicio de la propiedad del cliente[cite: 2734, 2790].
+
+    ---
+    #### **3. Línea General de Alimentación (LGA)**
+    * [cite_start]**Ubicación:** Discurre por zonas comunes del edificio, como un patinillo de instalaciones o por el interior de un conducto de obra[cite: 3007, 3179].
+    * [cite_start]**Propósito:** La `LGA` (Nº 3) es la línea principal que transporta la electricidad desde la CGP hasta la centralización de contadores[cite: 2738, 3004].
+
+    ---
+    #### **4. Centralización de Contadores**
+    * [cite_start]**Ubicación:** Dentro de un `Local de centralización` (Nº 10) o armario dedicado[cite: 2772, 3107].
+    * [cite_start]**Propósito:** Es el punto central donde se agrupan los equipos de medida de los diferentes clientes[cite: 3061]. Incluye:
+        * [cite_start]**Interruptor General de Maniobra (Nº 4):** Permite cortar la corriente a toda la centralización por seguridad o mantenimiento[cite: 2741, 3065].
+        * [cite_start]**Contadores (Nº 5.2):** Miden el consumo individual de cada cliente[cite: 2750].
+        * [cite_start]**Embarrado y Fusibles de Seguridad (Nº 5.1):** Reparten la energía de forma segura a cada contador[cite: 2747].
+
+    ---
+    #### **5. Derivación Individual (DI)**
+    * [cite_start]**Ubicación:** Es la línea que va desde el fusible de seguridad de un contador, a través de las zonas comunes, hasta la vivienda u oficina de ese cliente[cite: 2761].
+    * [cite_start]**Propósito:** La `DI` (Nº 6) es la línea exclusiva que alimenta a un único cliente[cite: 3151].
+
+    ---
+    #### **6. Cuadro General de Mando y Protección (CGMP)**
+    * [cite_start]**Ubicación:** Dentro de la propiedad del cliente (vivienda, local, etc.), normalmente cerca de la puerta de entrada[cite: 3202].
+    * **Propósito:** Es el cuadro de interruptores o "caja de breakers" del cliente (Nº 8). [cite_start]Recibe la energía de la DI y la distribuye a los circuitos internos (luces, enchufes, etc.)[cite: 2763, 3199].
+    """)
+
+
 # --- Disclaimer ---
 st.warning(
     "**Descargo de Responsabilidad:** Esta herramienta es una guía informativa y Siempre verifique los requisitos con la Refrencia abajo"
