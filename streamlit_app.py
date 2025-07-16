@@ -47,10 +47,7 @@ def get_iberdrola_igm_capacity(power_kw):
         return {"valor": "Consultar i-DE (>250A)", "fuente": fuente_iberdrola}
 
 def find_guia_bt_14_tube_diameter_by_sections(phase_mm2):
-    """
-    Finds the tube diameter from GUIA-BT-14 based on ONLY the phase conductor section.
-    This is now more flexible and will work for Endesa's unique neutral wire rule.
-    """
+   
     if not isinstance(phase_mm2, (int, float)):
         return "N/A", "Sección de fase no válida"
 
@@ -58,8 +55,10 @@ def find_guia_bt_14_tube_diameter_by_sections(phase_mm2):
         if row.get("phase_mm2_cu") and row["phase_mm2_cu"]["valor"] >= phase_mm2:
             return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
         if row.get("phase_mm2_al") and row["phase_mm2_al"]["valor"] >= phase_mm2:
-            return row["tube_dia_mm"]["valor"], row["tube_dia_mm"]["fuente"]
+            return guia_bt_14_table_1[-1]["tube_dia_mm"]["valor"], "Sección excede la tabla; usando el valor más grande."
     
+    return "N/A", "No se encontraron datos aplicables."
+            
     if guia_bt_14_table_1:
         return guia_bt_14_table_1[-1]["tube_dia_mm"]["valor"], "Sección excede la tabla; usando el valor más grande."
     return "N/A", "No se encontraron datos aplicables."
@@ -150,7 +149,7 @@ if selected_company_data:
         ground_mm2_info = {"valor": get_guia_bt_15_ground_size_by_phase(phase_mm2_info.get('valor')), "fuente": "GUÍA - BT-15, Pág. 56, 'Tabla 14 PE'"}
         fuentes_utilizadas["Sección de Tierra"] = ground_mm2_info.get('fuente')
 
-        st.info("Sección de Tierra,Endesa no tiene information en Guia, este reccomendation es de GUÍA-BT-13.")
+        st.info("*(Nota: La sección del conductor de protección (tierra), Endesa no lo especifica directamente, este reccomendation es de GUÍA-BT-13.")
 
 
     
