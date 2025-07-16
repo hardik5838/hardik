@@ -166,17 +166,21 @@ if selected_company_data:
     st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2_info.get('valor', 'N/A')} mm²")
     
     # --- Installation Details ---
-    if company == "Endesa":
-        # For Endesa, we look up the diameter using the phase_mm2 we found earlier
-        tube_dia_val, tube_fuente = find_guia_bt_14_tube_diameter_by_sections(phase_mm2)
-    else:
-        # For other companies, we get it directly from their data table
-        tube_info = selected_company_data.get('tube_dia_mm', {})
-        tube_dia_val = tube_info.get('valor', 'N/A')
-        tube_fuente = tube_info.get('fuente')
 
-    st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_val} mm")
-    fuentes_utilizadas["Diámetro Mínimo del Tubo"] = tube_fuente
+st.markdown("#### Detalles de Instalación")
+
+if company == "Endesa":
+    # Get the phase_mm2 value again to ensure it's in scope
+    phase_mm2 = phase_mm2_info.get('valor', 'N/A')
+    tube_dia_val, tube_fuente = find_guia_bt_14_tube_diameter_by_sections(phase_mm2)
+else:
+    # For other companies, get it directly from their data table
+    tube_info = selected_company_data.get('tube_dia_mm', {})
+    tube_dia_val = tube_info.get('valor', 'N/A')
+    tube_fuente = tube_info.get('fuente')
+
+st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_val} mm")
+fuentes_utilizadas["Diámetro Mínimo del Tubo"] = tube_fuente
 
     max_len_0_5_info = selected_company_data.get('max_len_0_5', {})
     fuentes_utilizadas["Longitud Máxima"] = max_len_0_5_info.get('fuente')
