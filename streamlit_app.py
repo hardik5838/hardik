@@ -182,8 +182,8 @@ else:
 st.write(f"- **Diámetro Mínimo del Tubo:** {tube_dia_val} mm")
 fuentes_utilizadas["Diámetro Mínimo del Tubo"] = tube_fuente
 
-    max_len_0_5_info = selected_company_data.get('max_len_0_5', {})
-    fuentes_utilizadas["Longitud Máxima"] = max_len_0_5_info.get('fuente')
+max_len_0_5_info = selected_company_data.get('max_len_0_5', {})
+fuentes_utilizadas["Longitud Máxima"] = max_len_0_5_info.get('fuente')
     if max_len_0_5_info.get('valor', 'N/A') != 'N/A':
         st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5_info.get('valor')} m")
         st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {selected_company_data.get('max_len_1', {}).get('valor')} m")
