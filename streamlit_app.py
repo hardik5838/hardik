@@ -351,7 +351,6 @@ if selected_company_data:
         .zone.green {{ background-color: #f0fdf4; border-color: #86efac; }}
         .zone.green .zone-title {{ color: #166534; border-color: #86efac; }}
     </style>
-    
     <div class="diagram-container">
         <div class="zone yellow">
             <div class="zone-title">Responsabilidad: Compañía</div>
@@ -359,18 +358,14 @@ if selected_company_data:
                 <div class="flow-box"><h5>Acometida</h5><p>{acometida_spec}</p></div>
             </div>
         </div>
-    
         <div class="flow-arrow">→</div>
-    
         <div class="zone blue">
             <div class="zone-title">Responsabilidad: Común</div>
             <div class="flow-boxes-in-zone">
                 <div class="flow-box"><h5>CGP</h5><p>{cgp_spec}</p></div>
             </div>
         </div>
-    
         <div class="flow-arrow">→</div>
-    
         <div class="zone green">
             <div class="zone-title">Responsabilidad: Usuario</div>
             <div class="flow-boxes-in-zone">
