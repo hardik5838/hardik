@@ -128,6 +128,36 @@ if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
 
+    acometida_spec = "Conexión a Red BT"
+        
+    # Get Company-Specific Specs
+    if company == "Endesa":
+        fuse_val = selected_company_data.get('nominal_protection_current_a', {}).get('valor', 'N/A')
+        cgp_spec = f"Tipo: {get_endesa_cgp_type(fuse_val)[0]}<br>Fusible: {fuse_val} A"
+        igm_spec = f"Capacidad: {get_endesa_igm_capacity(power_kw_for_lookup).get('valor')}"
+            
+            # We need to re-calculate phase_mm2 to use it here
+        found_cable_for_scheme = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= fuse_val), None)
+        phase_mm2_for_scheme = found_cable_for_scheme['area_mm2']['valor'] if found_cable_for_scheme else "N/A"
+        lga_spec = f"Sección Fase: {phase_mm2_for_scheme} mm²"
+        tubo_spec = f"Diámetro: {find_guia_bt_14_tube_diameter_by_sections(phase_mm2_for_scheme)[0]} mm"
+            
+    elif company == "Iberdrola":
+        fuse_val = selected_company_data.get('conductor_amp_rating', {}).get('valor', 'N/A')
+        cgp_spec = f"Tipo: {get_iberdrola_cgp_type(fuse_val)[0]}<br>Fusible: {fuse_val} A"
+        igm_spec = f"Capacidad: {get_iberdrola_igm_capacity(power_kw_for_lookup).get('valor')}"
+        lga_spec = f"Sección Fase: {selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')} mm²"
+        tubo_spec = f"Diámetro: {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm"
+    
+    elif company == "Unión Fenosa":
+        cgp_type, fuse_cap, _ = get_uf_cgp_type_and_fuse(calculated_current)
+        cgp_spec = f"Tipo: {cgp_type}<br>Fusible: {fuse_cap} A"
+        igm_spec = "N/A" # Not specified in the table
+        lga_spec = f"Sección Fase: {selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')} mm²"
+        tubo_spec = f"Diámetro: {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm"
+    
+
+
     # This dictionary will collect all our sources
     fuentes_utilizadas = {}
 
@@ -231,37 +261,8 @@ if selected_company_data:
         st.header("Requisitos Generados")
 
 # --- Visual Scheme Section ---
-    # First, we gather all the specifications into variables
-acometida_spec = "Conexión a Red BT"
-    
-    # Get Company-Specific Specs
-if company == "Endesa":
-    fuse_val = selected_company_data.get('nominal_protection_current_a', {}).get('valor', 'N/A')
-    cgp_spec = f"Tipo: {get_endesa_cgp_type(fuse_val)[0]}<br>Fusible: {fuse_val} A"
-    igm_spec = f"Capacidad: {get_endesa_igm_capacity(power_kw_for_lookup).get('valor')}"
-        
-        # We need to re-calculate phase_mm2 to use it here
-    found_cable_for_scheme = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= fuse_val), None)
-    phase_mm2_for_scheme = found_cable_for_scheme['area_mm2']['valor'] if found_cable_for_scheme else "N/A"
-    lga_spec = f"Sección Fase: {phase_mm2_for_scheme} mm²"
-    tubo_spec = f"Diámetro: {find_guia_bt_14_tube_diameter_by_sections(phase_mm2_for_scheme)[0]} mm"
-        
-elif company == "Iberdrola":
-    fuse_val = selected_company_data.get('conductor_amp_rating', {}).get('valor', 'N/A')
-    cgp_spec = f"Tipo: {get_iberdrola_cgp_type(fuse_val)[0]}<br>Fusible: {fuse_val} A"
-    igm_spec = f"Capacidad: {get_iberdrola_igm_capacity(power_kw_for_lookup).get('valor')}"
-    lga_spec = f"Sección Fase: {selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')} mm²"
-    tubo_spec = f"Diámetro: {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm"
+    # , we gather all the specifications into variables
 
-elif company == "Unión Fenosa":
-    cgp_type, fuse_cap, _ = get_uf_cgp_type_and_fuse(calculated_current)
-    cgp_spec = f"Tipo: {cgp_type}<br>Fusible: {fuse_cap} A"
-    igm_spec = "N/A" # Not specified in the table
-    lga_spec = f"Sección Fase: {selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')} mm²"
-    tubo_spec = f"Diámetro: {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm"
-
-
-    # Now, we build the HTML and CSS for the diagram
     diagram_html = f"""
     <style>
         .flow-container {{
