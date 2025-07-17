@@ -270,8 +270,6 @@ with st.expander("Ver Esquema de la Instalación de Enlace (Basado en Iberdrola 
     """)
 
 
-# THIS LINE SHOULD ALREADY BE IN YOUR CODE, RIGHT AFTER THE BLOCK YOU ADD
-st.header("Requisitos Generados")
 
     # --- Display All Collected Sources ---
         st.markdown("---")
