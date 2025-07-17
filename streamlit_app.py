@@ -128,37 +128,39 @@ if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
 
-    acometida_spec = "Conexión a Red BT"
-    di_spec = "Desde contador a vivienda"
-    cgmp_spec = "Cuadro principal en vivienda"
+ # Taking data for the scheme 
+    # 1. First, we gather all the specifications needed for the diagram
 
-    
-    # Get Company-Specific Specs
-    if company == "Endesa":
-        fuse_val = selected_company_data.get('nominal_protection_current_a', {}).get('valor', 'N/A')
-        cgp_spec = f"Tipo: {get_endesa_cgp_type(fuse_val)[0]}<br>Fusible: {fuse_val} A"
+    acometida_spec = "Conexión a Red BT"
+
+ if company == "Endesa":
+        required_nom_int_val = selected_company_data.get('nominal_protection_current_a', {}).get('valor', 'N/A')
+        found_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= required_nom_int_val), None)
+        phase_mm2 = found_cable['area_mm2']['valor'] if found_cable else "N/A"
+        
+        cgp_spec = f"Tipo: {get_endesa_cgp_type(required_nom_int_val)[0]}<br>Fusible: {required_nom_int_val} A"
         igm_spec = f"Capacidad: {get_endesa_igm_capacity(power_kw_for_lookup).get('valor')}"
-            
-            # We need to re-calculate phase_mm2 to use it here
-        found_cable_for_scheme = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= fuse_val), None)
-        phase_mm2_for_scheme = found_cable_for_scheme['area_mm2']['valor'] if found_cable_for_scheme else "N/A"
-        lga_spec = f"Sección Fase: {phase_mm2_for_scheme} mm²"
-        tubo_spec = f"Diámetro: {find_guia_bt_14_tube_diameter_by_sections(phase_mm2_for_scheme)[0]} mm"
-            
-    elif company == "Iberdrola":
-        fuse_val = selected_company_data.get('conductor_amp_rating', {}).get('valor', 'N/A')
-        cgp_spec = f"Tipo: {get_iberdrola_cgp_type(fuse_val)[0]}<br>Fusible: {fuse_val} A"
-        igm_spec = f"Capacidad: {get_iberdrola_igm_capacity(power_kw_for_lookup).get('valor')}"
-        lga_spec = f"Sección Fase: {selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')} mm²"
+        lga_spec = f"Fase: {phase_mm2} mm²<br>Neutro: {phase_mm2} mm²<br>Tierra: {get_guia_bt_15_ground_size_by_phase(phase_mm2)} mm²"
+        tubo_spec = f"Diámetro: {find_guia_bt_14_tube_diameter_by_sections(phase_mm2)[0]} mm"
+        
+    else: # Logic for Iberdrola and Unión Fenosa
+        phase_mm2 = selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')
+        neutral_mm2 = selected_company_data.get('neutral_mm2', {}).get('valor', 'N/A')
+        ground_mm2 = selected_company_data.get('ground_mm2', {}).get('valor', 'N/A')
+        
+        lga_spec = f"Fase: {phase_mm2} mm²<br>Neutro: {neutral_mm2} mm²<br>Tierra: {ground_mm2} mm²"
         tubo_spec = f"Diámetro: {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm"
-    
-    elif company == "Unión Fenosa":
-        cgp_type, fuse_cap, _ = get_uf_cgp_type_and_fuse(calculated_current)
-        cgp_spec = f"Tipo: {cgp_type}<br>Fusible: {fuse_cap} A"
-        igm_spec = "N/A" # Not specified in the table
-        lga_spec = f"Sección Fase: {selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')} mm²"
-        tubo_spec = f"Diámetro: {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm"
-    
+
+        if company == "Iberdrola":
+            fuse_val = selected_company_data.get('conductor_amp_rating', {}).get('valor', 'N/A')
+            cgp_spec = f"Tipo: {get_iberdrola_cgp_type(fuse_val)[0]}<br>Fusible: {fuse_val} A"
+            igm_spec = f"Capacidad: {get_iberdrola_igm_capacity(power_kw_for_lookup).get('valor')}"
+        
+        elif company == "Unión Fenosa":
+            cgp_type, fuse_cap, _ = get_uf_cgp_type_and_fuse(calculated_current)
+            cgp_spec = f"Tipo: {cgp_type}<br>Fusible: {fuse_cap} A"
+            igm_spec = "N/A"
+
 
 
     # This dictionary will collect all our sources
@@ -268,29 +270,30 @@ if selected_company_data:
     <style>
         .responsibility-container {{
             display: flex;
-            justify-content: space-between;
-            gap: 10px;
+            justify-content: space-around;
+            align-items: flex-start;
+            gap: 5px;
             font-family: sans-serif;
-            padding: 10px;
+            padding-top: 10px;
         }}
         .zone {{
             padding: 15px;
             border-radius: 10px;
             text-align: center;
-            flex-grow: 1;
+            flex: 1; /* Each zone will take equal space */
+            min-height: 300px;
         }}
         .zone-title {{
             font-weight: bold;
             font-size: 1.1em;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             border-bottom: 2px solid;
             padding-bottom: 8px;
         }}
         .flow-boxes-in-zone {{
             display: flex;
+            flex-direction: column; /* This makes the flow vertical */
             align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
             gap: 10px;
         }}
         .flow-box {{
@@ -299,13 +302,14 @@ if selected_company_data:
             border-radius: 8px;
             padding: 12px;
             text-align: center;
-            min-width: 120px;
+            width: 90%; /* Boxes take most of the zone width */
             box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
         }}
         .flow-box h5 {{ margin: 0 0 5px 0; color: #000; }}
-        .flow-box p {{ margin: 0; font-size: 0.9em; color: #333; }}
-        .flow-arrow {{ font-size: 2em; color: #586069; }}
-        /* Colors for each zone */
+        .flow-box p {{ margin: 0; font-size: 0.9em; color: #333; line-height: 1.4;}}
+        .main-flow-arrow {{ font-size: 2.5em; color: #586069; margin: auto 10px; }}
+        .internal-flow-arrow {{ font-size: 1.5em; color: #888; transform: rotate(90deg); margin: 5px 0; }}
+        /* Zone Colors */
         .zone.yellow {{ background-color: #FFFBEA; border: 1px solid #FDCF47; }}
         .zone.yellow .zone-title {{ color: #B54A09; border-color: #FDCF47; }}
         .zone.blue {{ background-color: #EBF5FF; border: 1px solid #6CB4EE; }}
@@ -318,30 +322,29 @@ if selected_company_data:
         <div class="zone yellow">
             <div class="zone-title">Responsabilidad: Compañía</div>
             <div class="flow-boxes-in-zone">
-                <div class="flow-box">
-                    <h5>Acometida</h5>
-                    <p>{acometida_spec}</p>
-                </div>
+                <div class="flow-box"><h5>Acometida</h5><p>{acometida_spec}</p></div>
             </div>
         </div>
+
+        <div class="main-flow-arrow">→</div>
+
         <div class="zone blue">
             <div class="zone-title">Responsabilidad: Común</div>
             <div class="flow-boxes-in-zone">
                 <div class="flow-box"><h5>CGP</h5><p>{cgp_spec}</p></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-box"><h5>IGM</h5><p>{igm_spec}</p></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-box"><h5>LGA</h5><p>{lga_spec}</p></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-box"><h5>Tubo</h5><p>{tubo_spec}</p></div>
             </div>
         </div>
+
+        <div class="main-flow-arrow">→</div>
+
         <div class="zone green">
             <div class="zone-title">Responsabilidad: Usuario</div>
             <div class="flow-boxes-in-zone">
-                <div class="flow-box"><h5>DI</h5><p>{di_spec}</p></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-box"><h5>CGMP</h5><p>{cgmp_spec}</p></div>
+                <div class="flow-box"><h5>IGM</h5><p>{igm_spec}</p></div>
+                <div class="internal-flow-arrow">→</div>
+                <div class="flow-box"><h5>LGA (Conductores)</h5><p>{lga_spec}</p></div>
+                <div class="internal-flow-arrow">→</div>
+                <div class="flow-box"><h5>Tubo / Canalización</h5><p>{tubo_spec}</p></div>
             </div>
         </div>
     </div>
