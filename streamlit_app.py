@@ -267,8 +267,7 @@ if selected_company_data:
 
 st.markdown("""---""")
 
-
-# --- Visual Scheme Section ---
+ # --- Visual Scheme Section ---
     diagram_html = f"""
     <head>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -281,7 +280,7 @@ st.markdown("""---""")
         }}
         .diagram-container {{
             display: flex;
-            align-items: center;
+            align-items: stretch; /* Align zones to have same height */
             justify-content: center;
             gap: 20px;
             font-family: 'Inter', sans-serif;
@@ -293,6 +292,8 @@ st.markdown("""---""")
         }}
         .zone {{
             flex: 1;
+            display: flex; /* Use flexbox for internal alignment */
+            flex-direction: column; /* Stack title and content vertically */
             min-width: 220px; /* Minimum width before wrapping */
             padding: 20px;
             border-radius: 12px;
@@ -314,11 +315,11 @@ st.markdown("""---""")
         }}
         .flow-boxes-in-zone {{
             display: flex;
-            flex-direction: column; /* Stack boxes vertically inside a zone */
-            align-items: stretch; /* Stretch boxes to fill width */
-            justify-content: center;
+            align-items: center; /* Vertically center items in the row */
+            justify-content: center; /* Horizontally center the group of items */
             gap: 15px;
-            min-height: 100px;
+            flex-grow: 1; /* Allow this container to grow to fill space */
+            flex-wrap: wrap; /* Allow boxes to wrap inside a zone if needed */
         }}
         .flow-box {{
             background-color: #FFFFFF;
@@ -327,6 +328,8 @@ st.markdown("""---""")
             padding: 15px;
             text-align: center;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            min-width: 140px; /* Give boxes a minimum width */
+            flex: 1; /* Allow boxes to grow */
         }}
         .flow-box h5 {{ 
             margin: 0 0 8px 0; 
@@ -345,6 +348,7 @@ st.markdown("""---""")
             color: #718096;
             margin: auto 0;
             font-weight: 200;
+            align-self: center; /* Ensure arrow is centered in the flex container */
         }}
         
         /* Zone Colors */
@@ -356,7 +360,7 @@ st.markdown("""---""")
         .zone.green .zone-title {{ color: #166534; border-color: #86efac; }}
 
         /* Responsive adjustments */
-        @media (max-width: 768px) {{
+        @media (max-width: 992px) {{ /* Adjust breakpoint for better wrapping */
             .diagram-container {{
                 flex-direction: column;
                 align-items: stretch;
@@ -367,26 +371,33 @@ st.markdown("""---""")
             }}
         }}
     </style>
+
     <div class="diagram-container">
         <div class="zone yellow">
             <div class="zone-title">Responsabilidad: Compañía</div>
             <div class="flow-boxes-in-zone">
-                <div class="flow-box"><h5>Acometida</h5><p>{tubo_spec}{lga_spec}</p></div>
+                <div class="flow-box"><h5>Acometida</h5><p>{acometida_spec}</p></div>
             </div>
         </div>
+
         <div class="flow-arrow">→</div>
+
         <div class="zone blue">
             <div class="zone-title">Responsabilidad: Común</div>
             <div class="flow-boxes-in-zone">
                 <div class="flow-box"><h5>CGP</h5><p>{cgp_spec}</p></div>
             </div>
         </div>
+
         <div class="flow-arrow">→</div>
+
         <div class="zone green">
             <div class="zone-title">Responsabilidad: Usuario</div>
             <div class="flow-boxes-in-zone">
                 <div class="flow-box"><h5>IGM</h5><p>{igm_spec}</p></div>
+                <div class="flow-arrow">→</div>
                 <div class="flow-box"><h5>LGA (Conductores)</h5><p>{lga_spec}</p></div>
+                <div class="flow-arrow">→</div>
                 <div class="flow-box"><h5>Tubo / Canalización</h5><p>{tubo_spec}</p></div>
             </div>
         </div>
@@ -394,8 +405,6 @@ st.markdown("""---""")
     """
     st.markdown(diagram_html, unsafe_allow_html=True)
     st.markdown("""---""")
-
-
     # --- Display All Collected Sources ---
     st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
     fuentes_validas = {key: value for key, value in fuentes_utilizadas.items() if value and value != "N/A"}
