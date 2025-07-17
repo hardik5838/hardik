@@ -262,6 +262,7 @@ if selected_company_data:
 
 # --- Visual Scheme Section ---
     # , we gather all the specifications into variables
+    st.markdown("---")
 
     diagram_html = f"""
     <style>
@@ -311,6 +312,11 @@ if selected_company_data:
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-box">
+            <h5>Interruptor General (IGM)</h5>
+            <p>{igm_spec}</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
             <h5>Línea General (LGA)</h5>
             <p>{lga_spec}</p>
         </div>
@@ -318,11 +324,6 @@ if selected_company_data:
         <div class="flow-box">
             <h5>Tubo/Canalización</h5>
             <p>{tubo_spec}</p>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-box">
-            <h5>Interruptor General (IGM)</h5>
-            <p>{igm_spec}</p>
         </div>
     </div>
     <hr>
