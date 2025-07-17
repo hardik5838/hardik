@@ -232,7 +232,7 @@ if selected_company_data:
 
         # --- Installation Scheme Section ---
 with st.expander("Ver Esquema de la Instalación de Enlace (Basado en Iberdrola MT 2.80.12)"):
-    st.markdown("""
+     st.markdown("""
     Esta sección describe el recorrido típico de la electricidad desde la red pública hasta una vivienda u oficina, basado en el **Esquema Unifilar de la Instalación de Enlace**.
 
     ---
