@@ -270,8 +270,6 @@ if selected_company_data:
 
 
 # --- Visual Scheme Section ---
-     st.markdown("""---""")
-
     diagram_html = f"""
     <head>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -370,21 +368,26 @@ if selected_company_data:
             }}
         }}
     </style>
-       <div class="diagram-container">
+
+    <div class="diagram-container">
         <div class="zone yellow">
             <div class="zone-title">Responsabilidad: Compañía</div>
             <div class="flow-boxes-in-zone">
                 <div class="flow-box"><h5>Acometida</h5><p>{acometida_spec}</p></div>
             </div>
         </div>
+
         <div class="flow-arrow">→</div>
+
         <div class="zone blue">
             <div class="zone-title">Responsabilidad: Común</div>
             <div class="flow-boxes-in-zone">
                 <div class="flow-box"><h5>CGP</h5><p>{cgp_spec}</p></div>
             </div>
         </div>
+
         <div class="flow-arrow">→</div>
+
         <div class="zone green">
             <div class="zone-title">Responsabilidad: Usuario</div>
             <div class="flow-boxes-in-zone">
@@ -397,6 +400,7 @@ if selected_company_data:
     """
     st.markdown(diagram_html, unsafe_allow_html=True)
     st.markdown("""---""")
+
 
     # --- Display All Collected Sources ---
     st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
