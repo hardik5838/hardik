@@ -195,18 +195,18 @@ input_design_current_a = st.number_input("Corriente de Diseño Calculada (A) (Op
     st.markdown(diagram_html, unsafe_allow_html=True)
 
 # --- Calculation & Logic ---
-st.header("Requisitos Generados")
-
-if input_design_current_a > 0:
-    calculated_current = input_design_current_a
-    current_source_note = "Corriente de Diseño proporcionada."
-    power_kw_for_lookup = (calculated_current * voltage_v * math.sqrt(3) * load_factor) / 1000 if phase_number == 3 else (calculated_current * voltage_v * load_factor) / 1000
-else:
-    calculated_current = calculate_current(power_kw, voltage_v, phase_number, load_factor)
-    current_source_note = f"Calculada (Basada en {power_kw} kW)."
-    power_kw_for_lookup = power_kw
-
-st.write(f"Corriente de Diseño (I_B): **{calculated_current:.2f} A** ({current_source_note})")
+    st.header("Requisitos Generados")
+    
+    if input_design_current_a > 0:
+        calculated_current = input_design_current_a
+        current_source_note = "Corriente de Diseño proporcionada."
+        power_kw_for_lookup = (calculated_current * voltage_v * math.sqrt(3) * load_factor) / 1000 if phase_number == 3 else (calculated_current * voltage_v * load_factor) / 1000
+    else:
+        calculated_current = calculate_current(power_kw, voltage_v, phase_number, load_factor)
+        current_source_note = f"Calculada (Basada en {power_kw} kW)."
+        power_kw_for_lookup = power_kw
+    
+    st.write(f"Corriente de Diseño (I_B): **{calculated_current:.2f} A** ({current_source_note})")
 
 # --- Data Lookup & Display Logic ---
 selected_company_data = None
