@@ -329,7 +329,7 @@ if selected_company_data:
         <div class="zone yellow">
             <div class="zone-title">Compañía</div>
             <div class="flow-boxes-in-zone">
-                <div class="flow-box"><h5>Acometida</h5><p>{tubo_spec}{lga_spec}</p></div>
+                <div class="flow-box"><h5>Acometida</h5><p>{tubo_spec} {lga_spec}</p></div>
             </div>
         </div>
         <div class="flow-arrow">→</div>
