@@ -271,13 +271,13 @@ with st.expander("Ver Esquema de la Instalación de Enlace (Basado en Iberdrola 
 
 
     # --- Display All Collected Sources ---
-        st.markdown("---")
-        st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
+    st.markdown("---")
+    st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
         fuentes_validas = {key: value for key, value in fuentes_utilizadas.items() if value and value != "N/A"}
-        if fuentes_validas:
-            for key, value in fuentes_validas.items():
-                st.write(f"- **{key}:** *{value}*")
-        else:
+    if fuentes_validas:
+        for key, value in fuentes_validas.items():
+        st.write(f"- **{key}:** *{value}*")
+    else:
              st.write("No se utilizaron fuentes específicas para esta recomendación.")
 
 else:
