@@ -332,9 +332,7 @@ if selected_company_data:
                 <div class="flow-box"><h5>CGP</h5><p>{cgp_spec}</p></div>
             </div>
         </div>
-
         <div class="main-flow-arrow">→</div>
-
         <div class="zone green">
             <div class="zone-title">Responsabilidad: Usuario</div>
             <div class="flow-boxes-in-zone">
