@@ -268,9 +268,9 @@ if selected_company_data:
 st.markdown("""---""")
 
 # --- Visual Scheme Section ---
-    diagram_html = f"""
-    <style>
-        .responsibility-container {{
+diagram_html = f"""
+<style>
+    .responsibility-container {{
             display: flex;
             align-items: flex-start; /* Aligns zones to the top */
             justify-content: center;
