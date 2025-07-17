@@ -264,10 +264,8 @@ if selected_company_data:
         st.write("- **Capacidad del IGM:** N/A (Consulte la documentación de Unión Fenosa)")
         
         
+st.markdown("""---""")
         st.header("Requisitos Generados")
-
-        st.markdown("""---""")
-
 
 # --- Visual Scheme Section ---
     diagram_html = f"""
