@@ -133,7 +133,7 @@ if selected_company_data:
 
     acometida_spec = "Conexión a Red BT"
 
- if company == "Endesa":
+    if company == "Endesa":
         required_nom_int_val = selected_company_data.get('nominal_protection_current_a', {}).get('valor', 'N/A')
         found_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= required_nom_int_val), None)
         phase_mm2 = found_cable['area_mm2']['valor'] if found_cable else "N/A"
