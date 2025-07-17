@@ -133,21 +133,23 @@ if selected_company_data:
 
     acometida_spec = "Conexión a Red BT"
 
-    if company == "Endesa":
-        required_nom_int_val = selected_company_data.get('nominal_protection_current_a', {}).get('valor', 'N/A')
-        found_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= required_nom_int_val), None)
+     if company == "Endesa":
+        required_nom_int_info = selected_company_data.get('nominal_protection_current_a', {})
+        required_nom_int_val = required_nom_int_info.get('valor')
+        fuentes_utilizadas["Corriente Nominal de Protección"] = required_nom_int_info.get('fuente')
+        found_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= required_nom_int_val), generic_cable_diameter_data[-1])
         phase_mm2 = found_cable['area_mm2']['valor'] if found_cable else "N/A"
-        
+        neutral_mm2 = phase_mm2
+        ground_mm2 = get_guia_bt_15_ground_size_by_phase(phase_mm2)
         cgp_spec = f"Tipo: {get_endesa_cgp_type(required_nom_int_val)[0]}<br>Fusible: {required_nom_int_val} A"
         igm_spec = f"Capacidad: {get_endesa_igm_capacity(power_kw_for_lookup).get('valor')}"
-        lga_spec = f"Fase: {phase_mm2} mm²<br>Neutro: {phase_mm2} mm²<br>Tierra: {get_guia_bt_15_ground_size_by_phase(phase_mm2)} mm²"
+        lga_spec = f"Fase: {phase_mm2} mm²<br>Neutro: {neutral_mm2} mm²<br>Tierra: {ground_mm2} mm²"
         tubo_spec = f"Diámetro: {find_guia_bt_14_tube_diameter_by_sections(phase_mm2)[0]} mm"
-        
-    else: # Logic for Iberdrola and Unión Fenosa
+
+    elif company == "Iberdrola" or company == "Unión Fenosa":
         phase_mm2 = selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')
         neutral_mm2 = selected_company_data.get('neutral_mm2', {}).get('valor', 'N/A')
         ground_mm2 = selected_company_data.get('ground_mm2', {}).get('valor', 'N/A')
-        
         lga_spec = f"Fase: {phase_mm2} mm²<br>Neutro: {neutral_mm2} mm²<br>Tierra: {ground_mm2} mm²"
         tubo_spec = f"Diámetro: {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm"
 
@@ -155,7 +157,6 @@ if selected_company_data:
             fuse_val = selected_company_data.get('conductor_amp_rating', {}).get('valor', 'N/A')
             cgp_spec = f"Tipo: {get_iberdrola_cgp_type(fuse_val)[0]}<br>Fusible: {fuse_val} A"
             igm_spec = f"Capacidad: {get_iberdrola_igm_capacity(power_kw_for_lookup).get('valor')}"
-        
         elif company == "Unión Fenosa":
             cgp_type, fuse_cap, _ = get_uf_cgp_type_and_fuse(calculated_current)
             cgp_spec = f"Tipo: {cgp_type}<br>Fusible: {fuse_cap} A"
