@@ -97,6 +97,10 @@ st.info("También puede introducir directamente la corriente de diseño si la co
 input_design_current_a = st.number_input("Corriente de Diseño Calculada (A) (Opcional)", min_value=0.0, value=0.0, step=1.0)
 
 
+    # This dictionary will collect all our sources
+fuentes_utilizadas = {}
+
+
 # --- Calculation & Logic ---
 st.header("Requisitos Generados")
     
@@ -162,9 +166,6 @@ if selected_company_data:
             igm_spec = "N/A"
 
 
-
-    # This dictionary will collect all our sources
-    fuentes_utilizadas = {}
 
     # --- Cable Sections ---
     st.markdown("#### Secciones de Cables (mm²)")
