@@ -230,47 +230,6 @@ if selected_company_data:
         st.header("Requisitos Generados")
 
 
-        # --- Installation Scheme Section ---
-with st.expander("Ver Esquema de la Instalación de Enlace (Basado en Iberdrola MT 2.80.12)"):
-     st.markdown("""
-    Esta sección describe el recorrido típico de la electricidad desde la red pública hasta una vivienda u oficina, basado en el **Esquema Unifilar de la Instalación de Enlace**.
-
-    ---
-    #### **1. Red de Distribución y Acometida (Service Drop)**
-    * **Ubicación:** En la vía pública. La `Acometida` (Nº 1 en el esquema) es el cable que conecta la red principal con el edificio.
-    * **Propósito:** Traer la energía desde la red de la compañía distribuidora hasta el límite de la propiedad. Esta parte es propiedad de i-DE.
-
-    ---
-    #### **2. Caja General de Protección (CGP)**
-    * **Ubicación:** En la fachada exterior del edificio o en el muro de cerramiento, en un lugar de libre y permanente acceso.
-    * **Propósito:** La `CGP` (Nº 2) aloja los fusibles principales que protegen toda la instalación del edificio y marca el inicio de la propiedad del cliente.
-
-    ---
-    #### **3. Línea General de Alimentación (LGA)**
-    * **Ubicación:** Discurre por zonas comunes del edificio, como patinillos o pasillos.
-    * **Propósito:** La `LGA` (Nº 3) es la línea principal que transporta la electricidad desde la CGP hasta la centralización de contadores.
-
-    ---
-    #### **4. Centralización de Contadores**
-    * **Ubicación:** Dentro de un `Local de centralización` (Nº 10) o armario dedicado.
-    * **Propósito:** Es el punto central donde se agrupan los equipos de medida de los diferentes clientes. Incluye:
-        * **Interruptor General de Maniobra (Nº 4):** Permite cortar la corriente a toda la centralización por seguridad o mantenimiento.
-        * **Contadores (Nº 5.2):** Miden el consumo individual de cada cliente.
-        * **Embarrado y Fusibles de Seguridad (Nº 5.1):** Reparten la energía de forma segura a cada contador.
-
-    ---
-    #### **5. Derivación Individual (DI)**
-    * **Ubicación:** Va desde el contador de un cliente, a través de las zonas comunes, hasta la entrada de su vivienda u oficina.
-    * **Propósito:** La `DI` (Nº 6) es la línea exclusiva que alimenta a un único cliente.
-
-    ---
-    #### **6. Cuadro General de Mando y Protección (CGMP)**
-    * **Ubicación:** Dentro de la propiedad del cliente (vivienda, local, etc.), cerca de la puerta de entrada.
-    * **Propósito:** Es el cuadro de interruptores o "caja de breakers" del cliente (Nº 8). Recibe la energía de la DI y la distribuye a los circuitos internos (luces, enchufes, etc.).
-    """)
-
-
-
     # --- Display All Collected Sources ---
         st.markdown("---")
         st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
