@@ -261,7 +261,7 @@ if selected_company_data:
         st.header("Requisitos Generados")
 
 # --- Visual Scheme Section ---
-   diagram_html = f"""
+    diagram_html = f"""
     <style>
         .responsibility-container {{
             display: flex;
