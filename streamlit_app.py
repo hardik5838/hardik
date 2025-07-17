@@ -278,78 +278,92 @@ if selected_company_data:
         }}
         .diagram-container {{
             display: flex;
-            align-items: stretch; /* Align zones to have same height */
-            justify-content: flex-start; /* Start content from the left */
-            gap: 20px;
+            align-items: stretch; /* Make zones equal height */
+            justify-content: center;
+            gap: 15px;
             font-family: 'Inter', sans-serif;
-            padding: 20px;
+            padding: 15px;
             width: 100%;
-            background-color: #f7fafc;
-            border-radius: 12px;
-            overflow-x: auto; /* Enable horizontal scrolling */
-            flex-wrap: nowrap; /* Prevent wrapping */
-            padding-bottom: 20px; /* Space for scrollbar */
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            flex-wrap: wrap; /* Allow zones to wrap on smaller screens */
         }}
         .zone {{
-            display: flex; /* Use flexbox for internal alignment */
-            flex-direction: column; /* Stack title and content vertically */
-            padding: 20px;
-            border-radius: 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+            padding: 15px;
+            border-radius: 10px;
             text-align: center;
-            border: 1px solid;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            border: 1px solid #dee2e6;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }}
         .zone-title {{
             font-weight: 600;
-            font-size: 1.1em;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid;
-            white-space: nowrap; /* Prevent title from wrapping */
+            font-size: 1em;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e9ecef;
         }}
         .flow-boxes-in-zone {{
             display: flex;
-            align-items: center; /* Vertically center items in the row */
-            justify-content: center; /* Horizontally center the group of items */
-            gap: 15px;
-            flex-grow: 1; /* Allow this container to grow to fill space */
+            flex-direction: column; /* Default to vertical stacking */
+            justify-content: center;
+            gap: 10px;
+            flex-grow: 1;
+        }}
+        /* Horizontal layout for zones that are not the 'Usuario' zone */
+        .zone:not(.green) .flow-boxes-in-zone {{
+            flex-direction: row;
+            align-items: center;
         }}
         .flow-box {{
-            background-color: #FFFFFF;
-            border: 1px solid #e2e8f0;
+            background-color: #fdfdff;
+            border: 1px solid #e9ecef;
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-            min-width: 150px; /* Give boxes a minimum width */
+            width: 100%;
+            box-sizing: border-box; /* Important for consistent padding */
         }}
         .flow-box h5 {{ 
-            margin: 0 0 8px 0; 
-            color: #1a202c; 
+            margin: 0 0 5px 0; 
+            color: #212529; 
             font-weight: 600;
-            font-size: 1em;
+            font-size: 0.9em;
         }}
         .flow-box p {{ 
             margin: 0; 
-            font-size: 0.875em; 
-            color: #4a5568; 
-            line-height: 1.5;
+            font-size: 0.8em; 
+            color: #495057; 
+            line-height: 1.4;
         }}
         .flow-arrow {{
-            font-size: 2.5em;
-            color: #718096;
-            margin: auto 0;
-            font-weight: 200;
-            align-self: center; /* Ensure arrow is centered in the flex container */
+            font-size: 2em;
+            color: #adb5bd;
+            align-self: center;
         }}
         
         /* Zone Colors */
-        .zone.yellow {{ background-color: #fffbeb; border-color: #fde68a; }}
-        .zone.yellow .zone-title {{ color: #92400e; border-color: #fde68a; }}
-        .zone.blue {{ background-color: #eff6ff; border-color: #93c5fd; }}
-        .zone.blue .zone-title {{ color: #1e40af; border-color: #93c5fd; }}
-        .zone.green {{ background-color: #f0fdf4; border-color: #86efac; }}
-        .zone.green .zone-title {{ color: #166534; border-color: #86efac; }}
+        .zone.yellow .zone-title {{ color: #b54a09; }}
+        .zone.yellow {{ border-top: 4px solid #fec847; }}
+        .zone.blue .zone-title {{ color: #00529b; }}
+        .zone.blue {{ border-top: 4px solid #6cb4ee; }}
+        .zone.green .zone-title {{ color: #1e7e34; }}
+        .zone.green {{ border-top: 4px solid #54c176; }}
+    
+        /* Responsive adjustments */
+        @media (max-width: 768px) {{
+            .diagram-container {{
+                flex-direction: column;
+            }}
+            .flow-arrow {{
+                transform: rotate(90deg);
+                margin: 15px 0;
+            }}
+        }}
     </style>
     <div class="diagram-container">
         <div class="zone yellow">
@@ -370,15 +384,14 @@ if selected_company_data:
             <div class="zone-title">Responsabilidad: Usuario</div>
             <div class="flow-boxes-in-zone">
                 <div class="flow-box"><h5>IGM</h5><p>{igm_spec}</p></div>
-                <div class="flow-arrow">→</div>
                 <div class="flow-box"><h5>LGA (Conductores)</h5><p>{lga_spec}</p></div>
-                <div class="flow-arrow">→</div>
                 <div class="flow-box"><h5>Tubo / Canalización</h5><p>{tubo_spec}</p></div>
             </div>
         </div>
     </div>
     """
     st.markdown(diagram_html, unsafe_allow_html=True)
+    st.markdown("""---""")
     st.markdown("""---""")
     # --- Display All Collected Sources ---
     st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
