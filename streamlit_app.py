@@ -265,36 +265,40 @@ if selected_company_data:
         
         st.header("Requisitos Generados")
 
+st.markdown("""---""")
+
 # --- Visual Scheme Section ---
     diagram_html = f"""
     <style>
         .responsibility-container {{
             display: flex;
-            justify-content: space-around;
-            align-items: flex-start;
-            gap: 5px;
+            align-items: flex-start; /* Aligns zones to the top */
+            justify-content: center;
+            gap: 10px;
             font-family: sans-serif;
-            padding-top: 10px;
+            padding: 10px 0;
+            width: 100%;
         }}
         .zone {{
             padding: 15px;
             border-radius: 10px;
             text-align: center;
-            flex: 1; /* Each zone will take equal space */
-            min-height: 300px;
+            border: 1px solid;
         }}
         .zone-title {{
             font-weight: bold;
             font-size: 1.1em;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 2px solid;
             padding-bottom: 8px;
         }}
         .flow-boxes-in-zone {{
             display: flex;
-            flex-direction: column; /* This makes the flow vertical */
             align-items: center;
+            justify-content: center;
+            flex-wrap: nowrap; /* Ensures boxes stay in one line */
             gap: 10px;
+            min-height: 80px; /* Give space for content */
         }}
         .flow-box {{
             background-color: #FFFFFF;
@@ -302,19 +306,19 @@ if selected_company_data:
             border-radius: 8px;
             padding: 12px;
             text-align: center;
-            width: 90%; /* Boxes take most of the zone width */
+            min-width: 130px;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
         }}
         .flow-box h5 {{ margin: 0 0 5px 0; color: #000; }}
         .flow-box p {{ margin: 0; font-size: 0.9em; color: #333; line-height: 1.4;}}
-        .main-flow-arrow {{ font-size: 2.5em; color: #586069; margin: auto 10px; }}
-        .internal-flow-arrow {{ font-size: 1.5em; color: #888; transform: rotate(90deg); margin: 5px 0; }}
+        .flow-arrow {{ font-size: 2em; color: #586069; margin: auto 15px; }}
+        
         /* Zone Colors */
-        .zone.yellow {{ background-color: #FFFBEA; border: 1px solid #FDCF47; }}
+        .zone.yellow {{ background-color: #FFFBEA; border-color: #FDCF47; }}
         .zone.yellow .zone-title {{ color: #B54A09; border-color: #FDCF47; }}
-        .zone.blue {{ background-color: #EBF5FF; border: 1px solid #6CB4EE; }}
+        .zone.blue {{ background-color: #EBF5FF; border-color: #6CB4EE; }}
         .zone.blue .zone-title {{ color: #00529B; border-color: #6CB4EE; }}
-        .zone.green {{ background-color: #E6FFED; border: 1px solid #54C176; }}
+        .zone.green {{ background-color: #E6FFED; border-color: #54C176; }}
         .zone.green .zone-title {{ color: #1E7E34; border-color: #54C176; }}
     </style>
 
@@ -325,21 +329,25 @@ if selected_company_data:
                 <div class="flow-box"><h5>Acometida</h5><p>{acometida_spec}</p></div>
             </div>
         </div>
-        <div class="main-flow-arrow">→</div>
+
+        <div class="flow-arrow">→</div>
+
         <div class="zone blue">
             <div class="zone-title">Responsabilidad: Común</div>
             <div class="flow-boxes-in-zone">
                 <div class="flow-box"><h5>CGP</h5><p>{cgp_spec}</p></div>
             </div>
         </div>
-        <div class="main-flow-arrow">→</div>
+
+        <div class="flow-arrow">→</div>
+
         <div class="zone green">
             <div class="zone-title">Responsabilidad: Usuario</div>
             <div class="flow-boxes-in-zone">
                 <div class="flow-box"><h5>IGM</h5><p>{igm_spec}</p></div>
-                <div class="internal-flow-arrow">→</div>
+                <div class="flow-arrow">→</div>
                 <div class="flow-box"><h5>LGA (Conductores)</h5><p>{lga_spec}</p></div>
-                <div class="internal-flow-arrow">→</div>
+                <div class="flow-arrow">→</div>
                 <div class="flow-box"><h5>Tubo / Canalización</h5><p>{tubo_spec}</p></div>
             </div>
         </div>
@@ -347,7 +355,7 @@ if selected_company_data:
     """
     st.markdown(diagram_html, unsafe_allow_html=True)
 
-
+st.markdown("""---""")
     # --- Display All Collected Sources ---
     st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
     
