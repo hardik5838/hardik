@@ -358,9 +358,8 @@ if selected_company_data:
 
 
     # --- Display All Collected Sources ---
-st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
-    
-fuentes_validas = {key: value for key, value in fuentes_utilizadas.items() if value and value != "N/A"}
+    st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
+    fuentes_validas = {key: value for key, value in fuentes_utilizadas.items() if value and value != "N/A"}
     
     if fuentes_validas:
         for key, value in fuentes_validas.items():
