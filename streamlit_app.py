@@ -353,7 +353,7 @@ diagram_html = f"""
         </div>
     </div>
     """
-    st.markdown(diagram_html, unsafe_allow_html=True)
+st.markdown(diagram_html, unsafe_allow_html=True)
 
     st.markdown("""---""")
     # --- Display All Collected Sources ---
