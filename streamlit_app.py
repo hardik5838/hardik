@@ -133,7 +133,7 @@ if selected_company_data:
 
     acometida_spec = "Conexión a Red BT"
 
-     if company == "Endesa":
+    if company == "Endesa":
         required_nom_int_info = selected_company_data.get('nominal_protection_current_a', {})
         required_nom_int_val = required_nom_int_info.get('valor')
         fuentes_utilizadas["Corriente Nominal de Protección"] = required_nom_int_info.get('fuente')
@@ -145,7 +145,6 @@ if selected_company_data:
         igm_spec = f"Capacidad: {get_endesa_igm_capacity(power_kw_for_lookup).get('valor')}"
         lga_spec = f"Fase: {phase_mm2} mm²<br>Neutro: {neutral_mm2} mm²<br>Tierra: {ground_mm2} mm²"
         tubo_spec = f"Diámetro: {find_guia_bt_14_tube_diameter_by_sections(phase_mm2)[0]} mm"
-
     elif company == "Iberdrola" or company == "Unión Fenosa":
         phase_mm2 = selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')
         neutral_mm2 = selected_company_data.get('neutral_mm2', {}).get('valor', 'N/A')
