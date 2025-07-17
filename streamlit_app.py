@@ -96,54 +96,103 @@ with col2:
 st.info("También puede introducir directamente la corriente de diseño si la conoce.")
 input_design_current_a = st.number_input("Corriente de Diseño Calculada (A) (Opcional)", min_value=0.0, value=0.0, step=1.0)
 
-# --- Installation Scheme Section ---
-# --- Installation Scheme Section ---
-with st.expander("Ver Esquema de la Instalación de Enlace (Diagrama de Flujo)", expanded=True):
-    st.markdown(
-        """
-        <div style="text-align: center;">
+# --- Visual Scheme Section ---
+    # First, we gather all the specifications into variables
+    acometida_spec = "Conexión a Red BT"
+    
+    # Get Company-Specific Specs
+    if company == "Endesa":
+        fuse_val = selected_company_data.get('nominal_protection_current_a', {}).get('valor', 'N/A')
+        cgp_spec = f"Tipo: {get_endesa_cgp_type(fuse_val)[0]}<br>Fusible: {fuse_val} A"
+        igm_spec = f"Capacidad: {get_endesa_igm_capacity(power_kw_for_lookup).get('valor')}"
         
-        ### 🔌 Red de Distribución Pública
-        (Propiedad de la compañía eléctrica)
-        <br>
-        ⬇️
+        # We need to re-calculate phase_mm2 to use it here
+        found_cable_for_scheme = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= fuse_val), None)
+        phase_mm2_for_scheme = found_cable_for_scheme['area_mm2']['valor'] if found_cable_for_scheme else "N/A"
+        lga_spec = f"Sección Fase: {phase_mm2_for_scheme} mm²"
+        tubo_spec = f"Diámetro: {find_guia_bt_14_tube_diameter_by_sections(phase_mm2_for_scheme)[0]} mm"
         
-        ### ⛓️ Acometida
-        *Conexión al edificio*
-        <br>
-        ⬇️
-        
-        ---
-        <p style="font-size: smaller; font-style: italic;">Límite de la Propiedad</p>
-        ---
-        
-        ### 📦 Caja General de Protección (CGP)
-        *Fusibles principales del edificio*
-        <br>
-        ⬇️
-        
-        ### ║ Línea General de Alimentación (LGA)
-        *Recorre zonas comunes*
-        <br>
-        ⬇️
-        
-        ### 🏢 Centralización de Contadores
-        *Cuarto o armario de contadores*
-        <br>
-        ⬇️
-        
-        ### 🏠 Derivación Individual (DI)
-        *Línea exclusiva para un cliente*
-        <br>
-        ⬇️
-        
-        ### ⚡ Cuadro General de Mando y Protección (CGMP)
-        *El cuadro de interruptores dentro de la vivienda o local*
-        
+    elif company == "Iberdrola":
+        fuse_val = selected_company_data.get('conductor_amp_rating', {}).get('valor', 'N/A')
+        cgp_spec = f"Tipo: {get_iberdrola_cgp_type(fuse_val)[0]}<br>Fusible: {fuse_val} A"
+        igm_spec = f"Capacidad: {get_iberdrola_igm_capacity(power_kw_for_lookup).get('valor')}"
+        lga_spec = f"Sección Fase: {selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')} mm²"
+        tubo_spec = f"Diámetro: {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm"
+
+    elif company == "Unión Fenosa":
+        cgp_type, fuse_cap, _ = get_uf_cgp_type_and_fuse(calculated_current)
+        cgp_spec = f"Tipo: {cgp_type}<br>Fusible: {fuse_cap} A"
+        igm_spec = "N/A" # Not specified in the table
+        lga_spec = f"Sección Fase: {selected_company_data.get('phase_mm2', {}).get('valor', 'N/A')} mm²"
+        tubo_spec = f"Diámetro: {selected_company_data.get('tube_dia_mm', {}).get('valor', 'N/A')} mm"
+
+
+    # Now, we build the HTML and CSS for the diagram
+    diagram_html = f"""
+    <style>
+        .flow-container {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 2rem;
+        }}
+        .flow-box {{
+            background-color: #F0F2F6;
+            border: 1px solid #D0D7DE;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            min-width: 140px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }}
+        .flow-box h5 {{
+            margin: 0 0 5px 0;
+            color: #00008B; /* Dark Blue */
+        }}
+        .flow-box p {{
+            margin: 0;
+            font-size: 0.9em;
+            color: #333;
+        }}
+        .flow-arrow {{
+            font-size: 1.5em;
+            color: #586069;
+            margin: 0 5px;
+            font-weight: bold;
+        }}
+    </style>
+
+    <div class="flow-container">
+        <div class="flow-box">
+            <h5>Acometida</h5>
+            <p>{acometida_spec}</p>
         </div>
-        """,
-        unsafe_allow_html=True
-    )
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+            <h5>CGP</h5>
+            <p>{cgp_spec}</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+            <h5>Línea General (LGA)</h5>
+            <p>{lga_spec}</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+            <h5>Tubo/Canalización</h5>
+            <p>{tubo_spec}</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+            <h5>Interruptor General (IGM)</h5>
+            <p>{igm_spec}</p>
+        </div>
+    </div>
+    <hr>
+    """
+    st.markdown(diagram_html, unsafe_allow_html=True)
 
 # --- Calculation & Logic ---
 st.header("Requisitos Generados")
