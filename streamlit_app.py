@@ -345,9 +345,9 @@ if selected_company_data:
             <div class="flow-boxes-in-zone">
                 <div class="flow-box"><h5>IGM</h5><p>{igm_spec}</p></div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box"><h5>LGA (Conductores)</h5><p>{lga_spec}</p></div>
+                <div class="flow-box"><h5>LGA</h5><p>{lga_spec}</p></div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box"><h5>Tubo / Canalización</h5><p>{tubo_spec}</p></div>
+                <div class="flow-box"><h5>Tubo</h5><p>{tubo_spec}</p></div>
             </div>
         </div>
     </div>
