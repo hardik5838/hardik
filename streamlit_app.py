@@ -129,7 +129,10 @@ if selected_company_data:
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
 
     acometida_spec = "Conexión a Red BT"
-        
+    di_spec = "Desde contador a vivienda"
+    cgmp_spec = "Cuadro principal en vivienda"
+
+    
     # Get Company-Specific Specs
     if company == "Endesa":
         fuse_val = selected_company_data.get('nominal_protection_current_a', {}).get('valor', 'N/A')
