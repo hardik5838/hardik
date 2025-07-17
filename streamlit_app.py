@@ -355,7 +355,7 @@ diagram_html = f"""
     """
 st.markdown(diagram_html, unsafe_allow_html=True)
 
-    st.markdown("""---""")
+st.markdown("""---""")
     # --- Display All Collected Sources ---
     st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
     
