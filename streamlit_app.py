@@ -268,100 +268,99 @@ if selected_company_data:
 
         st.markdown("""---""")
 
-# --- Visual Scheme Section ---
-        diagram_html = f"""
-        <div class="responsibility-container">
-        </div>
-        <style>
-            .responsibility-container {{
-                display: flex;
-                align-items: flex-start; /* Aligns zones to the top */
-                justify-content: center;
-                gap: 10px;
-                font-family: sans-serif;
-                padding: 10px 0;
-                width: 100%;
-            }}
-            .zone {{
-                padding: 15px;
-                border-radius: 10px;
-                text-align: center;
-                border: 1px solid;
-            }}
-            .zone-title {{
-                font-weight: bold;
-                font-size: 1.1em;
-                margin-bottom: 15px;
-                border-bottom: 2px solid;
-                padding-bottom: 8px;
-            }}
-            .flow-boxes-in-zone {{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-wrap: nowrap; /* Ensures boxes stay in one line */
-                gap: 10px;
-                min-height: 80px; /* Give space for content */
-            }}
-            .flow-box {{
-                background-color: #FFFFFF;
-                border: 1px solid #D0D7DE;
-                border-radius: 8px;
-                padding: 12px;
-                text-align: center;
-                min-width: 130px;
-                box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-            }}
-            .flow-box h5 {{ margin: 0 0 5px 0; color: #000; }}
-            .flow-box p {{ margin: 0; font-size: 0.9em; color: #333; line-height: 1.4;}}
-            .flow-arrow {{ font-size: 2em; color: #586069; margin: auto 15px; }}
-            
-            /* Zone Colors */
-            .zone.yellow {{ background-color: #FFFBEA; border-color: #FDCF47; }}
-            .zone.yellow .zone-title {{ color: #B54A09; border-color: #FDCF47; }}
-            .zone.blue {{ background-color: #EBF5FF; border-color: #6CB4EE; }}
-            .zone.blue .zone-title {{ color: #00529B; border-color: #6CB4EE; }}
-            .zone.green {{ background-color: #E6FFED; border-color: #54C176; }}
-            .zone.green .zone-title {{ color: #1E7E34; border-color: #54C176; }}
-        </style>
-    
-        <div class="responsibility-container">
-            <div class="zone yellow">
-                <div class="zone-title">Responsabilidad: Compañía</div>
-                <div class="flow-boxes-in-zone">
-                    <div class="flow-box"><h5>Acometida</h5><p>{acometida_spec}</p></div>
-                </div>
-            </div>
-    
-            <div class="flow-arrow">→</div>
-    
-            <div class="zone blue">
-                <div class="zone-title">Responsabilidad: Común</div>
-                <div class="flow-boxes-in-zone">
-                    <div class="flow-box"><h5>CGP</h5><p>{cgp_spec}</p></div>
-                </div>
-            </div>
-    
-            <div class="flow-arrow">→</div>
-    
-            <div class="zone green">
-                <div class="zone-title">Responsabilidad: Usuario</div>
-                <div class="flow-boxes-in-zone">
-                    <div class="flow-box"><h5>IGM</h5><p>{igm_spec}</p></div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-box"><h5>LGA (Conductores)</h5><p>{lga_spec}</p></div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-box"><h5>Tubo / Canalización</h5><p>{tubo_spec}</p></div>
-                </div>
-            </div>
-        </div>
-        """
-        st.markdown(diagram_html, unsafe_allow_html=True)
 
+    # --- Visual Scheme Section ---
+    diagram_html = f"""
+    <div class="responsibility-container">
+    </div>
+    <style>
+        .responsibility-container {{
+            display: flex;
+            align-items: flex-start; /* Aligns zones to the top */
+            justify-content: center;
+            gap: 10px;
+            font-family: sans-serif;
+            padding: 10px 0;
+            width: 100%;
+        }}
+        .zone {{
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid;
+        }}
+        .zone-title {{
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid;
+            padding-bottom: 8px;
+        }}
+        .flow-boxes-in-zone {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: nowrap; /* Ensures boxes stay in one line */
+            gap: 10px;
+            min-height: 80px; /* Give space for content */
+        }}
+        .flow-box {{
+            background-color: #FFFFFF;
+            border: 1px solid #D0D7DE;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            min-width: 130px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }}
+        .flow-box h5 {{ margin: 0 0 5px 0; color: #000; }}
+        .flow-box p {{ margin: 0; font-size: 0.9em; color: #333; line-height: 1.4;}}
+        .flow-arrow {{ font-size: 2em; color: #586069; margin: auto 15px; }}
         
-        st.markdown("""---""")
+        /* Zone Colors */
+        .zone.yellow {{ background-color: #FFFBEA; border-color: #FDCF47; }}
+        .zone.yellow .zone-title {{ color: #B54A09; border-color: #FDCF47; }}
+        .zone.blue {{ background-color: #EBF5FF; border-color: #6CB4EE; }}
+        .zone.blue .zone-title {{ color: #00529B; border-color: #6CB4EE; }}
+        .zone.green {{ background-color: #E6FFED; border-color: #54C176; }}
+        .zone.green .zone-title {{ color: #1E7E34; border-color: #54C176; }}
+    </style>
 
+    <div class="responsibility-container">
+        <div class="zone yellow">
+            <div class="zone-title">Responsabilidad: Compañía</div>
+            <div class="flow-boxes-in-zone">
+                <div class="flow-box"><h5>Acometida</h5><p>{acometida_spec}</p></div>
+            </div>
+        </div>
 
+        <div class="flow-arrow">→</div>
+
+        <div class="zone blue">
+            <div class="zone-title">Responsabilidad: Común</div>
+            <div class="flow-boxes-in-zone">
+                <div class="flow-box"><h5>CGP</h5><p>{cgp_spec}</p></div>
+            </div>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="zone green">
+            <div class="zone-title">Responsabilidad: Usuario</div>
+            <div class="flow-boxes-in-zone">
+                <div class="flow-box"><h5>IGM</h5><p>{igm_spec}</p></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box"><h5>LGA (Conductores)</h5><p>{lga_spec}</p></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box"><h5>Tubo / Canalización</h5><p>{tubo_spec}</p></div>
+            </div>
+        </div>
+    </div>
+    """
+    st.markdown(diagram_html, unsafe_allow_html=True)
+    st.markdown("""---""")
+
+    
     # --- Display All Collected Sources ---
     st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
     fuentes_validas = {key: value for key, value in fuentes_utilizadas.items() if value and value != "N/A"}
