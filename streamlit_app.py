@@ -237,13 +237,12 @@ if selected_company_data:
         fuentes_validas = {key: value for key, value in fuentes_utilizadas.items() if value and value != "N/A"}
     if fuentes_validas:
         for key, value in fuentes_validas.items():
-        st.write(f"- **{key}:** *{value}*")
+            st.write(f"- **{key}:** *{value}*")
+        else:
+            st.write("No se utilizaron fuentes específicas para esta recomendación.")
     else:
-             st.write("No se utilizaron fuentes específicas para esta recomendación.")
-
-else:
-    st.warning(f"No se encontró una entrada en la tabla de {company} para la potencia o corriente especificada. El valor puede exceder los límites de la tabla. Mostrando recomendaciones genéricas.")
-    found_generic_cable = find_data(calculated_current, generic_cable_diameter_data, lookup_key='three_phase_amps')
+        st.warning(f"No se encontró una entrada en la tabla de {company} para la potencia o corriente especificada. El valor puede exceder los límites de la tabla. Mostrando recomendaciones genéricas.")
+        found_generic_cable = find_data(calculated_current, generic_cable_diameter_data, lookup_key='three_phase_amps')
     if found_generic_cable:
         st.markdown("#### Recomendación Genérica de Cable (Respaldo)")
         st.write(f"- **Área de Sección Transversal de Cable Requerida (aprox.):** {found_generic_cable['area_mm2']['valor']} mm²")
