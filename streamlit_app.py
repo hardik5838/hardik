@@ -98,7 +98,7 @@ input_design_current_a = st.number_input("Corriente de Diseño Calculada (A) (Op
 
 # --- Visual Scheme Section ---
     # First, we gather all the specifications into variables
-    acometida_spec = "Conexión a Red BT"
+acometida_spec = "Conexión a Red BT"
     
     # Get Company-Specific Specs
     if company == "Endesa":
