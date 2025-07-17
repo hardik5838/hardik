@@ -269,6 +269,8 @@ if selected_company_data:
 
 # --- Visual Scheme Section ---
         diagram_html = f"""
+        <div class="responsibility-container">
+        </div>
         <style>
             .responsibility-container {{
                 display: flex;
@@ -354,6 +356,8 @@ if selected_company_data:
         </div>
         """
         st.markdown(diagram_html, unsafe_allow_html=True)
+
+        
         st.markdown("""---""")
 
 
