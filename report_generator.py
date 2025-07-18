@@ -122,3 +122,4 @@ def get_report_download_link(inputs, outputs, scheme_html, logo_base64):
     b64 = base64.b64encode(report_html.encode()).decode()
     href = f'<a href="data:text/html;base64,{b64}" download="reporte_electrico.html" target="_blank">Abrir Reporte en Nueva Pestaña para Imprimir</a>'
     return href
+
