@@ -377,13 +377,9 @@ if selected_company_data:
             'tubo_spec': tubo_spec,
             'diagram_styles': diagram_styles, 
         }
-
-    # 3. Call the imported function to generate the download link
-    href = get_report_download_link(inputs_data, outputs_data, diagram_html)
-    
-    # 4. Display the link in the app
-    st.markdown(href, unsafe_allow_html=True)
-    st.info("Haga clic en el enlace de arriba. La ventana de impresión se abrirá automáticamente en la nueva pestaña.")
+            href = get_report_download_link(inputs_data, outputs_data, diagram_html)
+            st.markdown(href, unsafe_allow_html=True)
+            st.info("Haga clic en el enlace de arriba. La ventana de impresión se abrirá automáticamente en la nueva pestaña.")
     
     # --- Display All Collected Sources ---
     st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
