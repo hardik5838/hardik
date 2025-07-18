@@ -295,7 +295,7 @@ if selected_company_data:
         }}
         .flow-boxes-in-zone {{
             display: flex;
-            flex-direction: column;
+            flex-direction: row; makes internals horizontal
             align-items: center;
             justify-content: center;
             flex-wrap: nowrap; /* Ensures boxes stay in one line */
