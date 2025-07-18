@@ -79,9 +79,8 @@ def generate_printable_report(inputs, outputs, scheme_html, logo_base64):
     </head>
     <body onload="window.print()">
         <div class="report-container">
-            <!-- NEW: Added the logo container -->
             <div class="logo-container">
-                <img src="data:image/png;base64,{logo_base64}" alt="Logo ASEPEYO">
+                <img src="data:Logo_ASEPEYO.png;base64,{logo_base64}" alt="Logo ASEPEYO">
             </div>
 
             <h1>Reporte de Instalación Eléctrica</h1>
