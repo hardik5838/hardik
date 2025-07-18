@@ -295,6 +295,7 @@ if selected_company_data:
         }}
         .flow-boxes-in-zone {{
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             flex-wrap: nowrap; /* Ensures boxes stay in one line */
@@ -302,7 +303,7 @@ if selected_company_data:
             min-height: 80px; /* Give space for content */
         }}
         .flow-box {{
-            background-color: #FFFFFF;
+            background-color: #FdFdFF;
             border: 1px solid #D0D7DE;
             border-radius: 8px;
             padding: 12px;
