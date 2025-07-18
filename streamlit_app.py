@@ -223,7 +223,7 @@ if selected_company_data:
     if max_len_0_5_info.get('valor', 'N/A') != 'N/A':
         st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5_info.get('valor')} m")
         st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {selected_company_data.get('max_len_1', {}).get('valor')} m")
-# 
+
     # --- Electrical Devices ---
     st.markdown("#### Dispositivos Eléctricos y Capacidades")
     if company == "Endesa":
@@ -312,6 +312,7 @@ if selected_company_data:
             display: flex;
             flex-direction: column; /* Default to vertical stacking */
             justify-content: center;
+            flex-wrap: nowrap;
             gap: 10px;
             flex-grow: 1;
         }}
@@ -393,7 +394,7 @@ if selected_company_data:
     """
     st.markdown(diagram_html, unsafe_allow_html=True)
     st.markdown("""---""")
-    st.markdown("""---""")
+
     # --- Display All Collected Sources ---
     st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
     fuentes_validas = {key: value for key, value in fuentes_utilizadas.items() if value and value != "N/A"}
