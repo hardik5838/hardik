@@ -1,5 +1,6 @@
 import streamlit as st
 import math
+from report_generator import get_report_download_link
 
 # --- Source Definitions ---
 FUENTE_ENDESA_NRZ103_PG54_IGM_REGLA = "Endesa Guía NRZ103, Pág. 54, 'Unidad IGM'"
@@ -353,6 +354,37 @@ if selected_company_data:
     st.markdown(diagram_html, unsafe_allow_html=True)
     st.markdown("""---""")
 
+
+
+    # --- Print Button Section ---
+    st.header("Exportar Reporte")
+    if st.button("Generar Reporte para Imprimir"):
+        # 1. Collect all input data into a dictionary
+        inputs_data = {
+            'company': company,
+            'power_kw': power_kw,
+            'voltage_v': voltage_v,
+            'phase_number': phase_number,
+            'load_factor': load_factor,
+        }
+        
+        # 2. Collect all output data into a dictionary
+        outputs_data = {
+            'calculated_current': calculated_current,
+            'igm_spec': igm_spec,
+            'cgp_spec': cgp_spec,
+            'lga_spec': lga_spec,
+            'tubo_spec': tubo_spec,
+            'diagram_styles': diagram_styles, # Pass the CSS styles
+        }
+
+    # 3. Call the imported function to generate the download link
+    href = get_report_download_link(inputs_data, outputs_data, diagram_html)
+    
+    # 4. Display the link in the app
+    st.markdown(href, unsafe_allow_html=True)
+    st.info("Haga clic en el enlace de arriba. La ventana de impresión se abrirá automáticamente en la nueva pestaña.")
+    
     # --- Display All Collected Sources ---
     st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
     fuentes_validas = {key: value for key, value in fuentes_utilizadas.items() if value and value != "N/A"}
