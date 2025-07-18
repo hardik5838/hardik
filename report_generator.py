@@ -1,4 +1,3 @@
-
 import base64
 
 def generate_printable_report(inputs, outputs, scheme_html, logo_base64):
@@ -63,10 +62,9 @@ def generate_printable_report(inputs, outputs, scheme_html, logo_base64):
                     box-shadow: none; 
                     border: 1px solid #ccc; 
                     background-color: #fff !important;
-                    /* NEW: Scale down the diagram to fit on the page */
                     transform: scale(0.9);
                     transform-origin: top left;
-                    width: 111%; /* Compensate for the scaling to better fit the page width */
+                    width: 111%;
                 }}
                 .zone {{
                     background-color: #fff !important;
@@ -80,7 +78,8 @@ def generate_printable_report(inputs, outputs, scheme_html, logo_base64):
     <body onload="window.print()">
         <div class="report-container">
             <div class="logo-container">
-                <img src="data:Logo_ASEPEYO.png;base64,{logo_base64}" alt="Logo ASEPEYO">
+                <!-- THIS IS THE CORRECTED LINE -->
+                <img src="data:image/png;base64,{logo_base64}" alt="Logo ASEPEYO">
             </div>
 
             <h1>Reporte de Instalación Eléctrica</h1>
