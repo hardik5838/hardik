@@ -267,6 +267,22 @@ if selected_company_data:
         st.markdown("""---""")
 
  # --- Visual Scheme Section ---
+
+     # 1. CREATE THE CSS STYLES AS A SEPARATE VARIABLE
+    diagram_styles = """
+        .diagram-container { display: flex; align-items: stretch; gap: 15px; padding: 15px; width: 100%; background-color: #f8f9fa; border-radius: 10px; overflow-x: auto; flex-wrap: nowrap; }
+        .zone { flex: 0 0 auto; display: flex; flex-direction: column; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #dee2e6; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .zone-title { font-weight: 600; font-size: 1em; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid #e9ecef; white-space: nowrap; }
+        .flow-boxes-in-zone { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 10px; flex-grow: 1; }
+        .flow-box { background-color: #fdfdff; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px; text-align: center; min-width: 140px; }
+        .flow-box h5 { margin: 0 0 5px 0; color: #212529; font-weight: 600; font-size: 0.9em; }
+        .flow-box p { margin: 0; font-size: 0.8em; color: #495057; line-height: 1.4; }
+        .flow-arrow { font-size: 2em; color: #adb5bd; align-self: center; margin: 0 5px; }
+        .zone.yellow .zone-title { color: #b54a09; } .zone.yellow { border-top: 4px solid #fec847; }
+        .zone.blue .zone-title { color: #00529b; } .zone.blue { border-top: 4px solid #6cb4ee; }
+        .zone.green .zone-title { color: #1e7e34; } .zone.green { border-top: 4px solid #54c176; }
+    """
+
     
     diagram_html = f"""
     <div class="responsibility-container">
