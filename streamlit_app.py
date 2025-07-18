@@ -286,6 +286,7 @@ if selected_company_data:
             width: 100%;
             background-color: #f8f9fa;
             border-radius: 10px;
+            overflow-x: auto; /* Enable horizontal scrolling if content overflows */
             flex-wrap: wrap; /* Allow zones to wrap on smaller screens */
         }}
         .zone {{
@@ -315,7 +316,7 @@ if selected_company_data:
             flex-grow: 1;
         }}
         /* Horizontal layout for zones that are not the 'Usuario' zone */
-        .zone:not(.green) .flow-boxes-in-zone {{
+        .zone: .flow-boxes-in-zone {{
             flex-direction: row;
             align-items: center;
         }}
