@@ -1,9 +1,9 @@
+
 import base64
 
-def generate_printable_report(inputs, outputs, scheme_html):
-    """Generates an HTML report for printing."""
+def generate_printable_report(inputs, outputs, scheme_html, logo_base64):
+    """Generates an HTML report for printing with visual improvements."""
     
-    # Extract the CSS styles for the diagram from the outputs
     diagram_styles = outputs.get('diagram_styles', '')
 
     report_html = f"""
@@ -24,6 +24,16 @@ def generate_printable_report(inputs, outputs, scheme_html):
             .report-container {{ 
                 max-width: 800px; 
                 margin: auto; 
+            }}
+            .logo-container {{
+                text-align: left;
+                margin-bottom: 30px;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 20px;
+            }}
+            .logo-container img {{
+                max-width: 200px;
+                height: auto;
             }}
             h1, h2 {{ 
                 color: #000; 
@@ -52,10 +62,14 @@ def generate_printable_report(inputs, outputs, scheme_html):
                 .diagram-container {{ 
                     box-shadow: none; 
                     border: 1px solid #ccc; 
-                    background-color: #fff !important; /* Ensure background is white for printing */
+                    background-color: #fff !important;
+                    /* NEW: Scale down the diagram to fit on the page */
+                    transform: scale(0.9);
+                    transform-origin: top left;
+                    width: 111%; /* Compensate for the scaling to better fit the page width */
                 }}
                 .zone {{
-                    background-color: #fff !important; /* Ensure background is white for printing */
+                    background-color: #fff !important;
                 }}
             }}
             
@@ -65,6 +79,11 @@ def generate_printable_report(inputs, outputs, scheme_html):
     </head>
     <body onload="window.print()">
         <div class="report-container">
+            <!-- NEW: Added the logo container -->
+            <div class="logo-container">
+                <img src="data:image/png;base64,{logo_base64}" alt="Logo ASEPEYO">
+            </div>
+
             <h1>Reporte de Instalación Eléctrica</h1>
             
             <div class="section">
@@ -82,10 +101,10 @@ def generate_printable_report(inputs, outputs, scheme_html):
                 <h2>Resultados Generados</h2>
                 <div class="grid">
                     <div class="grid-item"><strong>Corriente de Diseño (A):</strong> {outputs.get('calculated_current', 0):.2f} A</div>
-                    <div class="grid-item"><strong>Capacidad del IGM:</strong> {outputs.get('igm_spec', 'N/A')}</div>
-                    <div class="grid-item"><strong>Tipo de CGP:</strong> {outputs.get('cgp_spec', 'N/A').replace('<br>', ' ')}</div>
-                    <div class="grid-item"><strong>LGA (Conductores):</strong> {outputs.get('lga_spec', 'N/A').replace('<br>', ' ')}</div>
-                    <div class="grid-item"><strong>Tubo / Canalización:</strong> {outputs.get('tubo_spec', 'N/A')}</div>
+                    <div class="grid-item"><strong>Capacidad del IGM:</strong> {outputs.get('igm_spec', 'N/A').replace('<strong>','').replace('</strong>','')}</div>
+                    <div class="grid-item"><strong>Tipo de CGP:</strong> {outputs.get('cgp_spec', 'N/A').replace('<br>', ', ').replace('<strong>','').replace('</strong>','')}</div>
+                    <div class="grid-item"><strong>LGA (Conductores):</strong> {outputs.get('lga_spec', 'N/A').replace('<br>', ', ').replace('<strong>','').replace('</strong>','')}</div>
+                    <div class="grid-item"><strong>Tubo / Canalización:</strong> {outputs.get('tubo_spec', 'N/A').replace('<strong>','').replace('</strong>','')}</div>
                 </div>
             </div>
 
@@ -99,10 +118,9 @@ def generate_printable_report(inputs, outputs, scheme_html):
     """
     return report_html
 
-def get_report_download_link(inputs, outputs, scheme_html):
+def get_report_download_link(inputs, outputs, scheme_html, logo_base64):
     """Generates a download link for the printable report."""
-    report_html = generate_printable_report(inputs, outputs, scheme_html)
+    report_html = generate_printable_report(inputs, outputs, scheme_html, logo_base64)
     b64 = base64.b64encode(report_html.encode()).decode()
     href = f'<a href="data:text/html;base64,{b64}" download="reporte_electrico.html" target="_blank">Abrir Reporte en Nueva Pestaña para Imprimir</a>'
     return href
-    
