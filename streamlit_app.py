@@ -267,7 +267,7 @@ if selected_company_data:
         st.markdown("""---""")
 
  # --- Visual Scheme Section ---
-    
+    diagram_styles = """
     diagram_html = f"""
     <div class="responsibility-container">
     </div>
