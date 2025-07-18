@@ -377,9 +377,9 @@ if selected_company_data:
             'tubo_spec': tubo_spec,
             'diagram_styles': diagram_styles, 
         }
-            href = get_report_download_link(inputs_data, outputs_data, diagram_html)
-            st.markdown(href, unsafe_allow_html=True)
-            st.info("Haga clic en el enlace de arriba. La ventana de impresión se abrirá automáticamente en la nueva pestaña.")
+        href = get_report_download_link(inputs_data, outputs_data, diagram_html)
+        st.markdown(href, unsafe_allow_html=True)
+        st.info("Haga clic en el enlace de arriba. La ventana de impresión se abrirá automáticamente en la nueva pestaña.")
     
     # --- Display All Collected Sources ---
     st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
