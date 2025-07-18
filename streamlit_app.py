@@ -375,7 +375,7 @@ if selected_company_data:
             'cgp_spec': cgp_spec,
             'lga_spec': lga_spec,
             'tubo_spec': tubo_spec,
-            'diagram_styles': diagram_styles, # Pass the CSS styles
+            'diagram_styles': diagram_styles, 
         }
 
     # 3. Call the imported function to generate the download link
