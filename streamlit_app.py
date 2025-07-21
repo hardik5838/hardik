@@ -503,7 +503,7 @@ if selected_company_data:
                 <text x="1500" y="250" class="value-label">Neutro: {lga_neutro}</text>
                 <text x="1500" y="265" class="value-label">Tierra: {lga_tierra}</text>
                 <!-- Tubo Symbol (Circle at the end) -->
-                <line x1="1330" y1="180" x2="1700" y2="180" class="line" />
+                <line x1="1330" y1="180" x2="1680" y2="180" class="line" />
                 <circle cx="1700" cy="180" r="20" class="symbol-stroke" fill="white" />
                 <text x="1700" y="120" class="label">Tubo</text>
                 <!-- Tubo Values (Dynamic Placeholders) -->
