@@ -450,7 +450,7 @@ if selected_company_data:
                 <line x1="580" y1="0" x2="580" y2="368" class="section-background" />
                 <line x1="1160" y1="0" x2="1160" y2="368" class="section-background" />
                 <!-- Acometida Lines (L1, L2, L3, N, T) and Connection Point -->
-                <line x1="120" y1="100" x2="300" y2="120" class="line" />
+                <line x1="120" y1="100" x2="320" y2="100" class="line" />
                 <text x="70" y="105" class="label">L1</text>
                 <line x1="120" y1="140" x2="320" y2="140" class="line" />
                 <text x="70" y="145" class="label">L2</text>
