@@ -464,7 +464,7 @@ if selected_company_data:
                 <line x1="300" y1="100" x2="300" y2="260" class="line" />
                 <text x="200" y="72" class="label">Acometida</text>
                 <!-- Acometida Values (Dynamic Placeholders) -->
-                <text x="200" y="290" class="value-label">Diámetro: {acometida_diametro}</text>
+                <text x="200" y="290" class="value-label">Diámetro Tubo: {acometida_diametro}</text>
                 <text x="200" y="305" class="value-label">Fase: {acometida_fase}</text>
                 <text x="200" y="320" class="value-label">Neutro: {acometida_neutro}</text>
                 <text x="200" y="335" class="value-label">Tierra: {acometida_tierra}</text>
@@ -508,7 +508,7 @@ if selected_company_data:
                 <line x1="1680" y1="200" x2="1720" y2="160" class="line" />
                 <text x="1700" y="120" class="label">Tubo</text>
                 <!-- Tubo Values (Dynamic Placeholders) -->
-                <text x="1700" y="235" class="value-label">Diámetro: {tubo_diametro}</text>
+                <text x="1700" y="235" class="value-label">Diámetro Tubo: {tubo_diametro}</text>
             </svg>
             <!-- Details for each element (kept for comprehensive info, can be removed if desired) -->
             <div class="flex flex-wrap justify-center w-full mt-8 gap-4 px-4">
