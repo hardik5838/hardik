@@ -365,21 +365,20 @@ if selected_company_data:
     <title>Diagrama Eléctrico de Acometida</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom styles for SVG elements for better clarity */
         svg {{
             display: block;
             margin: auto;
-            overflow: visible; /* Allow elements to extend slightly beyond viewBox if needed */
+            overflow: visible; 
         }}
         .line {{
             stroke: black;
-            stroke-width: 3; /* Thicker lines for better visibility */
+            stroke-width: 3;
             fill: none;
             stroke-linecap: round;
         }}
         .symbol-stroke {{
             stroke: black;
-            stroke-width: 3; /* Thicker lines for better visibility */
+            stroke-width: 3; 
             fill: none;
             stroke-linecap: round;
             stroke-linejoin: round;
@@ -389,14 +388,14 @@ if selected_company_data:
         }}
         .label {{
             font-family: 'Inter', sans-serif;
-            font-size: 22px; /* Slightly larger for readability */
+            font-size: 24px; 
             fill: #333;
-            font-weight: bold;
+            font-weight:bolder;
             text-anchor: middle; /* Center text by default */
         }}
         .value-label {{
             font-family: 'Inter', sans-serif;
-            font-size: 16px; /* Smaller for detailed values */
+            font-size: 20px;
             fill: #555;
             text-anchor: middle;
         }}
@@ -408,7 +407,7 @@ if selected_company_data:
         }}
         .element-details {{
             font-family: 'Inter', sans-serif;
-            font-size: 13px;
+            font-size: 17px;
             color: #4a5568; /* Tailwind gray-700 */
             line-height: 1.4;
             text-align: center;
@@ -419,10 +418,6 @@ if selected_company_data:
             margin-bottom: 4px;
         }}
         .detail-box {{
-            /* Using @apply directly in Python string is problematic,
-               define explicit Tailwind classes or use a separate CSS file.
-               For this example, I'll keep it as is, but be aware of potential issues
-               if Tailwind JIT/CLI isn't processing this string. */
             background-color: white;
             padding: 1rem; /* p-4 */
             border-radius: 0.5rem; /* rounded-lg */
@@ -462,12 +457,12 @@ if selected_company_data:
                 <text x="70" y="265" class="label">T</text>
                 <!-- Vertical line connecting Acometida lines -->
                 <line x1="320" y1="100" x2="320" y2="260" class="line" />
-                <text x="220" y="72" class="label">Acometida</text>
+                <text x="220" y="76" class="label">Acometida</text>
                 <!-- Acometida Values (Dynamic Placeholders) -->
                 <text x="220" y="290" class="value-label">Diámetro Tubo: {acometida_diametro}</text>
-                <text x="220" y="306" class="value-label">Fase: {acometida_fase}</text>
-                <text x="220" y="322" class="value-label">Neutro: {acometida_neutro}</text>
-                <text x="220" y="338" class="value-label">Tierra: {acometida_tierra}</text>
+                <text x="220" y="310" class="value-label">Fase: {acometida_fase}</text>
+                <text x="220" y="330" class="value-label">Neutro: {acometida_neutro}</text>
+                <text x="220" y="350" class="value-label">Tierra: {acometida_tierra}</text>
                 <!-- Main horizontal line (Continuous Path) -->
                 <!-- CGP (Caja General de Protección) - Fusible Symbol -->
                 <!-- Outer box of CGP -->
