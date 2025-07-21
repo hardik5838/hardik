@@ -470,8 +470,8 @@ if selected_company_data:
                 <rect x="1160" y="0" width="650" height="395" fill="#E6FFED" rx="0" ry="0"/> <!-- Right section (IGM, LGA, Tubo) -->
                 <text x="1485" y="35" class="green">CLIENTE</text>
                 <!-- Dashed borders between sections -->
-                <line x1="580" y1="0" x2="580" y2="368" class="section-background" />
-                <line x1="1160" y1="0" x2="1160" y2="368" class="section-background" />
+                <line x1="580" y1="0" x2="580" y2="395" class="section-background" />
+                <line x1="1160" y1="0" x2="1160" y2="395" class="section-background" />
                 <!-- Acometida Lines (L1, L2, L3, N, T) and Connection Point -->
                 <line x1="190" y1="100" x2="390" y2="100" class="line" />
                 <text x="140" y="105" class="label">L1</text>
@@ -485,7 +485,7 @@ if selected_company_data:
                 <text x="140" y="265" class="label">T</text>
                 <!-- Vertical line connecting Acometida lines -->
                 <line x1="390" y1="100" x2="390" y2="260" class="line" />
-                <text x="290" y="76" class="label">Acometida</text>
+                <text x="290" y="85" class="label">Acometida</text>
                 <!-- Acometida Values (Dynamic Placeholders) -->
                 <text x="290" y="290" class="value-label">Diámetro Tubo: {acometida_diametro}</text>
                 <text x="290" y="310" class="value-label">Fase: {acometida_fase}</text>
