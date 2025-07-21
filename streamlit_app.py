@@ -491,7 +491,7 @@ if selected_company_data:
                     <text x="1290" y="120" class="label">IGM</text>
                 </g>
                 <!-- IGM Values (Dynamic Placeholders) -->
-                <text x="1290" y="235" class="value-label">Capacidad: {igm_capacidad}</text>
+                <text x="1290" y="245" class="value-label">Capacidad: {igm_capacidad}</text>
                 <!-- LGA (Línea General de Alimentación) - Multiple Conductors Symbol (Updated) -->
                 <line x1="1450" y1="180" x2="1550" y2="180" class="line" />
                 <!-- Oblique strokes (5 strokes for 3F+N+T) -->
