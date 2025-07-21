@@ -543,7 +543,6 @@ if selected_company_data:
                         <p>Fusible: {cgp_fusible}</p>
                     </div>
                 </div>
-
                 <!-- IGM Details -->
                 <div class="detail-box">
                     <div class="element-title">Interruptor General de Maniobra (IGM)</div>
@@ -573,7 +572,6 @@ if selected_company_data:
 </body>
 </html>
 """
-    # Step 3: Format the HTML template with your dynamic Python variables
     # This is the crucial step that replaces the placeholders with actual values
     diagram_html = diagram_html_template.format(
         acometida_diametro=acometida_diametro,
