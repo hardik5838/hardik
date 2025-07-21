@@ -439,13 +439,13 @@ if selected_company_data:
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-5xl w-full">
-        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Diagrama de Acometida Eléctrica</h1>
+        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Diagrama de Acometida Eléctrica</h1>
         <div class="flex flex-col items-center justify-center w-full">
             <svg viewBox="0 0 1744 368" class="w-full h-auto max-h-[368px]">
                 <!-- Background sections -->
                 <rect x="0" y="0" width="580" height="368" fill="#FFFBEA" rx="0" ry="0"/> <!-- Left section (Acometida) -->
                 <rect x="580" y="0" width="580" height="368" fill="#EBF5FF" rx="0" ry="0"/> <!-- Middle section (CGP) -->
-                <rect x="1160" y="0" width="584" height="368" fill="#E6FFED" rx="0" ry="0"/> <!-- Right section (IGM, LGA, Tubo) -->
+                <rect x="1160" y="0" width="650" height="368" fill="#E6FFED" rx="0" ry="0"/> <!-- Right section (IGM, LGA, Tubo) -->
                 <!-- Dashed borders between sections -->
                 <line x1="580" y1="0" x2="580" y2="368" class="section-background" />
                 <line x1="1160" y1="0" x2="1160" y2="368" class="section-background" />
@@ -454,7 +454,7 @@ if selected_company_data:
                 <text x="50" y="105" class="label">L1</text>
                 <line x1="100" y1="140" x2="300" y2="140" class="line" />
                 <text x="50" y="145" class="label">L2</text>
-                <line x1="100" y1="180" x2="300" y2="180" class="line" />
+                <line x1="100" y1="180" x2="1200" y2="240" class="line" />
                 <text x="50" y="185" class="label">L3</text>
                 <line x1="100" y1="220" x2="300" y2="220" class="line" />
                 <text x="50" y="225" class="label">N</text>
@@ -462,8 +462,7 @@ if selected_company_data:
                 <text x="50" y="265" class="label">T</text>
                 <!-- Vertical line connecting Acometida lines -->
                 <line x1="300" y1="100" x2="300" y2="260" class="line" />
-                <!-- Acometida Label (Corrected Position) -->
-                <text x="200" y="70" class="label">Acometida</text>
+                <text x="200" y="72" class="label">Acometida</text>
                 <!-- Acometida Values (Dynamic Placeholders) -->
                 <text x="200" y="290" class="value-label">Diámetro: {acometida_diametro}</text>
                 <text x="200" y="305" class="value-label">Fase: {acometida_fase}</text>
@@ -473,15 +472,15 @@ if selected_company_data:
                 <path d="M300,180 H650 M900,180 H1250 M1330,180 H1680" class="line" />
                 <!-- CGP (Caja General de Protección) - Fusible Symbol -->
                 <!-- Outer box of CGP -->
-                <rect x="700" y="100" width="200" height="160" class="symbol-stroke" />
-                <text x="800" y="285" class="label">CGP</text>
+                <rect x="750" y="100" width="200" height="160" class="symbol-stroke" />
+                <text x="850" y="285" class="label">CGP</text>
                 <!-- Inner Fusible symbol (rectangle with horizontal line) -->
-                <rect x="750" y="150" width="100" height="60" class="symbol-stroke" />
-                <line x1="750" y1="180" x2="850" y2="180" class="symbol-stroke" />
+                <rect x="800" y="150" width="100" height="60" class="symbol-stroke" />
+                <line x1="800" y1="180" x2="850" y2="180" class="symbol-stroke" />
                 <text x="800" y="140" class="label">Fusible</text>
                 <!-- CGP Values (Dynamic Placeholders) -->
-                <text x="800" y="310" class="value-label">Tipo: {cgp_tipo}</text>
-                <text x="800" y="325" class="value-label">Fusible: {cgp_fusible}</text>
+                <text x="850" y="310" class="value-label">Tipo: {cgp_tipo}</text>
+                <text x="850" y="325" class="value-label">Fusible: {cgp_fusible}</text>
                 <!-- IGM (Interruptor General de Maniobra) - Automatic Switch Symbol (Updated) -->
                 <g id="igm-symbol">
                     <!-- Main body of the breaker -->
