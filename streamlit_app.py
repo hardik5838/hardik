@@ -463,34 +463,34 @@ if selected_company_data:
         <div class="flex flex-col items-center justify-center w-full">
             <svg viewBox="0 0 1744 368" class="w-full h-auto max-h-[368px]">
                 <!-- Background sections -->
-                <rect x="0" y="0" width="580" height="375" fill="#FFFBEA" rx="0" ry="0"/> <!-- Left section (Acometida) -->
-                <text x="290" y="25" class="yellow">DISTRIBUIDORA</text>
-                <rect x="580" y="0" width="580" height="375" fill="#EBF5FF" rx="0" ry="0"/> <!-- Middle section (CGP) -->
-                <text x="870" y="25" class="blue">COMUN</text>
-                <rect x="1160" y="0" width="650" height="375" fill="#E6FFED" rx="0" ry="0"/> <!-- Right section (IGM, LGA, Tubo) -->
-                <text x="1485" y="25" class="green">CLIENTE</text>
+                <rect x="0" y="0" width="580" height="395" fill="#FFFBEA" rx="0" ry="0"/> <!-- Left section (Acometida) -->
+                <text x="290" y="35" class="yellow">DISTRIBUIDORA</text>
+                <rect x="580" y="0" width="580" height="395" fill="#EBF5FF" rx="0" ry="0"/> <!-- Middle section (CGP) -->
+                <text x="870" y="35" class="blue">COMUN</text>
+                <rect x="1160" y="0" width="650" height="395" fill="#E6FFED" rx="0" ry="0"/> <!-- Right section (IGM, LGA, Tubo) -->
+                <text x="1485" y="35" class="green">CLIENTE</text>
                 <!-- Dashed borders between sections -->
                 <line x1="580" y1="0" x2="580" y2="368" class="section-background" />
                 <line x1="1160" y1="0" x2="1160" y2="368" class="section-background" />
                 <!-- Acometida Lines (L1, L2, L3, N, T) and Connection Point -->
-                <line x1="120" y1="100" x2="320" y2="100" class="line" />
-                <text x="70" y="105" class="label">L1</text>
-                <line x1="120" y1="140" x2="320" y2="140" class="line" />
-                <text x="70" y="145" class="label">L2</text>
-                <line x1="120" y1="180" x2="1280" y2="180" class="line" />
-                <text x="70" y="185" class="label">L3</text>
-                <line x1="120" y1="220" x2="320" y2="220" class="line" />
-                <text x="70" y="225" class="label">N</text>
-                <line x1="120" y1="260" x2="320" y2="260" class="line" />
-                <text x="70" y="265" class="label">T</text>
+                <line x1="190" y1="100" x2="390" y2="100" class="line" />
+                <text x="140" y="105" class="label">L1</text>
+                <line x1="190" y1="140" x2="390" y2="140" class="line" />
+                <text x="140" y="145" class="label">L2</text>
+                <line x1="190" y1="180" x2="1280" y2="180" class="line" />
+                <text x="140" y="185" class="label">L3</text>
+                <line x1="190" y1="220" x2="390" y2="220" class="line" />
+                <text x="140" y="225" class="label">N</text>
+                <line x1="190" y1="260" x2="390" y2="260" class="line" />
+                <text x="140" y="265" class="label">T</text>
                 <!-- Vertical line connecting Acometida lines -->
-                <line x1="320" y1="100" x2="320" y2="260" class="line" />
-                <text x="220" y="76" class="label">Acometida</text>
+                <line x1="320" y1="100" x2="390" y2="260" class="line" />
+                <text x="290" y="76" class="label">Acometida</text>
                 <!-- Acometida Values (Dynamic Placeholders) -->
-                <text x="220" y="290" class="value-label">Diámetro Tubo: {acometida_diametro}</text>
-                <text x="220" y="310" class="value-label">Fase: {acometida_fase}</text>
-                <text x="220" y="330" class="value-label">Neutro: {acometida_neutro}</text>
-                <text x="220" y="350" class="value-label">Tierra: {acometida_tierra}</text>
+                <text x="290" y="290" class="value-label">Diámetro Tubo: {acometida_diametro}</text>
+                <text x="290" y="310" class="value-label">Fase: {acometida_fase}</text>
+                <text x="290" y="330" class="value-label">Neutro: {acometida_neutro}</text>
+                <text x="290" y="350" class="value-label">Tierra: {acometida_tierra}</text>
                 <!-- Main horizontal line (Continuous Path) -->
                 <!-- CGP (Caja General de Protección) - Fusible Symbol -->
                 <!-- Outer box of CGP -->
