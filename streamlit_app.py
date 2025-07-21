@@ -1,6 +1,11 @@
 import streamlit as st
 import math
 
+
+
+
+
+
 # --- Source Definitions ---
 FUENTE_ENDESA_NRZ103_PG54_IGM_REGLA = "Endesa Guía NRZ103, Pág. 54, 'Unidad IGM'"
 FUENTE_IBERDROLA_MT_PG19_IGM_REGLA = "Iberdrola MT 2.80.12, Pág. 19, 'Unidad IGM'"
@@ -16,11 +21,21 @@ FUENTE_GUIA_BT_14_PG9_TABLA1 = "GUÍA - BT-14, Pág. 9, 'Tabla 1'"
 FUENTE_GUIA_BT_15_PG56_TABLA14 = "GUÍA - BT-15, Pág. 56, 'Tabla 14 PE'"
 FUENTE_GENERICO_CABLE = "Tabla General de Calibres de Cable"
 
+
+
+
+
+
 # Import data from your separate files
 from endesa_data import endesa_contracted_power_data, get_endesa_igm_capacity, get_endesa_cgp_type
 from iberdrola_data import iberdrola_ide_table, get_iberdrola_cgp_type
 from union_fenosa_data import ufd_table, get_uf_cgp_type_and_fuse
 from shared_data import guia_bt_14_table_1, generic_cable_diameter_data
+
+
+
+
+
 
 # --- Helper Functions ---
 def find_data(lookup_value, data_table, lookup_key='power_kw'):
@@ -76,10 +91,20 @@ def calculate_current(power_kw, voltage_v, phase_number, power_factor):
     elif phase_number == 1: return power_w / (voltage_v * power_factor)
     return 0
 
+
+
+
+
+
 # --- App Body ---
 st.image("Logo_ASEPEYO.png", width=250)
 st.title("Generador de Guía de Instalaciones Eléctricas")
 st.markdown("Genere requisitos eléctricos detallados según las normas de las compañías distribuidoras.")
+
+
+
+
+
 
 # --- Input Section ---
 st.header("Parámetros de Entrada")
@@ -97,8 +122,12 @@ st.info("También puede introducir directamente la corriente de diseño si la co
 input_design_current_a = st.number_input("Corriente de Diseño Calculada (A) (Opcional)", min_value=0.0, value=0.0, step=1.0)
 
 
-    # This dictionary will collect all our sources
+# This dictionary will collect all our sources
 fuentes_utilizadas = {}
+
+
+
+
 
 
 # --- Calculation & Logic ---
@@ -114,6 +143,11 @@ else:
     power_kw_for_lookup = power_kw
     
 st.write(f"Corriente de Diseño (I_B): **{calculated_current:.2f} A** ({current_source_note})")
+
+
+
+
+
 
 # --- Data Lookup & Display Logic ---
 selected_company_data = None
@@ -132,8 +166,13 @@ if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
 
+
+
+
+
+    
  # Taking data for the scheme 
-    # 1. First, we gather all the specifications needed for the diagram
+ # 1. First, we gather all the specifications needed for the diagram
 
     acometida_spec = "Conexión a Red BT"
 
@@ -167,6 +206,11 @@ if selected_company_data:
 
 
 
+
+
+
+
+    
     # --- Cable Sections ---
     st.markdown("#### Secciones de Cables (mm²)")
     phase_mm2_info, neutral_mm2_info, ground_mm2_info = {}, {}, {}
@@ -202,7 +246,12 @@ if selected_company_data:
     st.write(f"- **Sección de Neutro:** {neutral_mm2_info.get('valor', 'N/A')} mm²")
     st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2_info.get('valor', 'N/A')} mm²")
     
-       # --- Installation Details ---
+    
+    
+    
+    
+    
+    # --- Installation Details ---
     st.markdown("#### Detalles de Instalación")
 
     if company == "Endesa":
@@ -224,6 +273,11 @@ if selected_company_data:
         st.write(f"- **Longitud Máxima @ 0.5% Caída de Tensión:** {max_len_0_5_info.get('valor')} m")
         st.write(f"- **Longitud Máxima @ 1.0% Caída de Tensión:** {selected_company_data.get('max_len_1', {}).get('valor')} m")
 # 
+
+
+
+
+    
     # --- Electrical Devices ---
     st.markdown("#### Dispositivos Eléctricos y Capacidades")
     if company == "Endesa":
@@ -269,6 +323,11 @@ if selected_company_data:
         st.markdown("""---""")
 
 
+    
+    
+    
+    
+    
     # --- Visual Scheme Section ---
     diagram_html = f"""
     <div class="responsibility-container">
@@ -376,10 +435,20 @@ else:
         st.error("No se encontró un cable genérico adecuado para la corriente calculada.")
 
 
+
+
+
+
+
 # --- Disclaimer ---
 st.warning(
     "**Descargo de Responsabilidad:** Esta herramienta es una guía informativa y Siempre verifique los requisitos con la Refrencia abajo"
 )
+
+
+
+
+
 # --- References ---
 
 st.markdown("""
