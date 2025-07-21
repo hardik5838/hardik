@@ -483,11 +483,9 @@ if selected_company_data:
                 <text x="850" y="325" class="value-label">Fusible: {cgp_fusible}</text>
                 <!-- IGM (Interruptor General de Maniobra) - Automatic Switch Symbol (Updated) -->
                 <g id="igm-symbol">
-                    <!-- Main body of the breaker -->
-                    <rect x="1250" y="130" width="80" height="100" class="symbol-stroke" />
                     <!-- Operating mechanism / 'X' for breaking capacity -->
-                    <line x1="1280" y1="160" x2="1300" y2="200" class="symbol-stroke" />
-                    <line x1="1280" y1="200" x2="1300" y2="160" class="symbol-stroke" />
+                    <line x1="1320" y1="160" x2="1340" y2="200" class="symbol-stroke" />
+                    <line x1="1320" y1="200" x2="1340" y2="160" class="symbol-stroke" />
                     <text x="1290" y="120" class="label">IGM</text>
                 </g>
                 <!-- IGM Values (Dynamic Placeholders) -->
