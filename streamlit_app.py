@@ -389,14 +389,14 @@ if selected_company_data:
         }}
         .label {{
             font-family: 'Inter', sans-serif;
-            font-size: 16px; /* Slightly larger for readability */
+            font-size: 24px; /* Slightly larger for readability */
             fill: #333;
             font-weight: bold;
             text-anchor: middle; /* Center text by default */
         }}
         .value-label {{
             font-family: 'Inter', sans-serif;
-            font-size: 12px; /* Smaller for detailed values */
+            font-size: 20px; /* Smaller for detailed values */
             fill: #555;
             text-anchor: middle;
         }}
