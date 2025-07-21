@@ -305,7 +305,7 @@ if selected_company_data:
 
 
 # Define the HTML template as a plain string (NO 'f' prefix)
-diagram_html_template = """
+diagram_html_template = 
 <!DOCTYPE html>
 <html lang="es">
 <head>
