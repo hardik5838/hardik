@@ -303,8 +303,6 @@ if selected_company_data:
 
  # --- Visual Scheme Section ---
 
-    # Define the HTML template as a plain string (NO 'f' prefix)
-    diagram_html_template = """
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -314,81 +312,81 @@ if selected_company_data:
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles for SVG elements for better clarity */
-        svg {{
+        svg {
             display: block;
             margin: auto;
             overflow: visible; /* Allow elements to extend slightly beyond viewBox if needed */
-        }}
-        .line {{
+        }
+        .line {
             stroke: black;
             stroke-width: 3; /* Thicker lines for better visibility */
             fill: none;
             stroke-linecap: round;
-        }}
-        .symbol-stroke {{
+        }
+        .symbol-stroke {
             stroke: black;
             stroke-width: 3; /* Thicker lines for better visibility */
             fill: none;
             stroke-linecap: round;
             stroke-linejoin: round;
-        }}
-        .symbol-fill {{
+        }
+        .symbol-fill {
             fill: black;
-        }}
-        .label {{
+        }
+        .label {
             font-family: 'Inter', sans-serif;
-            font-size: 16px; /* Slightly larger for readability */
+            font-size: 20px; /* Increased further for readability */
             fill: #333;
             font-weight: bold;
             text-anchor: middle; /* Center text by default */
-        }}
-        .value-label {{
+        }
+        .value-label {
             font-family: 'Inter', sans-serif;
-            font-size: 12px; /* Smaller for detailed values */
+            font-size: 16px; /* Increased further for readability */
             fill: #555;
             text-anchor: middle;
-        }}
-        .section-background {{
+        }
+        .section-background {
             stroke-dasharray: 5 5; /* Dashed border for sections */
             stroke: #6b7280; /* Gray-500 */
             stroke-width: 1;
             fill: none;
-        }}
-        .element-details {{
+        }
+        /* Tooltip styles */
+        .tooltip {
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 15px; /* Increased padding */
+            border-radius: 8px; /* More rounded */
             font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            color: #4a5568; /* Tailwind gray-700 */
-            line-height: 1.4;
-            text-align: center;
-        }}
-        .element-title {{
-            font-weight: bold;
-            color: #2d3748; /* Tailwind gray-800 */
-            margin-bottom: 4px;
-        }}
-        .detail-box {{
-            /* Using @apply directly in Python string is problematic,
-               define explicit Tailwind classes or use a separate CSS file.
-               For this example, I'll keep it as is, but be aware of potential issues
-               if Tailwind JIT/CLI isn't processing this string. */
-            background-color: white;
-            padding: 1rem; /* p-4 */
-            border-radius: 0.5rem; /* rounded-lg */
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow-md */
-            border: 1px solid #e2e8f0; /* border border-gray-200 */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-width: 200px; /* Ensure boxes are wide enough */
-            max-width: 300px;
-        }}
+            font-size: 16px; /* Increased for readability */
+            pointer-events: none; /* Allows mouse events to pass through to elements below */
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1000;
+            white-space: nowrap; /* Keep text on one line if possible */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* More prominent shadow */
+            text-align: left;
+        }
+        .tooltip.visible {
+            opacity: 1;
+        }
+        .tooltip-content p {
+            margin: 0;
+            line-height: 1.5; /* Increased line height */
+        }
+        .tooltip-content strong {
+            display: block;
+            margin-bottom: 6px; /* More space */
+            font-size: 18px; /* Increased for prominence */
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-5xl w-full">
         <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Diagrama de Acometida Eléctrica</h1>
-        <div class="flex flex-col items-center justify-center w-full">
+        <div class="flex flex-col items-center justify-center w-full relative">
             <svg viewBox="0 0 1744 368" class="w-full h-auto max-h-[368px]">
                 <!-- Background sections -->
                 <rect x="0" y="0" width="580" height="368" fill="#FFFBEA" rx="0" ry="0"/> <!-- Left section (Acometida) -->
@@ -411,17 +409,17 @@ if selected_company_data:
                 <!-- Vertical line connecting Acometida lines -->
                 <line x1="300" y1="100" x2="300" y2="260" class="line" />
                 <!-- Acometida Label (Corrected Position) -->
-                <text x="200" y="70" class="label">Acometida</text>
+                <text x="200" y="70" class="label" id="label-acometida">Acometida</text>
                 <!-- Acometida Values (Dynamic Placeholders) -->
                 <text x="200" y="290" class="value-label">Diámetro: {acometida_diametro}</text>
                 <text x="200" y="305" class="value-label">Fase: {acometida_fase}</text>
                 <text x="200" y="320" class="value-label">Neutro: {acometida_neutro}</text>
                 <text x="200" y="335" class="value-label">Tierra: {acometida_tierra}</text>
-                <!-- Main horizontal line (Continuous Path) -->
-                <path d="M300,180 H650 M900,180 H1250 M1330,180 H1680" class="line" />
+                <!-- Main horizontal line - now passes through IGM symbol -->
+                <line x1="300" y1="180" x2="1680" y2="180" class="line" />
                 <!-- CGP (Caja General de Protección) - Fusible Symbol -->
                 <!-- Outer box of CGP -->
-                <rect x="700" y="100" width="200" height="160" class="symbol-stroke" />
+                <rect x="700" y="100" width="200" height="160" class="symbol-stroke" id="symbol-cgp"/>
                 <text x="800" y="285" class="label">CGP</text>
                 <!-- Inner Fusible symbol (rectangle with horizontal line) -->
                 <rect x="750" y="150" width="100" height="60" class="symbol-stroke" />
@@ -430,115 +428,133 @@ if selected_company_data:
                 <!-- CGP Values (Dynamic Placeholders) -->
                 <text x="800" y="310" class="value-label">Tipo: {cgp_tipo}</text>
                 <text x="800" y="325" class="value-label">Fusible: {cgp_fusible}</text>
-                <!-- IGM (Interruptor General de Maniobra) - Automatic Switch Symbol (Updated) -->
-                <g id="igm-symbol">
-                    <!-- Main body of the breaker -->
-                    <rect x="1250" y="130" width="80" height="100" class="symbol-stroke" />
-                    <!-- Top connection -->
-                    <line x1="1290" y1="130" x2="1290" y2="100" class="line" />
-                    <!-- Thermal trip unit (small rectangle with line) -->
-                    <rect x="1260" y="140" width="20" height="10" class="symbol-stroke" />
-                    <line x1="1260" y1="145" x2="1280" y2="145" class="symbol-stroke" />
-                    <!-- Magnetic trip unit (arc) -->
-                    <path d="M1290,140 A 20 20 0 0 1 1290,160" class="symbol-stroke" />
-                    <!-- Contacts (simplified, one per line for unifilar) -->
-                    <line x1="1250" y1="180" x2="1270" y2="180" class="line" />
-                    <line x1="1310" y1="180" x2="1330" y2="180" class="line" class="line" />
-                    <!-- Operating mechanism / 'X' for breaking capacity -->
-                    <line x1="1280" y1="160" x2="1300" y2="200" class="symbol-stroke" />
-                    <line x1="1280" y1="200" x2="1300" y2="160" class="symbol-stroke" />
-                    <text x="1290" y="120" class="label">IGM</text>
+                <!-- IGM (Interruptor General de Maniobra) - Simplified Automatic Switch Symbol (FINAL REVISION) -->
+                <g id="symbol-igm">
+                    <!-- Vertical line from main horizontal line -->
+                    <line x1="1290" y1="180" x2="1290" y2="100" class="line" />
+                    <!-- Diagonal line for the switch part -->
+                    <line x1="1290" y1="100" x2="1320" y2="130" class="symbol-stroke" />
+                    <!-- The 'X' at the end of the switch, connected to the diagonal line -->
+                    <line x1="1310" y1="120" x2="1330" y2="140" class="symbol-stroke" />
+                    <line x1="1310" y1="140" x2="1330" y2="120" class="symbol-stroke" />
+                    <!-- Label for IGM -->
+                    <text x="1290" y="90" class="label">IGM</text>
                 </g>
-                <!-- IGM Values (Dynamic Placeholders) -->
-                <text x="1290" y="235" class="value-label">Capacidad: {igm_capacidad}</text>
-                <!-- LGA (Línea General de Alimentación) - Multiple Conductors Symbol (Updated) -->
-                <line x1="1450" y1="180" x2="1550" y2="180" class="line" />
-                <!-- Oblique strokes (5 strokes for 3F+N+T) -->
-                <line x1="1480" y1="170" x2="1480" y2="190" class="symbol-stroke" transform="rotate(45 1480 180)" />
-                <line x1="1490" y1="170" x2="1490" y2="190" class="symbol-stroke" transform="rotate(45 1490 180)" />
+                <!-- IGM Values (Dynamic Placeholders) - Adjusted position -->
+                <text x="1290" y="205" class="value-label">Capacidad: {igm_capacidad}</text>
+                <!-- LGA (Línea General de Alimentación) - Multiple Conductors Symbol (Corrected) -->
+                <line x1="1450" y1="180" x2="1550" y2="180" class="line" id="symbol-lga"/>
+                <!-- Oblique strokes (5 strokes for 3F+N+T, as per UNE 60617-3, Section 1) -->
+                <line x1="1470" y1="170" x2="1470" y2="190" class="symbol-stroke" transform="rotate(45 1470 180)" />
+                <line x1="1485" y1="170" x2="1485" y2="190" class="symbol-stroke" transform="rotate(45 1485 180)" />
                 <line x1="1500" y1="170" x2="1500" y2="190" class="symbol-stroke" transform="rotate(45 1500 180)" />
-                <line x1="1510" y1="170" x2="1510" y2="190" class="symbol-stroke" transform="rotate(45 1510 180)" />
-                <line x1="1520" y1="170" x2="1520" y2="190" class="symbol-stroke" transform="rotate(45 1520 180)" />
+                <line x1="1515" y1="170" x2="1515" y2="190" class="symbol-stroke" transform="rotate(45 1515 180)" />
+                <line x1="1530" y1="170" x2="1530" y2="190" class="symbol-stroke" transform="rotate(45 1530 180)" />
                 <text x="1500" y="120" class="label">LGA</text>
                 <!-- LGA Values (Dynamic Placeholders) -->
                 <text x="1500" y="235" class="value-label">Fase: {lga_fase}</text>
                 <text x="1500" y="250" class="value-label">Neutro: {lga_neutro}</text>
                 <text x="1500" y="265" class="value-label">Tierra: {lga_tierra}</text>
                 <!-- Tubo Symbol (Circle at the end) -->
-                <line x1="1680" y1="180" x2="1700" y2="180" class="line" />
+                <line x1="1680" y1="180" x2="1700" y2="180" class="line" id="symbol-tubo"/>
                 <circle cx="1700" cy="180" r="20" class="symbol-stroke" fill="white" />
                 <text x="1700" y="120" class="label">Tubo</text>
                 <!-- Tubo Values (Dynamic Placeholders) -->
                 <text x="1700" y="235" class="value-label">Diámetro: {tubo_diametro}</text>
             </svg>
-            <!-- Details for each element (kept for comprehensive info, can be removed if desired) -->
-            <div class="flex flex-wrap justify-center w-full mt-8 gap-4 px-4">
-                <!-- Acometida / Tubo Details -->
-                <div class="detail-box">
-                    <div class="element-title">Acometida</div>
-                    <div class="element-details">
+            <!-- Tooltip Container -->
+            <div id="tooltip" class="tooltip"></div>
+            <!-- JavaScript for hover functionality -->
+            <script>
+                const tooltip = document.getElementById('tooltip');
+                const svg = document.querySelector('svg'); // Get the SVG element
+                // Function to get the position of an SVG element relative to the viewport
+                function getSvgElementPosition(element) {
+                    const svgRect = svg.getBoundingClientRect();
+                    const elementRect = element.getBoundingClientRect();
+                    return {
+                        x: elementRect.left - svgRect.left,
+                        y: elementRect.top - svgRect.top,
+                        width: elementRect.width,
+                        height: elementRect.height
+                    };
+                }
+                // Data for tooltips - ENSURE THESE ARE CORRECTLY POPULATED BY PYTHON .format()
+                const tooltipData = {
+                    'label-acometida': `
+                        <strong>Acometida</strong>
                         <p>Diámetro: {acometida_diametro}</p>
                         <p>Fase: {acometida_fase}</p>
                         <p>Neutro: {acometida_neutro}</p>
                         <p>Tierra: {acometida_tierra}</p>
-                    </div>
-                </div>
-                <!-- CGP Details -->
-                <div class="detail-box">
-                    <div class="element-title">Caja General de Protección (CGP)</div>
-                    <div class="element-details">
+                    `,
+                    'symbol-cgp': `
+                        <strong>Caja General de Protección (CGP)</strong>
                         <p>Tipo: {cgp_tipo}</p>
                         <p>Fusible: {cgp_fusible}</p>
-                    </div>
-                </div>
-                <!-- IGM Details -->
-                <div class="detail-box">
-                    <div class="element-title">Interruptor General de Maniobra (IGM)</div>
-                    <div class="element-details">
+                    `,
+                    'symbol-igm': `
+                        <strong>Interruptor General de Maniobra (IGM)</strong>
                         <p>Capacidad: {igm_capacidad}</p>
-                    </div>
-                </div>
-                <!-- LGA Details -->
-                <div class="detail-box">
-                    <div class="element-title">Línea General de Alimentación (LGA)</div>
-                    <div class="element-details">
+                    `,
+                    'symbol-lga': `
+                        <strong>Línea General de Alimentación (LGA)</strong>
                         <p>Fase: {lga_fase}</p>
                         <p>Neutro: {lga_neutro}</p>
                         <p>Tierra: {lga_tierra}</p>
-                    </div>
-                </div>
-                <!-- Tubo Details (assuming this refers to the final conduit/connection) -->
-                <div class="detail-box">
-                    <div class="element-title">Tubo (Salida LGA)</div>
-                    <div class="element-details">
+                    `,
+                    'symbol-tubo': `
+                        <strong>Tubo (Salida LGA)</strong>
                         <p>Diámetro: {tubo_diametro}</p>
-                    </div>
-                </div>
-            </div>
+                    `
+                };
+                // Add event listeners to elements that should show tooltips
+                // Note: For 'g' elements (like symbol-igm), the mouseenter/mouseleave might be tricky
+                // to trigger correctly if the 'g' itself doesn't have a visible fill/stroke.
+                // It's often better to attach to a rect/path within the group or use a transparent rect.
+                const elementsWithTooltips = [
+                    document.getElementById('label-acometida'),
+                    document.getElementById('symbol-cgp'),
+                    document.getElementById('symbol-igm'),
+                    document.getElementById('symbol-lga'),
+                    document.getElementById('symbol-tubo')
+                ].filter(Boolean); // Filter out any nulls if elements aren't found
+                elementsWithTooltips.forEach(element => {
+                    element.addEventListener('mouseenter', (e) => {
+                        const id = element.id;
+                        if (tooltipData[id]) {
+                            tooltip.innerHTML = tooltipData[id];
+                            tooltip.classList.add('visible');
+                            // Position the tooltip relative to the mouse cursor
+                            // Adjusting for scroll and parent offset
+                            const parentRect = svg.parentElement.getBoundingClientRect();
+                            const xOffset = e.clientX - parentRect.left + 15; // 15px right of cursor
+                            const yOffset = e.clientY - parentRect.top + 15;  // 15px below cursor
+
+                            tooltip.style.left = `${xOffset}px`;
+                            tooltip.style.top = `${yOffset}px`;
+                        }
+                    });
+                    element.addEventListener('mouseleave', () => {
+                        tooltip.classList.remove('visible');
+                    });
+                    // Optional: Update tooltip position on mousemove for smoother tracking
+                    element.addEventListener('mousemove', (e) => {
+                        if (tooltip.classList.contains('visible')) {
+                            const parentRect = svg.parentElement.getBoundingClientRect();
+                            const xOffset = e.clientX - parentRect.left + 15;
+                            const yOffset = e.clientY - parentRect.top + 15;
+                            tooltip.style.left = `${xOffset}px`;
+                            tooltip.style.top = `${yOffset}px`;
+                        }
+                    });
+                });
+            </script>
         </div>
     </div>
 </body>
 </html>
-"""
-    # Step 3: Format the HTML template with your dynamic Python variables
-    # This is the crucial step that replaces the placeholders with actual values
-    diagram_html = diagram_html_template.format(
-        acometida_diametro=acometida_diametro,
-        acometida_fase=acometida_fase,
-        acometida_neutro=acometida_neutro,
-        acometida_tierra=acometida_tierra,
-        cgp_tipo=cgp_tipo,
-        cgp_fusible=cgp_fusible,
-        igm_capacidad=igm_capacidad,
-        lga_fase=lga_fase,
-        lga_neutro=lga_neutro,
-        lga_tierra=lga_tierra,
-        tubo_diametro=tubo_diametro
-    )
 
-    st.markdown(diagram_html, unsafe_allow_html=True)
-    st.markdown("""---""")
-    
     
 
     #< --- Print Button Section ---
