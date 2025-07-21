@@ -393,10 +393,32 @@ if selected_company_data:
             font-weight:bolder;
             text-anchor: middle; /* Center text by default */
         }}
+        .green {{
+            font-family: 'Inter', sans-serif;
+            font-size: 24px; 
+            fill: #00ab30;
+            font-weight:bolder;
+            text-anchor: middle; /* Center text by default */
+        }}
+        .blue {{
+            font-family: 'Inter', sans-serif;
+            font-size: 24px; 
+            fill: #003380;
+            font-weight:bolder;
+            text-anchor: middle; /* Center text by default */
+        }}
+        .yellow {{
+            font-family: 'Inter', sans-serif;
+            font-size: 24px; 
+            fill: #ffcc00;
+            font-weight:bolder;
+            text-anchor: middle; /* Center text by default */
+        }}
         .value-label {{
             font-family: 'Inter', sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             fill: #555;
+            font-weight:bolder;
             text-anchor: middle;
         }}
         .section-background {{
@@ -439,8 +461,11 @@ if selected_company_data:
             <svg viewBox="0 0 1744 368" class="w-full h-auto max-h-[368px]">
                 <!-- Background sections -->
                 <rect x="0" y="0" width="580" height="375" fill="#FFFBEA" rx="0" ry="0"/> <!-- Left section (Acometida) -->
+                <text x="290" y="10" class="yellow">Distribuidora</text>
                 <rect x="580" y="0" width="580" height="375" fill="#EBF5FF" rx="0" ry="0"/> <!-- Middle section (CGP) -->
+                <text x="510" y="10" class="blue">Comun</text>
                 <rect x="1160" y="0" width="650" height="375" fill="#E6FFED" rx="0" ry="0"/> <!-- Right section (IGM, LGA, Tubo) -->
+                <text x="1485" y="10" class="green">Cliente</text>
                 <!-- Dashed borders between sections -->
                 <line x1="580" y1="0" x2="580" y2="368" class="section-background" />
                 <line x1="1160" y1="0" x2="1160" y2="368" class="section-background" />
