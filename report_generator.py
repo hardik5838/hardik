@@ -1,6 +1,6 @@
 import base64
 
-def generate_printable_report(inputs, outputs, scheme_html, logo_base64):
+def generate_printable_report(inputs, outputs, scheme_html, Logo_ASEPEYO):
     """Generates an HTML report for printing with visual improvements."""
     
     diagram_styles = outputs.get('diagram_styles', '')
