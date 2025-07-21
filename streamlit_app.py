@@ -612,7 +612,7 @@ st.markdown("""
 ---
 ### Documentos de Referencia:
 * **Endesa:** [Guía de Interpretación NRZ103, Edición 6.1]
-* **Unión Fenosa:** [Especificaciones Particulares para Instalaciones de Conexión ES.0100.ES.RE.EIC, Edición: 5, 08/09/2011]
+* **Unión Fenosa:** [Especificaciones Particulares para Instalaciones de Conexión ES.0100.ES.RE.EIC, Edición: 5,]
 * **Iberdrola (i-DE):** [Manual Técnico de Distribución MT 2.80.12, Edición 05, Mayo 2019]
 * **Iberdrola (i-DE) Tipos de CGP:** [NORMA NI 76.50.01, Edición 6a, Julio 2010]
 * **Guías Técnicas de Aplicación (Ministerio para la Transición Ecológica y el Reto Demográfico):**
