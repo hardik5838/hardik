@@ -454,7 +454,7 @@ if selected_company_data:
                 <text x="50" y="105" class="label">L1</text>
                 <line x1="100" y1="140" x2="300" y2="140" class="line" />
                 <text x="50" y="145" class="label">L2</text>
-                <line x1="100" y1="180" x2="1200" y2="180" class="line" />
+                <line x1="100" y1="180" x2="1250" y2="180" class="line" />
                 <text x="50" y="185" class="label">L3</text>
                 <line x1="100" y1="220" x2="300" y2="220" class="line" />
                 <text x="50" y="225" class="label">N</text>
