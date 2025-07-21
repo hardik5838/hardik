@@ -616,10 +616,10 @@ st.markdown("""
 * **Iberdrola (i-DE):** [Manual Técnico de Distribución MT 2.80.12, Edición 5, Mayo 2019]  # <-- CHANGED '05' to '5'
 * **Iberdrola (i-DE) Tipos de CGP:** [NORMA NI 76.50.01, Edición 6a, Julio 2010]
 * **Guías Técnicas de Aplicación (Ministerio para la Transición Ecológica y el Reto Demográfico):**
-    * [GUÍA-BT-10: Previsión de Cargas, Edición: sep 03, Revisión: 1] # Review '03' here if it's causing issues
-    * [GUÍA-BT-12: Esquemas, Edición: sep 03, Revisión: 1] # Review '03' here
-    * [GUÍA-BT-13: Cajas Generales de Protección, Edición: sep 03, Revisión: 1] # Review '03' here
-    * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1] # Review '03' here
-    * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1] # Review '03' here
-    * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1] # Review '03' here
+    * [GUÍA-BT-10: Previsión de Cargas, Edición: sep 3, Revisión: 1] # Review '03' here if it's causing issues
+    * [GUÍA-BT-12: Esquemas, Edición: sep 3, Revisión: 1] # Review '03' here
+    * [GUÍA-BT-13: Cajas Generales de Protección, Edición: sep 3, Revisión: 1] # Review '03' here
+    * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 3, Revisión: 1] # Review '03' here
+    * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 3, Revisión: 1] # Review '03' here
+    * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 3, Revisión: 1] # Review '03' here
 """)
