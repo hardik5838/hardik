@@ -480,7 +480,7 @@ if selected_company_data:
                 <text x="800" y="140" class="label">Fusible</text>
                 <!-- CGP Values (Dynamic Placeholders) -->
                 <text x="850" y="310" class="value-label">Tipo: {cgp_tipo}</text>
-                <text x="850" y="325" class="value-label">Fusible: {cgp_fusible}</text>
+                <text x="900" y="325" class="value-label">Fusible: {cgp_fusible}</text>
                 <!-- IGM (Interruptor General de Maniobra) - Automatic Switch Symbol (Updated) -->
                 <g id="igm-symbol">
                     <!-- Main body of the breaker -->
