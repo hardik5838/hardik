@@ -79,7 +79,7 @@ def generate_printable_report(inputs, outputs, scheme_html, logo_base64):
         <div class="report-container">
             <div class="logo-container">
                 <!-- THIS IS THE CORRECTED LINE -->
-                <img src="data:image/png;base64,{logo_base64}" alt="Logo ASEPEYO">
+                <img src="data:image/png;base64,{Logo_ASEPEYO}" alt="Logo ASEPEYO">
             </div>
 
             <h1>Reporte de Instalación Eléctrica</h1>
