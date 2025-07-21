@@ -613,14 +613,14 @@ st.markdown("""
 ### Documentos de Referencia:
 * **Endesa:** [Guía de Interpretación NRZ103, Edición 6.1]
 * **Unión Fenosa:** [Especificaciones Particulares para Instalaciones de Conexión ES.0100.ES.RE.EIC, Edición: 5,]
-* **Iberdrola (i-DE):** [Manual Técnico de Distribución MT 2.80.12, Edición 05, Mayo 2019]
-* **Iberdrola (i-DE) Tipos de CGP:** [NORMA NI 76.50.01, Edición 6a, Julio 2010]
+* **Iberdrola (i-DE):** [Manual Técnico de Distribución MT 2.80.12, Edición 05,Mayo 2019]
+* **Iberdrola (i-DE) Tipos de CGP:** [NORMA NI 76.50.01, Edición 6a,Julio 2010]
 * **Guías Técnicas de Aplicación (Ministerio para la Transición Ecológica y el Reto Demográfico):**
-    * [GUÍA-BT-10: Previsión de Cargas, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-10: Previsión de Cargas, Edición: sep 03,Revisión: 1]
     * [GUÍA-BT-12: Esquemas, Edición: sep 03, Revisión: 1]
-    * [GUÍA-BT-13: Cajas Generales de Protección, Edición: sep 03, Revisión: 1]
-    * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 03, Revisión: 1]
-    * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 03, Revisión: 1]
-    * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 03, Revisión: 1]
+    * [GUÍA-BT-13: Cajas Generales de Protección, Edición:sep 03,Revisión: 1]
+    * [GUÍA-BT-14: Línea General de Alimentación, Edición:sep 03,Revisión: 1]
+    * [GUÍA-BT-15: Derivaciones Individuales, Edición:sep 03,Revisión: 1]
+    * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición:sep 03,Revisión: 1]
 """)
 
