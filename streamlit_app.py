@@ -469,7 +469,6 @@ if selected_company_data:
                 <text x="200" y="320" class="value-label">Neutro: {acometida_neutro}</text>
                 <text x="200" y="335" class="value-label">Tierra: {acometida_tierra}</text>
                 <!-- Main horizontal line (Continuous Path) -->
-                <path d="M300,180 H650 M900,180 H1250 M1330,180 H1680" class="line" />
                 <!-- CGP (Caja General de Protección) - Fusible Symbol -->
                 <!-- Outer box of CGP -->
                 <rect x="750" y="100" width="200" height="160" class="symbol-stroke" />
@@ -505,7 +504,7 @@ if selected_company_data:
                 <text x="1500" y="250" class="value-label">Neutro: {lga_neutro}</text>
                 <text x="1500" y="265" class="value-label">Tierra: {lga_tierra}</text>
                 <!-- Tubo Symbol (Circle at the end) -->
-                <line x1="1580" y1="180" x2="1700" y2="180" class="line" />
+                <line x1="1580" y1="180" x2="1650" y2="180" class="line" />
                 <circle cx="1700" cy="180" r="20" class="symbol-stroke" fill="white" />
                 <text x="1700" y="120" class="label">Tubo</text>
                 <!-- Tubo Values (Dynamic Placeholders) -->
