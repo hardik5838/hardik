@@ -155,7 +155,7 @@ igm_capacidad = "N/A"
 lga_fase = "N/A"
 lga_neutro = "N/A"
 lga_tierra = "N/A"
-tubo_diametro = "N/A
+tubo_diametro = "N/A"
 
 
 
