@@ -491,7 +491,6 @@ if selected_company_data:
                 <!-- IGM Values (Dynamic Placeholders) -->
                 <text x="1290" y="245" class="value-label">Capacidad: {igm_capacidad}</text>
                 <!-- LGA (Línea General de Alimentación) - Multiple Conductors Symbol (Updated) -->
-                <line x1="1450" y1="180" x2="1550" y2="180" class="line" />
                 <!-- Oblique strokes (5 strokes for 3F+N+T) -->
                 <line x1="1480" y1="170" x2="1480" y2="190" class="symbol-stroke" transform="rotate(45 1480 180)" />
                 <line x1="1490" y1="170" x2="1490" y2="190" class="symbol-stroke" transform="rotate(45 1490 180)" />
@@ -500,11 +499,11 @@ if selected_company_data:
                 <line x1="1520" y1="170" x2="1520" y2="190" class="symbol-stroke" transform="rotate(45 1520 180)" />
                 <text x="1500" y="120" class="label">LGA</text>
                 <!-- LGA Values (Dynamic Placeholders) -->
-                <text x="1500" y="235" class="value-label">Fase: {lga_fase}</text>
+                <text x="1500" y="235" class="value-label">3*Fase: {lga_fase}</text>
                 <text x="1500" y="250" class="value-label">Neutro: {lga_neutro}</text>
                 <text x="1500" y="265" class="value-label">Tierra: {lga_tierra}</text>
                 <!-- Tubo Symbol (Circle at the end) -->
-                <line x1="1580" y1="180" x2="1650" y2="180" class="line" />
+                <line x1="1330" y1="180" x2="1700" y2="180" class="line" />
                 <circle cx="1700" cy="180" r="20" class="symbol-stroke" fill="white" />
                 <text x="1700" y="120" class="label">Tubo</text>
                 <!-- Tubo Values (Dynamic Placeholders) -->
