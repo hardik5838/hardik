@@ -129,7 +129,6 @@ elif company == "Iberdrola":
     else:
         selected_company_data = find_data(power_kw_for_lookup, iberdrola_ide_table)
 
-
 acometida_diametro = "N/A"
 acometida_fase = "N/A"
 acometida_neutro = "N/A"
@@ -140,8 +139,7 @@ igm_capacidad = "N/A"
 lga_fase = "N/A"
 lga_neutro = "N/A"
 lga_tierra = "N/A"
-tubo_diametro = "N/A"
-
+tubo_diametro = "N/A" 
 
 if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
