@@ -303,8 +303,6 @@ if selected_company_data:
 
  # --- Visual Scheme Section ---
 
-
-    
     # Define the HTML template as a plain string (NO 'f' prefix)
     diagram_html_template = """
 <!DOCTYPE html>
@@ -316,59 +314,59 @@ if selected_company_data:
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles for SVG elements for better clarity */
-        svg {
+        svg {{
             display: block;
             margin: auto;
             overflow: visible; /* Allow elements to extend slightly beyond viewBox if needed */
-        }
-        .line {
+        }}
+        .line {{
             stroke: black;
             stroke-width: 3; /* Thicker lines for better visibility */
             fill: none;
             stroke-linecap: round;
-        }
-        .symbol-stroke {
+        }}
+        .symbol-stroke {{
             stroke: black;
             stroke-width: 3; /* Thicker lines for better visibility */
             fill: none;
             stroke-linecap: round;
             stroke-linejoin: round;
-        }
-        .symbol-fill {
+        }}
+        .symbol-fill {{
             fill: black;
-        }
-        .label {
+        }}
+        .label {{
             font-family: 'Inter', sans-serif;
             font-size: 16px; /* Slightly larger for readability */
             fill: #333;
             font-weight: bold;
             text-anchor: middle; /* Center text by default */
-        }
-        .value-label {
+        }}
+        .value-label {{
             font-family: 'Inter', sans-serif;
             font-size: 12px; /* Smaller for detailed values */
             fill: #555;
             text-anchor: middle;
-        }
-        .section-background {
+        }}
+        .section-background {{
             stroke-dasharray: 5 5; /* Dashed border for sections */
             stroke: #6b7280; /* Gray-500 */
             stroke-width: 1;
             fill: none;
-        }
-        .element-details {
+        }}
+        .element-details {{
             font-family: 'Inter', sans-serif;
             font-size: 13px;
             color: #4a5568; /* Tailwind gray-700 */
             line-height: 1.4;
             text-align: center;
-        }
-        .element-title {
+        }}
+        .element-title {{
             font-weight: bold;
             color: #2d3748; /* Tailwind gray-800 */
             margin-bottom: 4px;
-        }
-        .detail-box {
+        }}
+        .detail-box {{
             /* Using @apply directly in Python string is problematic,
                define explicit Tailwind classes or use a separate CSS file.
                For this example, I'll keep it as is, but be aware of potential issues
@@ -384,7 +382,7 @@ if selected_company_data:
             justify-content: center;
             min-width: 200px; /* Ensure boxes are wide enough */
             max-width: 300px;
-        }
+        }}
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
