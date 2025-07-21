@@ -505,6 +505,7 @@ if selected_company_data:
                 <!-- Tubo Symbol (Circle at the end) -->
                 <line x1="1330" y1="180" x2="1680" y2="180" class="line" />
                 <circle cx="1700" cy="180" r="20" class="symbol-stroke" fill="white" />
+                <line x1="1720" y1="200" x2="1680" y2="160" class="line" />
                 <text x="1700" y="120" class="label">Tubo</text>
                 <!-- Tubo Values (Dynamic Placeholders) -->
                 <text x="1700" y="235" class="value-label">Diámetro: {tubo_diametro}</text>
