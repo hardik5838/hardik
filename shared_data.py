@@ -9,7 +9,6 @@ FUENTE_GENERICO_CABLE = "Tabla General de Calibres de Cable"
 guia_bt_14_table_1 = [
     {"phase_mm2_cu": {"valor": 10, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 10, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 75, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
     {"phase_mm2_cu": {"valor": 16, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 10, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 75, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
-    {"phase_mm2_al": {"valor": 16, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 16, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 75, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}}, # Opción de Aluminio
     {"phase_mm2_cu": {"valor": 25, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 16, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 110, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
     {"phase_mm2_cu": {"valor": 35, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 16, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 110, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
     {"phase_mm2_cu": {"valor": 50, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "neutral_mm2": {"valor": 25, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}, "tube_dia_mm": {"valor": 125, "fuente": FUENTE_GUIA_BT_14_PG9_TABLA1}},
