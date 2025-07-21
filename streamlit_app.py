@@ -144,8 +144,18 @@ else:
     
 st.write(f"Corriente de Diseño (I_B): **{calculated_current:.2f} A** ({current_source_note})")
 
-
-
+# --- Initialize all variables used in the HTML diagram with default values ---
+acometida_diametro = "N/A"
+acometida_fase = "N/A"
+acometida_neutro = "N/A"
+acometida_tierra = "N/A"
+cgp_tipo = "N/A"
+cgp_fusible = "N/A"
+igm_capacidad = "N/A"
+lga_fase = "N/A"
+lga_neutro = "N/A"
+lga_tierra = "N/A"
+tubo_diametro = "N/A
 
 
 
@@ -203,8 +213,28 @@ if selected_company_data:
             cgp_type, fuse_cap, _ = get_uf_cgp_type_and_fuse(calculated_current)
             cgp_spec = f"Tipo: {cgp_type}<br>Fusible: {fuse_cap} A"
             igm_spec = "N/A"
+   
 
+# --- Update individual variables for HTML injection after all company-specific logic ---
+    # If not found, they retain their "N/A" default values.
 
+acometida_diametro = tubo_spec.replace("Diámetro: ", "") 
+    lga_parts = lga_spec.split("<br>")
+    acometida_fase = lga_parts[0].replace("Fase: ", "") 
+    acometida_neutro = lga_parts[1].replace("Neutro: ", "") 
+    acometida_tierra = lga_parts[2].replace("Tierra: ", "") 
+
+    cgp_parts = cgp_spec.split("<br>")
+    cgp_tipo = cgp_parts[0].replace("Tipo: ", "") 
+    cgp_fusible = cgp_parts[1].replace("Fusible: ", "") 
+
+    igm_capacidad = igm_spec.replace("Capacidad: ", "") 
+
+    lga_fase = acometida_fase # Reuse if LGA is same as acometida conductors
+    lga_neutro = acometida_neutro
+    lga_tierra = acometida_tierra
+
+    tubo_diametro = acometida_diametro # Reuse if final tubo is same as initial acometida tube
 
 
 
