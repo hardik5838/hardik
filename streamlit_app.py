@@ -389,7 +389,7 @@ if selected_company_data:
         }}
         .label {{
             font-family: 'Inter', sans-serif;
-            font-size: 20px; /* Slightly larger for readability */
+            font-size: 22px; /* Slightly larger for readability */
             fill: #333;
             font-weight: bold;
             text-anchor: middle; /* Center text by default */
