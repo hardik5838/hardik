@@ -484,7 +484,7 @@ if selected_company_data:
                 <line x1="190" y1="260" x2="390" y2="260" class="line" />
                 <text x="140" y="265" class="label">T</text>
                 <!-- Vertical line connecting Acometida lines -->
-                <line x1="320" y1="100" x2="390" y2="260" class="line" />
+                <line x1="390" y1="100" x2="390" y2="260" class="line" />
                 <text x="290" y="76" class="label">Acometida</text>
                 <!-- Acometida Values (Dynamic Placeholders) -->
                 <text x="290" y="290" class="value-label">Diámetro Tubo: {acometida_diametro}</text>
@@ -502,7 +502,7 @@ if selected_company_data:
                 <text x="850" y="140" class="label">Fusible</text>
                 <!-- CGP Values (Dynamic Placeholders) -->
                 <text x="850" y="310" class="value-label">Tipo: {cgp_tipo}</text>
-                <text x="850" y="325" class="value-label">Fusible: {cgp_fusible}</text>
+                <text x="850" y="330" class="value-label">Fusible: {cgp_fusible}</text>
                 <!-- IGM (Interruptor General de Maniobra) - Automatic Switch Symbol (Updated) -->
                 <g id="igm-symbol">
                     <!-- Operating mechanism / 'X' for breaking capacity -->
