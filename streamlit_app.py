@@ -361,7 +361,7 @@ if selected_company_data:
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.2">
     <title>Diagrama Eléctrico de Acometida</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -461,11 +461,11 @@ if selected_company_data:
             <svg viewBox="0 0 1744 368" class="w-full h-auto max-h-[368px]">
                 <!-- Background sections -->
                 <rect x="0" y="0" width="580" height="375" fill="#FFFBEA" rx="0" ry="0"/> <!-- Left section (Acometida) -->
-                <text x="290" y="10" class="yellow">Distribuidora</text>
+                <text x="290" y="20" class="yellow">DISTRIBUIDORA</text>
                 <rect x="580" y="0" width="580" height="375" fill="#EBF5FF" rx="0" ry="0"/> <!-- Middle section (CGP) -->
-                <text x="510" y="10" class="blue">Comun</text>
+                <text x="870" y="20" class="blue">COMUN</text>
                 <rect x="1160" y="0" width="650" height="375" fill="#E6FFED" rx="0" ry="0"/> <!-- Right section (IGM, LGA, Tubo) -->
-                <text x="1485" y="10" class="green">Cliente</text>
+                <text x="1485" y="20" class="green">CLIENTE</text>
                 <!-- Dashed borders between sections -->
                 <line x1="580" y1="0" x2="580" y2="368" class="section-background" />
                 <line x1="1160" y1="0" x2="1160" y2="368" class="section-background" />
