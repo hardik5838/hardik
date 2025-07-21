@@ -269,7 +269,35 @@ if selected_company_data:
         st.markdown("""---""")
 
  # --- Visual Scheme Section ---
- # --- Visual Scheme Section ---
+
+     # NEW CODE TO ADD: Prepare individual variables for HTML injection
+    # Acometida/Tubo values
+    # These lines extract the numerical/textual values from your existing spec strings.
+    # Adjust the .replace() methods if your spec strings have slightly different formats.
+    acometida_diametro = tubo_spec.replace("Diámetro: ", "") # "140 mm"
+    # Assuming lga_spec is "Fase: 70 mm²<br>Neutro: 70 mm²<br>Tierra: 35 mm²"
+    lga_parts = lga_spec.split("<br>")
+    acometida_fase = lga_parts[0].replace("Fase: ", "") # "70 mm²"
+    acometida_neutro = lga_parts[1].replace("Neutro: ", "") # "70 mm²"
+    acometida_tierra = lga_parts[2].replace("Tierra: ", "") # "35 mm²"
+
+    # CGP values
+    cgp_parts = cgp_spec.split("<br>")
+    cgp_tipo = cgp_parts[0].replace("Tipo: ", "") # "BUC - esquema 7-160 A o 9-160 A"
+    cgp_fusible = cgp_parts[1].replace("Fusible: ", "") # "160 A"
+
+    # IGM values
+    igm_capacidad = igm_spec.replace("Capacidad: ", "") # "250 A"
+
+    # For LGA values in the diagram, reuse the extracted acometida_fase, etc.
+    lga_fase = acometida_fase
+    lga_neutro = acometida_neutro
+    lga_tierra = acometida_tierra
+
+    # For the final Tubo, reuse the extracted acometida_diametro
+    tubo_diametro = acometida_diametro
+
+    # Define the HTML template as a plain string (NO 'f' prefix)
     diagram_html_template = """
 <!DOCTYPE html>
 <html lang="es">
@@ -333,7 +361,19 @@ if selected_company_data:
             margin-bottom: 4px;
         }
         .detail-box {
-            @apply bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col items-center justify-center;
+            /* Using @apply directly in Python string is problematic,
+               define explicit Tailwind classes or use a separate CSS file.
+               For this example, I'll keep it as is, but be aware of potential issues
+               if Tailwind JIT/CLI isn't processing this string. */
+            background-color: white;
+            padding: 1rem; /* p-4 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow-md */
+            border: 1px solid #e2e8f0; /* border border-gray-200 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             min-width: 200px; /* Ensure boxes are wide enough */
             max-width: 300px;
         }
@@ -513,6 +553,7 @@ if selected_company_data:
     st.markdown(diagram_html, unsafe_allow_html=True)
     st.markdown("""---""")
 
+    
 
     #< --- Print Button Section ---
     st.header("Exportar Reporte")
