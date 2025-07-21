@@ -484,7 +484,7 @@ if selected_company_data:
                 <!-- IGM (Interruptor General de Maniobra) - Automatic Switch Symbol (Updated) -->
                 <g id="igm-symbol">
                     <!-- Operating mechanism / 'X' for breaking capacity -->
-                    <line x1="1320" y1="150" x2="1340" y2="190" class="symbol-stroke" />
+                    <line x1="1320" y1="170" x2="1340" y2="210" class="symbol-stroke" />
                     <line x1="1320" y1="190" x2="1340" y2="150" class="symbol-stroke" />
                     <text x="1290" y="120" class="label">IGM</text>
                 </g>
