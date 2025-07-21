@@ -608,7 +608,7 @@ st.warning(
 )
 # --- References ---
 
-st.markdown("""
+st.markdown(
 ---
 ### Documentos de Referencia:
 * **Endesa:** [Guía de Interpretación NRZ103, Edición 6.1]
@@ -622,4 +622,4 @@ st.markdown("""
     * [GUÍA-BT-14: Línea General de Alimentación, Edición: sep 3, Revisión: 1] # Review '03' here
     * [GUÍA-BT-15: Derivaciones Individuales, Edición: sep 3, Revisión: 1] # Review '03' here
     * [GUÍA-BT-16: Contadores: Ubicación y Sistemas de Instalación, Edición: sep 3, Revisión: 1] # Review '03' here
-""")
+)
