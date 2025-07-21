@@ -553,7 +553,7 @@ diagram_html_template ="""
     </div>
 </body>
 </html>
-
+"""
     
 
     #< --- Print Button Section ---
@@ -608,7 +608,7 @@ st.warning(
 )
 # --- References ---
 
-st.markdown(
+st.markdown("""
 ---
 ### Documentos de Referencia:
 * **Endesa:** [Guía de Interpretación NRZ103, Edición 6.1]
