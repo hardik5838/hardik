@@ -485,8 +485,8 @@ if selected_company_data:
                 <g id="igm-symbol">
                     <!-- Operating mechanism / 'X' for breaking capacity -->
                     <line x1="1280" y1="180" x2="1340" y2="155" class="symbol-stroke" />
-                    <line x1="1320" y1="170" x2="1340" y2="190" class="symbol-stroke" />
-                    <line x1="1320" y1="190" x2="1340" y2="170" class="symbol-stroke" />
+                    <line x1="1325" y1="175" x2="1335" y2="195" class="symbol-stroke" />
+                    <line x1="1325" y1="185" x2="1335" y2="165" class="symbol-stroke" />
                     <text x="1290" y="120" class="label">IGM</text>
                 </g>
                 <!-- IGM Values (Dynamic Placeholders) -->
