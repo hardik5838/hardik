@@ -279,63 +279,63 @@ if selected_company_data:
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles for SVG elements for better clarity */
-        svg {
+        svg {{
             display: block;
             margin: auto;
             overflow: visible; /* Allow elements to extend slightly beyond viewBox if needed */
-        }
-        .line {
+        }}
+        .line {{
             stroke: black;
             stroke-width: 3; /* Thicker lines for better visibility */
             fill: none;
             stroke-linecap: round;
-        }
-        .symbol-stroke {
+        }}
+        .symbol-stroke {{
             stroke: black;
             stroke-width: 3; /* Thicker lines for better visibility */
             fill: none;
             stroke-linecap: round;
             stroke-linejoin: round;
-        }
-        .symbol-fill {
+        }}
+        .symbol-fill {{
             fill: black;
-        }
-        .label {
+        }}
+        .label {{
             font-family: 'Inter', sans-serif;
             font-size: 16px; /* Slightly larger for readability */
             fill: #333;
             font-weight: bold;
             text-anchor: middle; /* Center text by default */
-        }
-        .value-label {
+        }}
+        .value-label {{
             font-family: 'Inter', sans-serif;
             font-size: 12px; /* Smaller for detailed values */
             fill: #555;
             text-anchor: middle;
-        }
-        .section-background {
+        }}
+        .section-background {{
             stroke-dasharray: 5 5; /* Dashed border for sections */
             stroke: #6b7280; /* Gray-500 */
             stroke-width: 1;
             fill: none;
-        }
-        .element-details {
+        }}
+        .element-details {{
             font-family: 'Inter', sans-serif;
             font-size: 13px;
             color: #4a5568; /* Tailwind gray-700 */
             line-height: 1.4;
             text-align: center;
-        }
-        .element-title {
+        }}
+        .element-title {{
             font-weight: bold;
             color: #2d3748; /* Tailwind gray-800 */
             margin-bottom: 4px;
-        }
-        .detail-box {
+        }}
+        .detail-box {{
             @apply bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col items-center justify-center;
             min-width: 200px; /* Ensure boxes are wide enough */
             max-width: 300px;
-        }
+        }}
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
@@ -371,10 +371,10 @@ if selected_company_data:
                 <text x="200" y="70" class="label">Acometida</text>
 
                 <!-- Acometida Values (Dynamic Placeholders) -->
-                <text x="200" y="290" class="value-label">Diámetro: {acometida_diametro}</text>
-                <text x="200" y="305" class="value-label">Fase: {acometida_fase}</text>
-                <text x="200" y="320" class="value-label">Neutro: {acometida_neutro}</text>
-                <text x="200" y="335" class="value-label">Tierra: {acometida_tierra}</text>
+                <text x="200" y="290" class="value-label">Diámetro: {{acometida_diametro}}</text>
+                <text x="200" y="305" class="value-label">Fase: {{acometida_fase}}</text>
+                <text x="200" y="320" class="value-label">Neutro: {{acometida_neutro}}</text>
+                <text x="200" y="335" class="value-label">Tierra: {{acometida_tierra}}</text>
 
                 <!-- Main horizontal line (Continuous Path) -->
                 <path d="M300,180 H650 M900,180 H1250 M1330,180 H1680" class="line" />
@@ -390,8 +390,8 @@ if selected_company_data:
                 <text x="800" y="140" class="label">Fusible</text>
 
                 <!-- CGP Values (Dynamic Placeholders) -->
-                <text x="800" y="310" class="value-label">Tipo: {cgp_tipo}</text>
-                <text x="800" y="325" class="value-label">Fusible: {cgp_fusible}</text>
+                <text x="800" y="310" class="value-label">Tipo: {{cgp_tipo}}</text>
+                <text x="800" y="325" class="value-label">Fusible: {{cgp_fusible}}</text>
 
                 <!-- IGM (Interruptor General de Maniobra) - Automatic Switch Symbol (Updated) -->
                 <g id="igm-symbol">
@@ -414,7 +414,7 @@ if selected_company_data:
                 </g>
 
                 <!-- IGM Values (Dynamic Placeholders) -->
-                <text x="1290" y="235" class="value-label">Capacidad: {igm_capacidad}</text>
+                <text x="1290" y="235" class="value-label">Capacidad: {{igm_capacidad}}</text>
 
                 <!-- LGA (Línea General de Alimentación) - Multiple Conductors Symbol (Updated) -->
                 <line x1="1450" y1="180" x2="1550" y2="180" class="line" />
@@ -427,9 +427,9 @@ if selected_company_data:
                 <text x="1500" y="120" class="label">LGA</text>
 
                 <!-- LGA Values (Dynamic Placeholders) -->
-                <text x="1500" y="235" class="value-label">Fase: {lga_fase}</text>
-                <text x="1500" y="250" class="value-label">Neutro: {lga_neutro}</text>
-                <text x="1500" y="265" class="value-label">Tierra: {lga_tierra}</text>
+                <text x="1500" y="235" class="value-label">Fase: {{lga_fase}}</text>
+                <text x="1500" y="250" class="value-label">Neutro: {{lga_neutro}}</text>
+                <text x="1500" y="265" class="value-label">Tierra: {{lga_tierra}}</text>
 
                 <!-- Tubo Symbol (Circle at the end) -->
                 <line x1="1680" y1="180" x2="1700" y2="180" class="line" />
@@ -437,7 +437,7 @@ if selected_company_data:
                 <text x="1700" y="120" class="label">Tubo</text>
 
                 <!-- Tubo Values (Dynamic Placeholders) -->
-                <text x="1700" y="235" class="value-label">Diámetro: {tubo_diametro}</text>
+                <text x="1700" y="235" class="value-label">Diámetro: {{tubo_diametro}}</text>
             </svg>
 
             <!-- Details for each element (kept for comprehensive info, can be removed if desired) -->
@@ -446,10 +446,10 @@ if selected_company_data:
                 <div class="detail-box">
                     <div class="element-title">Acometida</div>
                     <div class="element-details">
-                        <p>Diámetro: {acometida_diametro}</p>
-                        <p>Fase: {acometida_fase}</p>
-                        <p>Neutro: {acometida_neutro}</p>
-                        <p>Tierra: {acometida_tierra}</p>
+                        <p>Diámetro: {{acometida_diametro}}</p>
+                        <p>Fase: {{acometida_fase}}</p>
+                        <p>Neutro: {{acometida_neutro}}</p>
+                        <p>Tierra: {{acometida_tierra}}</p>
                     </div>
                 </div>
 
@@ -457,8 +457,8 @@ if selected_company_data:
                 <div class="detail-box">
                     <div class="element-title">Caja General de Protección (CGP)</div>
                     <div class="element-details">
-                        <p>Tipo: {cgp_tipo}</p>
-                        <p>Fusible: {cgp_fusible}</p>
+                        <p>Tipo: {{cgp_tipo}}</p>
+                        <p>Fusible: {{cgp_fusible}}</p>
                     </div>
                 </div>
 
@@ -466,7 +466,7 @@ if selected_company_data:
                 <div class="detail-box">
                     <div class="element-title">Interruptor General de Maniobra (IGM)</div>
                     <div class="element-details">
-                        <p>Capacidad: {igm_capacidad}</p>
+                        <p>Capacidad: {{igm_capacidad}}</p>
                     </div>
                 </div>
 
@@ -474,9 +474,9 @@ if selected_company_data:
                 <div class="detail-box">
                     <div class="element-title">Línea General de Alimentación (LGA)</div>
                     <div class="element-details">
-                        <p>Fase: {lga_fase}</p>
-                        <p>Neutro: {lga_neutro}</p>
-                        <p>Tierra: {lga_tierra}</p>
+                        <p>Fase: {{lga_fase}}</p>
+                        <p>Neutro: {{lga_neutro}}</p>
+                        <p>Tierra: {{lga_tierra}}</p>
                     </div>
                 </div>
 
@@ -484,7 +484,7 @@ if selected_company_data:
                 <div class="detail-box">
                     <div class="element-title">Tubo (Salida LGA)</div>
                     <div class="element-details">
-                        <p>Diámetro: {tubo_diametro}</p>
+                        <p>Diámetro: {{tubo_diametro}}</p>
                     </div>
                 </div>
             </div>
@@ -492,6 +492,7 @@ if selected_company_data:
     </div>
 </body>
 </html>
+
 
     #< --- Print Button Section ---
     st.header("Exportar Reporte")
