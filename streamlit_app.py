@@ -216,25 +216,24 @@ if selected_company_data:
    
 
 # --- Update individual variables for HTML injection after all company-specific logic ---
-    # If not found, they retain their "N/A" default values.
 
 acometida_diametro = tubo_spec.replace("Diámetro: ", "") 
-    lga_parts = lga_spec.split("<br>")
-    acometida_fase = lga_parts[0].replace("Fase: ", "") 
-    acometida_neutro = lga_parts[1].replace("Neutro: ", "") 
-    acometida_tierra = lga_parts[2].replace("Tierra: ", "") 
+lga_parts = lga_spec.split("<br>")
+acometida_fase = lga_parts[0].replace("Fase: ", "") 
+acometida_neutro = lga_parts[1].replace("Neutro: ", "") 
+acometida_tierra = lga_parts[2].replace("Tierra: ", "") 
 
-    cgp_parts = cgp_spec.split("<br>")
-    cgp_tipo = cgp_parts[0].replace("Tipo: ", "") 
-    cgp_fusible = cgp_parts[1].replace("Fusible: ", "") 
+cgp_parts = cgp_spec.split("<br>")
+cgp_tipo = cgp_parts[0].replace("Tipo: ", "") 
+cgp_fusible = cgp_parts[1].replace("Fusible: ", "") 
 
-    igm_capacidad = igm_spec.replace("Capacidad: ", "") 
+igm_capacidad = igm_spec.replace("Capacidad: ", "") 
 
-    lga_fase = acometida_fase # Reuse if LGA is same as acometida conductors
-    lga_neutro = acometida_neutro
-    lga_tierra = acometida_tierra
+lga_fase = acometida_fase # Reuse if LGA is same as acometida conductors
+lga_neutro = acometida_neutro
+lga_tierra = acometida_tierra
 
-    tubo_diametro = acometida_diametro # Reuse if final tubo is same as initial acometida tube
+tubo_diametro = acometida_diametro # Reuse if final tubo is same as initial acometida tube
 
 
 
