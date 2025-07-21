@@ -323,98 +323,256 @@ if selected_company_data:
         st.markdown("""---""")
 
 
+
+
+
+
     
+# Schema 
+
     
-    
-    
-    
-    # --- Visual Scheme Section ---
-    diagram_html = f"""
-    <div class="responsibility-container">
-    </div>
+    diagram_html_template = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama Eléctrico de Acometida</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .responsibility-container {{
-            display: flex;
-            align-items: flex-start; /* Aligns zones to the top */
-            justify-content: center;
-            gap: 10px;
-            font-family: sans-serif;
-            padding: 10px 0;
-            width: 100%;
+        /* Custom styles for SVG elements for better clarity */
+        svg {{
+            display: block;
+            margin: auto;
+            overflow: visible; /* Allow elements to extend slightly beyond viewBox if needed */
         }}
-        .zone {{
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            border: 1px solid;
+        .line {{
+            stroke: black;
+            stroke-width: 3; /* Thicker lines for better visibility */
+            fill: none;
+            stroke-linecap: round;
         }}
-        .zone-title {{
+        .symbol-stroke {{
+            stroke: black;
+            stroke-width: 3; /* Thicker lines for better visibility */
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }}
+        .symbol-fill {{
+            fill: black;
+        }}
+        .label {{
+            font-family: 'Inter', sans-serif;
+            font-size: 16px; /* Slightly larger for readability */
+            fill: #333;
             font-weight: bold;
-            font-size: 1.1em;
-            margin-bottom: 15px;
-            border-bottom: 2px solid;
-            padding-bottom: 8px;
+            text-anchor: middle; /* Center text by default */
         }}
-        .flow-boxes-in-zone {{
+        .value-label {{
+            font-family: 'Inter', sans-serif;
+            font-size: 12px; /* Smaller for detailed values */
+            fill: #555;
+            text-anchor: middle;
+        }}
+        .section-background {{
+            stroke-dasharray: 5 5; /* Dashed border for sections */
+            stroke: #6b7280; /* Gray-500 */
+            stroke-width: 1;
+            fill: none;
+        }}
+        .element-details {{
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: #4a5568; /* Tailwind gray-700 */
+            line-height: 1.4;
+            text-align: center;
+        }}
+        .element-title {{
+            font-weight: bold;
+            color: #2d3748; /* Tailwind gray-800 */
+            margin-bottom: 4px;
+        }}
+        .detail-box {{
+            /* Using @apply directly in Python string is problematic,
+               define explicit Tailwind classes or use a separate CSS file.
+               For this example, I'll keep it as is, but be aware of potential issues
+               if Tailwind JIT/CLI isn't processing this string. */
+            background-color: white;
+            padding: 1rem; /* p-4 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow-md */
+            border: 1px solid #e2e8f0; /* border border-gray-200 */
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex-wrap: nowrap; /* Ensures boxes stay in one line */
-            gap: 10px;
-            min-height: 80px; /* Give space for content */
+            min-width: 200px; /* Ensure boxes are wide enough */
+            max-width: 300px;
         }}
-        .flow-box {{
-            background-color: #FFFFFF;
-            border: 1px solid #D0D7DE;
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-            min-width: 130px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-        }}
-        .flow-box h5 {{ margin: 0 0 5px 0; color: #000; }}
-        .flow-box p {{ margin: 0; font-size: 0.9em; color: #333; line-height: 1.4;}}
-        .flow-arrow {{ font-size: 2em; color: #586069; margin: auto 15px; }}
-        
-        /* Zone Colors */
-        .zone.yellow {{ background-color: #FFFBEA; border-color: #FDCF47; }}
-        .zone.yellow .zone-title {{ color: #B54A09; border-color: #FDCF47; }}
-        .zone.blue {{ background-color: #EBF5FF; border-color: #6CB4EE; }}
-        .zone.blue .zone-title {{ color: #00529B; border-color: #6CB4EE; }}
-        .zone.green {{ background-color: #E6FFED; border-color: #54C176; }}
-        .zone.green .zone-title {{ color: #1E7E34; border-color: #54C176; }}
     </style>
-    <div class="responsibility-container">
-        <div class="zone yellow">
-            <div class="zone-title">Compañía</div>
-            <div class="flow-boxes-in-zone">
-                <div class="flow-box"><h5>Acometida</h5><p>{tubo_spec} {lga_spec}</p></div>
-            </div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="zone blue">
-            <div class="zone-title">Común</div>
-            <div class="flow-boxes-in-zone">
-                <div class="flow-box"><h5>CGP</h5><p>{cgp_spec}</p></div>
-            </div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="zone green">
-            <div class="zone-title">Usuario</div>
-            <div class="flow-boxes-in-zone">
-                <div class="flow-box"><h5>IGM</h5><p>{igm_spec}</p></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-box"><h5>LGA</h5><p>{lga_spec}</p></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-box"><h5>Tubo</h5><p>{tubo_spec}</p></div>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-5xl w-full">
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Diagrama de Acometida Eléctrica</h1>
+        <div class="flex flex-col items-center justify-center w-full">
+            <svg viewBox="0 0 1744 368" class="w-full h-auto max-h-[368px]">
+                <!-- Background sections -->
+                <rect x="0" y="0" width="580" height="368" fill="#FFFBEA" rx="0" ry="0"/> <!-- Left section (Acometida) -->
+                <rect x="580" y="0" width="580" height="368" fill="#EBF5FF" rx="0" ry="0"/> <!-- Middle section (CGP) -->
+                <rect x="1160" y="0" width="584" height="368" fill="#E6FFED" rx="0" ry="0"/> <!-- Right section (IGM, LGA, Tubo) -->
+                <!-- Dashed borders between sections -->
+                <line x1="580" y1="0" x2="580" y2="368" class="section-background" />
+                <line x1="1160" y1="0" x2="1160" y2="368" class="section-background" />
+                <!-- Acometida Lines (L1, L2, L3, N, T) and Connection Point -->
+                <line x1="100" y1="100" x2="300" y2="100" class="line" />
+                <text x="50" y="105" class="label">L1</text>
+                <line x1="100" y1="140" x2="300" y2="140" class="line" />
+                <text x="50" y="145" class="label">L2</text>
+                <line x1="100" y1="180" x2="300" y2="180" class="line" />
+                <text x="50" y="185" class="label">L3</text>
+                <line x1="100" y1="220" x2="300" y2="220" class="line" />
+                <text x="50" y="225" class="label">N</text>
+                <line x1="100" y1="260" x2="300" y2="260" class="line" />
+                <text x="50" y="265" class="label">T</text>
+                <!-- Vertical line connecting Acometida lines -->
+                <line x1="300" y1="100" x2="300" y2="260" class="line" />
+                <!-- Acometida Label (Corrected Position) -->
+                <text x="200" y="70" class="label">Acometida</text>
+                <!-- Acometida Values (Dynamic Placeholders) -->
+                <text x="200" y="290" class="value-label">Diámetro: {acometida_diametro}</text>
+                <text x="200" y="305" class="value-label">Fase: {acometida_fase}</text>
+                <text x="200" y="320" class="value-label">Neutro: {acometida_neutro}</text>
+                <text x="200" y="335" class="value-label">Tierra: {acometida_tierra}</text>
+                <!-- Main horizontal line (Continuous Path) -->
+                <path d="M300,180 H650 M900,180 H1250 M1330,180 H1680" class="line" />
+                <!-- CGP (Caja General de Protección) - Fusible Symbol -->
+                <!-- Outer box of CGP -->
+                <rect x="700" y="100" width="200" height="160" class="symbol-stroke" />
+                <text x="800" y="285" class="label">CGP</text>
+                <!-- Inner Fusible symbol (rectangle with horizontal line) -->
+                <rect x="750" y="150" width="100" height="60" class="symbol-stroke" />
+                <line x1="750" y1="180" x2="850" y2="180" class="symbol-stroke" />
+                <text x="800" y="140" class="label">Fusible</text>
+                <!-- CGP Values (Dynamic Placeholders) -->
+                <text x="800" y="310" class="value-label">Tipo: {cgp_tipo}</text>
+                <text x="800" y="325" class="value-label">Fusible: {cgp_fusible}</text>
+                <!-- IGM (Interruptor General de Maniobra) - Automatic Switch Symbol (Updated) -->
+                <g id="igm-symbol">
+                    <!-- Main body of the breaker -->
+                    <rect x="1250" y="130" width="80" height="100" class="symbol-stroke" />
+                    <!-- Top connection -->
+                    <line x1="1290" y1="130" x2="1290" y2="100" class="line" />
+                    <!-- Thermal trip unit (small rectangle with line) -->
+                    <rect x="1260" y="140" width="20" height="10" class="symbol-stroke" />
+                    <line x1="1260" y1="145" x2="1280" y2="145" class="symbol-stroke" />
+                    <!-- Magnetic trip unit (arc) -->
+                    <path d="M1290,140 A 20 20 0 0 1 1290,160" class="symbol-stroke" />
+                    <!-- Contacts (simplified, one per line for unifilar) -->
+                    <line x1="1250" y1="180" x2="1270" y2="180" class="line" />
+                    <line x1="1310" y1="180" x2="1330" y2="180" class="line" class="line" />
+                    <!-- Operating mechanism / 'X' for breaking capacity -->
+                    <line x1="1280" y1="160" x2="1300" y2="200" class="symbol-stroke" />
+                    <line x1="1280" y1="200" x2="1300" y2="160" class="symbol-stroke" />
+                    <text x="1290" y="120" class="label">IGM</text>
+                </g>
+                <!-- IGM Values (Dynamic Placeholders) -->
+                <text x="1290" y="235" class="value-label">Capacidad: {igm_capacidad}</text>
+                <!-- LGA (Línea General de Alimentación) - Multiple Conductors Symbol (Updated) -->
+                <line x1="1450" y1="180" x2="1550" y2="180" class="line" />
+                <!-- Oblique strokes (5 strokes for 3F+N+T) -->
+                <line x1="1480" y1="170" x2="1480" y2="190" class="symbol-stroke" transform="rotate(45 1480 180)" />
+                <line x1="1490" y1="170" x2="1490" y2="190" class="symbol-stroke" transform="rotate(45 1490 180)" />
+                <line x1="1500" y1="170" x2="1500" y2="190" class="symbol-stroke" transform="rotate(45 1500 180)" />
+                <line x1="1510" y1="170" x2="1510" y2="190" class="symbol-stroke" transform="rotate(45 1510 180)" />
+                <line x1="1520" y1="170" x2="1520" y2="190" class="symbol-stroke" transform="rotate(45 1520 180)" />
+                <text x="1500" y="120" class="label">LGA</text>
+                <!-- LGA Values (Dynamic Placeholders) -->
+                <text x="1500" y="235" class="value-label">Fase: {lga_fase}</text>
+                <text x="1500" y="250" class="value-label">Neutro: {lga_neutro}</text>
+                <text x="1500" y="265" class="value-label">Tierra: {lga_tierra}</text>
+                <!-- Tubo Symbol (Circle at the end) -->
+                <line x1="1680" y1="180" x2="1700" y2="180" class="line" />
+                <circle cx="1700" cy="180" r="20" class="symbol-stroke" fill="white" />
+                <text x="1700" y="120" class="label">Tubo</text>
+                <!-- Tubo Values (Dynamic Placeholders) -->
+                <text x="1700" y="235" class="value-label">Diámetro: {tubo_diametro}</text>
+            </svg>
+            <!-- Details for each element (kept for comprehensive info, can be removed if desired) -->
+            <div class="flex flex-wrap justify-center w-full mt-8 gap-4 px-4">
+                <!-- Acometida / Tubo Details -->
+                <div class="detail-box">
+                    <div class="element-title">Acometida</div>
+                    <div class="element-details">
+                        <p>Diámetro: {acometida_diametro}</p>
+                        <p>Fase: {acometida_fase}</p>
+                        <p>Neutro: {acometida_neutro}</p>
+                        <p>Tierra: {acometida_tierra}</p>
+                    </div>
+                </div>
+                <!-- CGP Details -->
+                <div class="detail-box">
+                    <div class="element-title">Caja General de Protección (CGP)</div>
+                    <div class="element-details">
+                        <p>Tipo: {cgp_tipo}</p>
+                        <p>Fusible: {cgp_fusible}</p>
+                    </div>
+                </div>
+
+                <!-- IGM Details -->
+                <div class="detail-box">
+                    <div class="element-title">Interruptor General de Maniobra (IGM)</div>
+                    <div class="element-details">
+                        <p>Capacidad: {igm_capacidad}</p>
+                    </div>
+                </div>
+                <!-- LGA Details -->
+                <div class="detail-box">
+                    <div class="element-title">Línea General de Alimentación (LGA)</div>
+                    <div class="element-details">
+                        <p>Fase: {lga_fase}</p>
+                        <p>Neutro: {lga_neutro}</p>
+                        <p>Tierra: {lga_tierra}</p>
+                    </div>
+                </div>
+                <!-- Tubo Details (assuming this refers to the final conduit/connection) -->
+                <div class="detail-box">
+                    <div class="element-title">Tubo (Salida LGA)</div>
+                    <div class="element-details">
+                        <p>Diámetro: {tubo_diametro}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    """
+</body>
+</html>
+"""
+    # Step 3: Format the HTML template with your dynamic Python variables
+    # This is the crucial step that replaces the placeholders with actual values
+    diagram_html = diagram_html_template.format(
+        acometida_diametro=acometida_diametro,
+        acometida_fase=acometida_fase,
+        acometida_neutro=acometida_neutro,
+        acometida_tierra=acometida_tierra,
+        cgp_tipo=cgp_tipo,
+        cgp_fusible=cgp_fusible,
+        igm_capacidad=igm_capacidad,
+        lga_fase=lga_fase,
+        lga_neutro=lga_neutro,
+        lga_tierra=lga_tierra,
+        tubo_diametro=tubo_diametro
+    )
+
     st.markdown(diagram_html, unsafe_allow_html=True)
     st.markdown("""---""")
 
+
+
+
+
     
+
     # --- Display All Collected Sources ---
     st.markdown("#### Fuentes de Datos Utilizadas para esta Recomendación")
     fuentes_validas = {key: value for key, value in fuentes_utilizadas.items() if value and value != "N/A"}
