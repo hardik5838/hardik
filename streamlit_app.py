@@ -614,7 +614,7 @@ st.markdown("""
 * **Endesa:** [Guía de Interpretación NRZ103, Edición 6.1]
 * **Unión Fenosa:** [Especificaciones Particulares para Instalaciones de Conexión ES.0100.ES.RE.EIC, Edición: 5,]
 * **Iberdrola (i-DE):** [Manual Técnico de Distribución MT 2.80.12, Edición 5, Mayo 2019]  # <-- CHANGED '05' to '5'
-* **Iberdrola (i-DE) Tipos de CGP:** [NORMA NI 76.50.01, Edición 6a, Julio 2010]
+* **Iberdrola (i-DE) Tipos de CGP:** [NORMA NI 76.50.01, Edición6a, Julio 2010]
 * **Guías Técnicas de Aplicación (Ministerio para la Transición Ecológica y el Reto Demográfico):**
     * [GUÍA-BT-10: Previsión de Cargas, Edición: sep 3, Revisión: 1] # Review '03' here if it's causing issues
     * [GUÍA-BT-12: Esquemas, Edición: sep 3, Revisión: 1] # Review '03' here
