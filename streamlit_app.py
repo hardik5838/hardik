@@ -525,47 +525,6 @@ if selected_company_data:
             </svg>
             <!-- Details for each element (kept for comprehensive info, can be removed if desired) -->
             <div class="flex flex-wrap justify-center w-full mt-8 gap-4 px-4">
-                <!-- Acometida / Tubo Details -->
-                <div class="detail-box">
-                    <div class="element-title">Acometida</div>
-                    <div class="element-details">
-                        <p>Diámetro: {acometida_diametro}</p>
-                        <p>Fase: {acometida_fase}</p>
-                        <p>Neutro: {acometida_neutro}</p>
-                        <p>Tierra: {acometida_tierra}</p>
-                    </div>
-                </div>
-                <!-- CGP Details -->
-                <div class="detail-box">
-                    <div class="element-title">Caja General de Protección (CGP)</div>
-                    <div class="element-details">
-                        <p>Tipo: {cgp_tipo}</p>
-                        <p>Fusible: {cgp_fusible}</p>
-                    </div>
-                </div>
-                <!-- IGM Details -->
-                <div class="detail-box">
-                    <div class="element-title">Interruptor General de Maniobra (IGM)</div>
-                    <div class="element-details">
-                        <p>Capacidad: {igm_capacidad}</p>
-                    </div>
-                </div>
-                <!-- LGA Details -->
-                <div class="detail-box">
-                    <div class="element-title">Línea General de Alimentación (LGA)</div>
-                    <div class="element-details">
-                        <p>Fase: {lga_fase}</p>
-                        <p>Neutro: {lga_neutro}</p>
-                        <p>Tierra: {lga_tierra}</p>
-                    </div>
-                </div>
-                <!-- Tubo Details (assuming this refers to the final conduit/connection) -->
-                <div class="detail-box">
-                    <div class="element-title">Tubo (Salida LGA)</div>
-                    <div class="element-details">
-                        <p>Diámetro: {tubo_diametro}</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
