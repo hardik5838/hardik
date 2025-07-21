@@ -477,24 +477,14 @@ if selected_company_data:
                 <!-- Inner Fusible symbol (rectangle with horizontal line) -->
                 <rect x="800" y="150" width="100" height="60" class="symbol-stroke" />
                 <line x1="800" y1="180" x2="850" y2="180" class="symbol-stroke" />
-                <text x="800" y="140" class="label">Fusible</text>
+                <text x="850" y="140" class="label">Fusible</text>
                 <!-- CGP Values (Dynamic Placeholders) -->
                 <text x="850" y="310" class="value-label">Tipo: {cgp_tipo}</text>
-                <text x="900" y="325" class="value-label">Fusible: {cgp_fusible}</text>
+                <text x="850" y="325" class="value-label">Fusible: {cgp_fusible}</text>
                 <!-- IGM (Interruptor General de Maniobra) - Automatic Switch Symbol (Updated) -->
                 <g id="igm-symbol">
                     <!-- Main body of the breaker -->
                     <rect x="1250" y="130" width="80" height="100" class="symbol-stroke" />
-                    <!-- Top connection -->
-                    <line x1="1290" y1="130" x2="1290" y2="100" class="line" />
-                    <!-- Thermal trip unit (small rectangle with line) -->
-                    <rect x="1260" y="140" width="20" height="10" class="symbol-stroke" />
-                    <line x1="1260" y1="145" x2="1280" y2="145" class="symbol-stroke" />
-                    <!-- Magnetic trip unit (arc) -->
-                    <path d="M1290,140 A 20 20 0 0 1 1290,160" class="symbol-stroke" />
-                    <!-- Contacts (simplified, one per line for unifilar) -->
-                    <line x1="1250" y1="180" x2="1270" y2="180" class="line" />
-                    <line x1="1310" y1="180" x2="1330" y2="180" class="line" class="line" />
                     <!-- Operating mechanism / 'X' for breaking capacity -->
                     <line x1="1280" y1="160" x2="1300" y2="200" class="symbol-stroke" />
                     <line x1="1280" y1="200" x2="1300" y2="160" class="symbol-stroke" />
