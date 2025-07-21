@@ -129,12 +129,25 @@ elif company == "Iberdrola":
     else:
         selected_company_data = find_data(power_kw_for_lookup, iberdrola_ide_table)
 
+
+acometida_diametro = "N/A"
+acometida_fase = "N/A"
+acometida_neutro = "N/A"
+acometida_tierra = "N/A"
+cgp_tipo = "N/A"
+cgp_fusible = "N/A"
+igm_capacidad = "N/A"
+lga_fase = "N/A"
+lga_neutro = "N/A"
+lga_tierra = "N/A"
+tubo_diametro = "N/A"
+
+
 if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
     st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
 
  # Taking data for the scheme 
-    # 1. First, we gather all the specifications needed for the diagram
 
     acometida_spec = "Conexión a Red BT"
 
@@ -166,7 +179,29 @@ if selected_company_data:
             cgp_spec = f"Tipo: {cgp_type}<br>Fusible: {fuse_cap} A"
             igm_spec = "N/A"
 
+    # --- Update individual variables for HTML injection after all company-specific logic ---
+    # Acometida/Tubo values
+    acometida_diametro = tubo_spec.replace("Diámetro: ", "") 
+    lga_parts = lga_spec.split("<br>")
+    acometida_fase = lga_parts[0].replace("Fase: ", "") 
+    acometida_neutro = lga_parts[1].replace("Neutro: ", "") 
+    acometida_tierra = lga_parts[2].replace("Tierra: ", "") 
 
+    # CGP values
+    cgp_parts = cgp_spec.split("<br>")
+    cgp_tipo = cgp_parts[0].replace("Tipo: ", "") 
+    cgp_fusible = cgp_parts[1].replace("Fusible: ", "") 
+
+    # IGM values
+    igm_capacidad = igm_spec.replace("Capacidad: ", "") 
+
+    # For LGA values in the diagram, reuse the extracted acometida_fase, etc.
+    lga_fase = acometida_fase
+    lga_neutro = acometida_neutro
+    lga_tierra = acometida_tierra
+
+    # For the final Tubo, reuse the extracted acometida_diametro
+    tubo_diametro = acometida_diametro
 
     # --- Cable Sections ---
     st.markdown("#### Secciones de Cables (mm²)")
@@ -270,33 +305,8 @@ if selected_company_data:
 
  # --- Visual Scheme Section ---
 
-     # NEW CODE TO ADD: Prepare individual variables for HTML injection
-    # Acometida/Tubo values
-    # These lines extract the numerical/textual values from your existing spec strings.
-    # Adjust the .replace() methods if your spec strings have slightly different formats.
-    acometida_diametro = tubo_spec.replace("Diámetro: ", "") # "140 mm"
-    # Assuming lga_spec is "Fase: 70 mm²<br>Neutro: 70 mm²<br>Tierra: 35 mm²"
-    lga_parts = lga_spec.split("<br>")
-    acometida_fase = lga_parts[0].replace("Fase: ", "") # "70 mm²"
-    acometida_neutro = lga_parts[1].replace("Neutro: ", "") # "70 mm²"
-    acometida_tierra = lga_parts[2].replace("Tierra: ", "") # "35 mm²"
 
-    # CGP values
-    cgp_parts = cgp_spec.split("<br>")
-    cgp_tipo = cgp_parts[0].replace("Tipo: ", "") # "BUC - esquema 7-160 A o 9-160 A"
-    cgp_fusible = cgp_parts[1].replace("Fusible: ", "") # "160 A"
-
-    # IGM values
-    igm_capacidad = igm_spec.replace("Capacidad: ", "") # "250 A"
-
-    # For LGA values in the diagram, reuse the extracted acometida_fase, etc.
-    lga_fase = acometida_fase
-    lga_neutro = acometida_neutro
-    lga_tierra = acometida_tierra
-
-    # For the final Tubo, reuse the extracted acometida_diametro
-    tubo_diametro = acometida_diametro
-
+    
     # Define the HTML template as a plain string (NO 'f' prefix)
     diagram_html_template = """
 <!DOCTYPE html>
@@ -552,7 +562,7 @@ if selected_company_data:
 
     st.markdown(diagram_html, unsafe_allow_html=True)
     st.markdown("""---""")
-
+    
     
 
     #< --- Print Button Section ---
