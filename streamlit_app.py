@@ -422,6 +422,7 @@ if selected_company_data:
             font-size: 18px;
             fill: #555;
             font-weight:bolder;
+            text-wrap: wrap;
             text-anchor: middle;
         }}
         .section-background {{
