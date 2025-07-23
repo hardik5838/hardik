@@ -466,7 +466,7 @@ if selected_company_data:
                 <rect x="0" y="0" width="580" height="395" fill="#FFFBEA" rx="0" ry="0"/> <!-- Left section (Acometida) -->
                 <text x="290" y="35" class="yellow">DISTRIBUIDORA</text>
                 <rect x="580" y="0" width="580" height="395" fill="#EBF5FF" rx="0" ry="0"/> <!-- Middle section (CGP) -->
-                <text x="870" y="35" class="blue">COMUN</text>
+                <text x="850" y="35" class="blue">COMUN</text>
                 <rect x="1160" y="0" width="650" height="395" fill="#E6FFED" rx="0" ry="0"/> <!-- Right section (IGM, LGA, Tubo) -->
                 <text x="1485" y="35" class="green">CLIENTE</text>
                 <!-- Dashed borders between sections -->
