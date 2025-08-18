@@ -47,9 +47,10 @@ def find_data(lookup_value, data_table, lookup_key='power_kw'):
 
 def find_max_power_by_section(section_mm2_input, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data):
     """
-    Finds max power for a cable section. FIX: It now uses company-specific sections for interpolation bounds.
+    Finds max power for a cable section, providing low/high matches and an interpolated value for non-standard sizes.
+    This version is self-contained to prevent NameErrors.
     """
-    # Internal helper function to get power for a standard section
+    # Internal helper function to get power for a standard section. It's defined inside the main function.
     def _get_power_for_exact_section(section_mm2, company):
         if company == "Endesa":
             cable_info = next((c for c in generic_cable_data if c['area_mm2']['valor'] == section_mm2), None)
@@ -59,7 +60,7 @@ def find_max_power_by_section(section_mm2_input, company_name, endesa_data, iber
             if applicable_entries:
                 max_power_entry = max(applicable_entries, key=lambda x: x['power_kw']['valor'])
                 return max_power_entry['power_kw']['valor'], max_power_entry['power_kw']['fuente']
-        else: # Iberdrola & Unión Fenosa
+        else:  # Logic for Iberdrola & Unión Fenosa
             data_table = iberdrola_data if company == "Iberdrola" else uf_data
             matching_entries = [row for row in data_table if 'phase_mm2' in row and row['phase_mm2']['valor'] == section_mm2]
             if matching_entries:
@@ -68,11 +69,11 @@ def find_max_power_by_section(section_mm2_input, company_name, endesa_data, iber
         return None, "No se encontró potencia para la sección."
 
     # --- Main Logic ---
-    # FIX: Determine the list of standard sections based on the selected company
+    # Determine the list of standard sections to use for bounds checking
     if company_name in ["Iberdrola", "Unión Fenosa"]:
         data_table = iberdrola_data if company_name == "Iberdrola" else uf_data
         standard_sections = sorted(list(set(row['phase_mm2']['valor'] for row in data_table)))
-    else: # For Endesa, we still use the generic list due to the indirect lookup method
+    else:  # For Endesa, we still use the generic list
         standard_sections = sorted(list(set(c['area_mm2']['valor'] for c in generic_cable_data)))
 
     # --- Case 1: Exact Match ---
@@ -107,53 +108,7 @@ def find_max_power_by_section(section_mm2_input, company_name, endesa_data, iber
         "interpolated": {"section": section_mm2_input, "power": interpolated_power, "source": "Calculado por interpolación lineal"}
     }
 
-def find_max_power_by_section(section_mm2_input, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data):
-    """
-    Finds max power for a cable section, providing low/high matches and an interpolated value for non-standard sizes.
-    """
-    # Get a sorted list of unique, standard cable sections
-    standard_sections = sorted(list(set(c['area_mm2']['valor'] for c in generic_cable_data)))
-    
-    # --- Case 1: Exact Match ---
-    if section_mm2_input in standard_sections:
-        power, source = _get_power_for_exact_section(section_mm2_input, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data)
-        if power is not None:
-            return {
-                "exact_match": {"section": section_mm2_input, "power": power, "source": source}
-            }
-        else:
-            return {"error": source}
 
-    # --- Case 2: Non-Standard Size, Find Bounds ---
-    lower_bound = None
-    upper_bound = None
-    for s in standard_sections:
-        if s < section_mm2_input:
-            lower_bound = s
-        if s > section_mm2_input:
-            upper_bound = s
-            break # Stop once we find the first size larger than the input
-            
-    # --- Handle Edge Cases ---
-    if not lower_bound or not upper_bound:
-        return {"error": f"La sección {section_mm2_input} mm² está fuera del rango de cálculo ({min(standard_sections)}-{max(standard_sections)} mm²)."}
-
-    # --- Get Power for Lower and Upper Bounds ---
-    power_low, source_low = _get_power_for_exact_section(lower_bound, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data)
-    power_high, source_high = _get_power_for_exact_section(upper_bound, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data)
-
-    if power_low is None or power_high is None:
-        return {"error": "No se pudieron determinar los límites de potencia para la interpolación."}
-
-    # --- Perform Linear Interpolation ---
-    interpolated_power = power_low + (
-        (section_mm2_input - lower_bound) * (power_high - power_low) / (upper_bound - lower_bound)
-    )
-
-    return {
-        "low_match": {"section": lower_bound, "power": power_low, "source": source_low},
-        "high_match": {"section": upper_bound, "power": power_high, "source": source_high},
-        "interpolated": {"section": section_mm2_input, "power": interpolated_power, "source": "Calculado por interpolación lineal"}
     }
 
     
