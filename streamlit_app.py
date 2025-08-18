@@ -2,10 +2,6 @@ import streamlit as st
 import math
 
 
-
-
-
-
 # --- Source Definitions ---
 FUENTE_ENDESA_NRZ103_PG54_IGM_REGLA = "Endesa Guía NRZ103, Pág. 54, 'Unidad IGM'"
 FUENTE_IBERDROLA_MT_PG19_IGM_REGLA = "Iberdrola MT 2.80.12, Pág. 19, 'Unidad IGM'"
@@ -48,6 +44,53 @@ def find_data(lookup_value, data_table, lookup_key='power_kw'):
             return row
             
     return None
+
+def find_max_power_by_section(section_mm2, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data):
+    """
+    Finds the maximum power for a given cable section based on the selected company.
+    """
+    max_power = None
+    source = "Fuente no encontrada."
+
+    if company_name == "Endesa":
+        # For Endesa, we first find the current rating of the cable
+        cable_info = next((c for c in generic_cable_data if c['area_mm2']['valor'] == section_mm2), None)
+        if not cable_info:
+            return None, f"No se encontró la capacidad de corriente para la sección {section_mm2} mm²."
+        
+        current_rating = cable_info['three_phase_amps']['valor']
+        
+        # Then, we find the highest power that can be protected by that current
+        applicable_entries = [
+            row for row in endesa_data 
+            if row['nominal_protection_current_a']['valor'] <= current_rating
+        ]
+        
+        if applicable_entries:
+            max_power_entry = max(applicable_entries, key=lambda x: x['power_kw']['valor'])
+            max_power = max_power_entry['power_kw']['valor']
+            source = max_power_entry['power_kw']['fuente']
+
+    elif company_name in ["Iberdrola", "Unión Fenosa"]:
+        data_table = iberdrola_data if company_name == "Iberdrola" else uf_data
+        
+        # For Iberdrola and UFD, we find all entries with the matching section
+        matching_entries = [
+            row for row in data_table 
+            if 'phase_mm2' in row and row['phase_mm2']['valor'] == section_mm2
+        ]
+        
+        if matching_entries:
+            # We select the one with the highest power rating
+            max_power_entry = max(matching_entries, key=lambda x: x['power_kw']['valor'])
+            max_power = max_power_entry['power_kw']['valor']
+            source = max_power_entry['power_kw']['fuente']
+
+    if max_power is not None:
+        return max_power, source
+    else:
+        return None, f"No se encontraron datos para la sección {section_mm2} mm² en las tablas de {company_name}."
+
     
 def get_iberdrola_igm_capacity(power_kw):
     """
@@ -113,7 +156,6 @@ with col1:
     company = st.selectbox("Seleccione Compañía Distribuidora", options=["Endesa", "Iberdrola", "Unión Fenosa"], index=0)
     power_kw = st.number_input("Potencia Máxima Contratada (kW)", min_value=0.0, value=20.0, step=1.0)
     voltage_v = st.number_input("Tensión Nominal de Red (V)", min_value=0.0, value=400.0, step=1.0)
-    Cable = st.number_input("Cable", min_value=0.0, value=400.0, step=1.0)
 
 with col2:
     phase_number = st.selectbox("Número de Fases", options=[1, 3], index=1)
@@ -348,8 +390,43 @@ if selected_company_data:
         st.markdown("""---""")
 
 
-
-
+    
+    # --- Section to Calculate Max Power by Cable Section ---
+    st.markdown("---")
+    st.header("Calcular Potencia Máxima por Sección de Cable")
+    
+    # User input for the cable section they want to check
+    cable_section_input = st.number_input(
+        "Introduzca la Sección del Cable (mm²)", 
+        min_value=1.5, 
+        value=50.0, 
+        step=1.0, 
+        key="cable_section_lookup"
+    )
+    
+    if cable_section_input:
+        # Call the new helper function with the correct data tables
+        max_power_kw, power_source = find_max_power_by_section(
+            section_mm2=cable_section_input,
+            company_name=company,
+            endesa_data=endesa_contracted_power_data,
+            iberdrola_data=iberdrola_ide_table,
+            uf_data=ufd_table,
+            generic_cable_data=generic_cable_diameter_data
+        )
+    
+        # Display the result
+        if max_power_kw is not None:
+            st.success(
+                f"Para una sección de **{cable_section_input} mm²**, la potencia máxima admitida por "
+                f"**{company}** es de **{max_power_kw:.2f} kW**."
+            )
+            st.info(f"Fuente de datos: *{power_source}*")
+        else:
+            # Show the message if no data was found
+            st.warning(power_source)
+    
+    st.markdown("---")
 
 
     
