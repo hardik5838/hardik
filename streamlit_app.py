@@ -109,7 +109,6 @@ def find_max_power_by_section(section_mm2_input, company_name, endesa_data, iber
     }
 
 
-    }
 
     
 def get_iberdrola_igm_capacity(power_kw):
