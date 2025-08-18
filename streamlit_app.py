@@ -476,7 +476,7 @@ if selected_company_data:
             with col1:
                 st.markdown("##### Valor Calculado (Estimación)")
                 st.write(
-                    f"Para su valor exacto de **{interp['section']} mm²**, la potencia interpolada es **~{interp['power']:.2f} kW**."
+                    f"Para su valor exacto de **{interp['section']:.1f} mm²**, la potencia interpolada es **~{interp['power']:.2f} kW**."
                 )
                 st.caption(f"*{interp['source']}*")
     
