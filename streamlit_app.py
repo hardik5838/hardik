@@ -45,51 +45,80 @@ def find_data(lookup_value, data_table, lookup_key='power_kw'):
             
     return None
 
-def find_max_power_by_section(section_mm2, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data):
-    """
-    Finds the maximum power for a given cable section based on the selected company.
-    """
+def _get_power_for_exact_section(section_mm2, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data):
+    """Helper function to find the maximum power for a SINGLE, STANDARD cable section."""
+    # This function contains the original lookup logic
     max_power = None
     source = "Fuente no encontrada."
 
     if company_name == "Endesa":
-        # For Endesa, we first find the current rating of the cable
         cable_info = next((c for c in generic_cable_data if c['area_mm2']['valor'] == section_mm2), None)
-        if not cable_info:
-            return None, f"No se encontró la capacidad de corriente para la sección {section_mm2} mm²."
-        
+        if not cable_info: return None, "Datos de cable genérico no encontrados."
         current_rating = cable_info['three_phase_amps']['valor']
-        
-        # Then, we find the highest power that can be protected by that current
-        applicable_entries = [
-            row for row in endesa_data 
-            if row['nominal_protection_current_a']['valor'] <= current_rating
-        ]
-        
+        applicable_entries = [row for row in endesa_data if row['nominal_protection_current_a']['valor'] <= current_rating]
         if applicable_entries:
             max_power_entry = max(applicable_entries, key=lambda x: x['power_kw']['valor'])
             max_power = max_power_entry['power_kw']['valor']
             source = max_power_entry['power_kw']['fuente']
-
-    elif company_name in ["Iberdrola", "Unión Fenosa"]:
+    
+    else: # Iberdrola & Unión Fenosa
         data_table = iberdrola_data if company_name == "Iberdrola" else uf_data
-        
-        # For Iberdrola and UFD, we find all entries with the matching section
-        matching_entries = [
-            row for row in data_table 
-            if 'phase_mm2' in row and row['phase_mm2']['valor'] == section_mm2
-        ]
-        
+        matching_entries = [row for row in data_table if 'phase_mm2' in row and row['phase_mm2']['valor'] == section_mm2]
         if matching_entries:
-            # We select the one with the highest power rating
             max_power_entry = max(matching_entries, key=lambda x: x['power_kw']['valor'])
             max_power = max_power_entry['power_kw']['valor']
             source = max_power_entry['power_kw']['fuente']
 
-    if max_power is not None:
-        return max_power, source
-    else:
-        return None, f"No se encontraron datos para la sección {section_mm2} mm² en las tablas de {company_name}."
+    return max_power, source
+
+def find_max_power_by_section(section_mm2_input, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data):
+    """
+    Finds max power for a cable section, providing low/high matches and an interpolated value for non-standard sizes.
+    """
+    # Get a sorted list of unique, standard cable sections
+    standard_sections = sorted(list(set(c['area_mm2']['valor'] for c in generic_cable_data)))
+    
+    # --- Case 1: Exact Match ---
+    if section_mm2_input in standard_sections:
+        power, source = _get_power_for_exact_section(section_mm2_input, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data)
+        if power is not None:
+            return {
+                "exact_match": {"section": section_mm2_input, "power": power, "source": source}
+            }
+        else:
+            return {"error": source}
+
+    # --- Case 2: Non-Standard Size, Find Bounds ---
+    lower_bound = None
+    upper_bound = None
+    for s in standard_sections:
+        if s < section_mm2_input:
+            lower_bound = s
+        if s > section_mm2_input:
+            upper_bound = s
+            break # Stop once we find the first size larger than the input
+            
+    # --- Handle Edge Cases ---
+    if not lower_bound or not upper_bound:
+        return {"error": f"La sección {section_mm2_input} mm² está fuera del rango de cálculo ({min(standard_sections)}-{max(standard_sections)} mm²)."}
+
+    # --- Get Power for Lower and Upper Bounds ---
+    power_low, source_low = _get_power_for_exact_section(lower_bound, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data)
+    power_high, source_high = _get_power_for_exact_section(upper_bound, company_name, endesa_data, iberdrola_data, uf_data, generic_cable_data)
+
+    if power_low is None or power_high is None:
+        return {"error": "No se pudieron determinar los límites de potencia para la interpolación."}
+
+    # --- Perform Linear Interpolation ---
+    interpolated_power = power_low + (
+        (section_mm2_input - lower_bound) * (power_high - power_low) / (upper_bound - lower_bound)
+    )
+
+    return {
+        "low_match": {"section": lower_bound, "power": power_low, "source": source_low},
+        "high_match": {"section": upper_bound, "power": power_high, "source": source_high},
+        "interpolated": {"section": section_mm2_input, "power": interpolated_power, "source": "Calculado por interpolación lineal"}
+    }
 
     
 def get_iberdrola_igm_capacity(power_kw):
@@ -395,19 +424,23 @@ if selected_company_data:
     st.markdown("---")
     st.header("Calcular Potencia Máxima por Sección de Cable")
     
-    # User input for the cable section they want to check
+    # --- Section to Calculate Max Power by Cable Section ---
+    st.markdown("---")
+    st.header("Calcular Potencia Máxima por Sección de Cable")
+    
     cable_section_input = st.number_input(
         "Introduzca la Sección del Cable (mm²)", 
         min_value=1.5, 
-        value=50.0, 
-        step=1.0, 
+        value=149.0, # Using 149 as a default to demonstrate the new feature
+        step=0.1, 
+        format="%.1f",
         key="cable_section_lookup"
     )
     
     if cable_section_input:
-        # Call the new helper function with the correct data tables
-        max_power_kw, power_source = find_max_power_by_section(
-            section_mm2=cable_section_input,
+        # Call the new, more powerful function
+        result = find_max_power_by_section(
+            section_mm2_input=cable_section_input,
             company_name=company,
             endesa_data=endesa_contracted_power_data,
             iberdrola_data=iberdrola_ide_table,
@@ -415,16 +448,47 @@ if selected_company_data:
             generic_cable_data=generic_cable_diameter_data
         )
     
-        # Display the result
-        if max_power_kw is not None:
+        # --- Display results based on the dictionary key received ---
+        if "exact_match" in result:
+            res = result["exact_match"]
             st.success(
-                f"Para una sección de **{cable_section_input} mm²**, la potencia máxima admitida por "
-                f"**{company}** es de **{max_power_kw:.2f} kW**."
+                f"**Resultado para una sección estándar de {res['section']} mm²:**\n\n"
+                f"La potencia máxima admitida por **{company}** es de **{res['power']:.2f} kW**."
             )
-            st.info(f"Fuente de datos: *{power_source}*")
-        else:
-            # Show the message if no data was found
-            st.warning(power_source)
+            st.info(f"Fuente de datos: *{res['source']}*")
+    
+        elif "low_match" in result:
+            low = result["low_match"]
+            high = result["high_match"]
+            interp = result["interpolated"]
+            
+            st.markdown("#### Recomendación (Basada en la Sección Estándar Inferior)")
+            st.success(
+                f"Para garantizar la seguridad, use la especificación para **{low['section']} mm²** (la sección estándar inferior más cercana).\n\n"
+                f"La potencia máxima admitida es **{low['power']:.2f} kW**."
+            )
+            st.info(f"Fuente: *{low['source']}*")
+            
+            st.markdown("---")
+            st.markdown("#### Información Adicional")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown("##### Valor Calculado (Estimación)")
+                st.write(
+                    f"Para su valor exacto de **{interp['section']} mm²**, la potencia interpolada es **~{interp['power']:.2f} kW**."
+                )
+                st.caption(f"*{interp['source']}*")
+    
+            with col2:
+                st.markdown("##### Referencia Superior")
+                st.write(
+                    f"La siguiente sección estándar es **{high['section']} mm²**, que admite **{high['power']:.2f} kW**."
+                )
+                st.caption(f"Fuente: *{high['source']}*")
+    
+        elif "error" in result:
+            st.error(result["error"])
     
     st.markdown("---")
 
