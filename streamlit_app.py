@@ -408,11 +408,6 @@ if selected_company_data:
 
         st.markdown("""---""")
 
-
-    
-    # --- Section to Calculate Max Power by Cable Section ---
-    st.markdown("---")
-    st.header("Calcular Potencia Máxima por Sección de Cable")
     
     # --- Section to Calculate Max Power by Cable Section ---
     st.markdown("---")
