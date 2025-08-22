@@ -459,7 +459,7 @@ if selected_company_data:
             
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown("##### Valor Calculado (Estimación)")
+                st.markdown("##### Valor Calculado (Estimación con promedio ponderado)")
                 st.write(
                     f"Para su valor exacto de **{interp['section']:.1f} mm²**, la potencia interpolada es **~{interp['power']:.2f} kW**."
                 )
