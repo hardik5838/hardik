@@ -160,8 +160,8 @@ def calculate_current(power_kw, voltage_v, phase_number, power_factor):
 
 # --- App Body ---
 st.image("Logo_ASEPEYO.png", width=250)
-st.title("Generador de Guía de Instalaciones Eléctricas")
-st.markdown("Genere requisitos eléctricos detallados según las normas de las compañías distribuidoras.")
+st.title("Generador de Guías para Instalaciones Eléctricas")
+st.markdown("Genere los requisitos técnicos detallados según las normas de las compañías distribuidoras.")
 
 
 
@@ -173,12 +173,12 @@ st.header("Parámetros de Entrada")
 col1, col2 = st.columns(2)
 with col1:
     company = st.selectbox("Seleccione Compañía Distribuidora", options=["Endesa", "Iberdrola", "Unión Fenosa"], index=0)
-    power_kw = st.number_input("Potencia Máxima Contratada (kW)", min_value=0.0, value=20.0, step=1.0)
+    power_kw = st.number_input("Potencia Máxima a Contratar (kW)", min_value=0.0, value=20.0, step=1.0)
     voltage_v = st.number_input("Tensión Nominal de Red (V)", min_value=0.0, value=400.0, step=1.0)
 
 with col2:
     phase_number = st.selectbox("Número de Fases", options=[1, 3], index=1)
-    load_factor = st.slider("Factor de Carga (Factor de Potencia)", 0.8, 1.0, 0.9, 0.01)
+    load_factor = st.slider("Factor de Potencia (cos φ)", 0.8, 1.0, 0.9, 0.01)
     voltage_drop_limit = st.slider("Límite de Caída de Tensión (%)", 0.5, 5.0, 0.5, 0.1)
 
 st.info("También puede introducir directamente la corriente de diseño si la conoce.")
