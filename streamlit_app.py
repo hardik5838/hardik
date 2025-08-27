@@ -371,28 +371,28 @@ if selected_company_data:
         fuse_info = selected_company_data.get('nominal_protection_current_a', {})
         cgp_info = get_endesa_cgp_type(fuse_info.get('valor'))
         
-        fuentes_utilizadas["Capacidad del IGM"] = igm_info.get('fuente')
+        fuentes_utilizadas["Intensidad Máxima del IGM"] = igm_info.get('fuente')
         fuentes_utilizadas["Tipo de CGP"] = cgp_info[1]
         fuentes_utilizadas["Capacidad de Fusible"] = fuse_info.get('fuente')
         
-        st.write(f"- **Capacidad del IGM:** {igm_info.get('valor')}")
+        st.write(f"- **Intensidad Máxima del IGM:** {igm_info.get('valor')}")
         st.write(f"- **Tipo de CGP:** {cgp_info[0]}")
-        st.write(f"- **Capacidad de Fusible/Interruptor:** {fuse_info.get('valor')} A")
+        st.write(f"- **Calibre del Fusible/Interruptor:** {fuse_info.get('valor')} A")
 
     elif company == "Iberdrola":
         igm_info = get_iberdrola_igm_capacity(power_kw_for_lookup)
         fuse_info = selected_company_data.get('conductor_amp_rating', {})
         cgp_info = get_iberdrola_cgp_type(fuse_info.get('valor'))
         
-        fuentes_utilizadas["Capacidad del IGM"] = igm_info.get('fuente')
+        fuentes_utilizadas["Intensidad Máxima del IGM"] = igm_info.get('fuente')
         fuentes_utilizadas["Tipo de CGP"] = cgp_info[1]
         fuentes_utilizadas["Capacidad de Fusible"] = fuse_info.get('fuente')
         
-        st.write(f"- **Capacidad del IGM:** {igm_info.get('valor')}")
+        st.write(f"- **Intensidad Máxima del IGM:** {igm_info.get('valor')}")
         st.write(f"- **Tipo de CGP:** {cgp_info[0]}")
         if "CGP-1-100/BUC" in cgp_info[0]:
             st.info("*(Nota: El tipo CGP-1-100/BUC puede estar restringido a mantenimiento.)*")
-        st.write(f"- **Capacidad de Fusible/Interruptor:** {fuse_info.get('valor')} A")
+        st.write(f"- **Calibre del Fusible/Interruptor:** {fuse_info.get('valor')} A")
 
     elif company == "Unión Fenosa":
         cgp_type, fuse_cap, cgp_source = get_uf_cgp_type_and_fuse(calculated_current)
@@ -400,8 +400,8 @@ if selected_company_data:
         fuentes_utilizadas["Capacidad de Fusible"] = cgp_source
 
         st.write(f"- **Tipo de CGP:** {cgp_type}")
-        st.write(f"- **Capacidad de Fusible/Interruptor:** {fuse_cap} A")
-        st.write("- **Capacidad del IGM:** N/A (Consulte la documentación de Unión Fenosa)")
+        st.write(f"- **Calibre del Fusible/Interruptor:** {fuse_cap} A")
+        st.write("- **Intensidad Máxima del IGM:** N/A (Consulte la documentación de Unión Fenosa)")
         
         
         st.header("Requisitos Generados")
@@ -449,7 +449,7 @@ if selected_company_data:
             
             st.markdown("#### Recomendación (Basada en la Sección Estándar Inferior)")
             st.success(
-                f"Para garantizar la seguridad, use la especificación para **{low['section']} mm²** (la sección estándar inferior más cercana).\n\n"
+                f"Para garantizar la seguridad, utilice la especificación para **{low['section']} mm²** (la sección estándar inmediamente inferior).\n\n"
                 f"La potencia máxima admitida es **{low['power']:.2f} kW**."
             )
             st.info(f"Fuente: *{low['source']}*")
@@ -586,7 +586,7 @@ if selected_company_data:
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-5xl w-full">
-        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Diagrama de Acometida Eléctrica</h1>
+        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Diagrama de la Instalación de Enlace</h1>
         <div class="flex flex-col items-center justify-center w-full">
             <svg viewBox="0 0 1744 368" class="w-full h-auto max-h-[368px]">
                 <!-- Background sections -->
