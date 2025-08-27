@@ -298,7 +298,7 @@ if selected_company_data:
 
     
     # --- Cable Sections ---
-    st.markdown("#### Secciones de Cables (mm²)")
+    st.markdown("#### Secciones de Cables ")
     phase_mm2_info, neutral_mm2_info, ground_mm2_info = {}, {}, {}
     
     if company == "Endesa":
@@ -311,12 +311,12 @@ if selected_company_data:
         fuentes_utilizadas["Sección de Fase"] = "Tabla Genérica de Cables (basado en Corriente de Protección)"
         
         neutral_mm2_info = {"valor": phase_mm2_info.get('valor'), "fuente": "Endesa Guía NRZ103, Pág. 23 (Regla: Neutro = Fase)"}
-        fuentes_utilizadas["Sección de Neutro"] = neutral_mm2_info.get('fuente')
+        fuentes_utilizadas["Sección del Conductor Neutro"] = neutral_mm2_info.get('fuente')
 
         ground_mm2_info = {"valor": get_guia_bt_15_ground_size_by_phase(phase_mm2_info.get('valor')), "fuente": "GUÍA - BT-15, Pág. 56, 'Tabla 14 PE'"}
         fuentes_utilizadas["Sección de Tierra"] = ground_mm2_info.get('fuente')
 
-        st.info("*(Nota: La sección del conductor de protección (tierra), Endesa no lo especifica directamente, este reccomendation es de GUÍA-BT-13.")
+        st.info("* Nota: Endesa no especifica directamente la sección del conductor de protección (toma de tierra). Esta recomendación se basa en la GUÍA-BT-13 del REBT.")
 
 
     
@@ -325,11 +325,11 @@ if selected_company_data:
         neutral_mm2_info = selected_company_data.get('neutral_mm2', {})
         ground_mm2_info = selected_company_data.get('ground_mm2', {})
         fuentes_utilizadas["Sección de Fase"] = phase_mm2_info.get('fuente')
-        fuentes_utilizadas["Sección de Neutro"] = neutral_mm2_info.get('fuente')
+        fuentes_utilizadas["Sección del Conductor Neutro"] = neutral_mm2_info.get('fuente')
         fuentes_utilizadas["Sección de Tierra"] = ground_mm2_info.get('fuente')
 
-    st.write(f"- **Sección de Cable de Fase:** {phase_mm2_info.get('valor', 'N/A')} mm²")
-    st.write(f"- **Sección de Neutro:** {neutral_mm2_info.get('valor', 'N/A')} mm²")
+    st.write(f"- **Sección del Conductor de Fase:** {phase_mm2_info.get('valor', 'N/A')} mm²")
+    st.write(f"- **Sección del Conductor Neutro:** {neutral_mm2_info.get('valor', 'N/A')} mm²")
     st.write(f"- **Sección de Conductor de Protección (Tierra):** {ground_mm2_info.get('valor', 'N/A')} mm²")
     
     
@@ -338,7 +338,7 @@ if selected_company_data:
     
     
     # --- Installation Details ---
-    st.markdown("#### Detalles de Instalación")
+    st.markdown("#### Detalles de la Instalación (Línea General de Alimentación)")
 
     if company == "Endesa":
         # Get the phase_mm2 value again to ensure it's in scope
@@ -719,7 +719,7 @@ else:
 
 # --- Disclaimer ---
 st.warning(
-    "**Descargo de Responsabilidad:** Esta herramienta es una guía informativa y Siempre verifique los requisitos con la Refrencia abajo"
+    "**Descargo de Responsabilidad: Esta herramienta es una guía informativa. Verifique siempre los requisitos con los documentos de referencia oficiales listados a continuación.**"
 )
 
 
