@@ -235,7 +235,7 @@ elif company == "Iberdrola":
 
 if selected_company_data:
     display_basis = f"{calculated_current:.2f} A" if input_design_current_a > 0 else f"{power_kw:.2f} kW"
-    st.subheader(f"Requisitos para {company} (Basado en {display_basis})")
+    st.subheader(f"Requisitos para {company} (Basados en {display_basis})")
 
 
 
@@ -308,7 +308,7 @@ if selected_company_data:
         
         found_cable = next((c for c in generic_cable_diameter_data if c["three_phase_amps"]["valor"] >= required_nom_int_val), generic_cable_diameter_data[-1])
         phase_mm2_info = found_cable.get('area_mm2', {})
-        fuentes_utilizadas["Sección de Fase"] = "Tabla Genérica de Cables (basado en Corriente de Protección)"
+        fuentes_utilizadas["Sección de Fase"] = "Tabla Genérica de Cables (basada en Corriente de Protección)"
         
         neutral_mm2_info = {"valor": phase_mm2_info.get('valor'), "fuente": "Endesa Guía NRZ103, Pág. 23 (Regla: Neutro = Fase)"}
         fuentes_utilizadas["Sección del Conductor Neutro"] = neutral_mm2_info.get('fuente')
@@ -586,14 +586,14 @@ if selected_company_data:
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-5xl w-full">
-        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Diagrama de la Instalación de Enlace</h1>
+        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Diagrama de la Instalación de Enlace</h2>
         <div class="flex flex-col items-center justify-center w-full">
             <svg viewBox="0 0 1744 368" class="w-full h-auto max-h-[368px]">
                 <!-- Background sections -->
                 <rect x="0" y="0" width="580" height="395" fill="#FFFBEA" rx="0" ry="0"/> <!-- Left section (Acometida) -->
                 <text x="290" y="35" class="yellow">DISTRIBUIDORA</text>
                 <rect x="580" y="0" width="580" height="395" fill="#EBF5FF" rx="0" ry="0"/> <!-- Middle section (CGP) -->
-                <text x="850" y="35" class="blue">COMUN</text>
+                <text x="850" y="35" class="blue">COMÚN</text>
                 <rect x="1160" y="0" width="650" height="395" fill="#E6FFED" rx="0" ry="0"/> <!-- Right section (IGM, LGA, Tubo) -->
                 <text x="1485" y="35" class="green">CLIENTE</text>
                 <!-- Dashed borders between sections -->
@@ -649,7 +649,7 @@ if selected_company_data:
                 <line x1="1520" y1="170" x2="1520" y2="190" class="symbol-stroke" transform="rotate(45 1520 180)" />
                 <text x="1500" y="120" class="label">LGA</text>
                 <!-- LGA Values (Dynamic Placeholders) -->
-                <text x="1500" y="235" class="value-label">3*Fase: {lga_fase}</text>
+                <text x="1500" y="235" class="value-label">3 Fase: {lga_fase}</text>
                 <text x="1500" y="255" class="value-label">Neutro: {lga_neutro}</text>
                 <text x="1500" y="275" class="value-label">Tierra: {lga_tierra}</text>
                 <!-- Tubo Symbol (Circle at the end) -->
