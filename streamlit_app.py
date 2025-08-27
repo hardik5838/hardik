@@ -411,7 +411,7 @@ if selected_company_data:
     
     # --- Section to Calculate Max Power by Cable Section ---
     st.markdown("---")
-    st.header("Calcular Potencia Máxima por Sección de Cable")
+    st.header("Cálculo de potencia máxima por sección de cable")
     
     cable_section_input = st.number_input(
         "Introduzca la Sección del Cable (mm²)", 
@@ -449,7 +449,7 @@ if selected_company_data:
             
             st.markdown("#### Recomendación (Basada en la Sección Estándar Inferior)")
             st.success(
-                f"Para garantizar la seguridad, utilice la especificación para **{low['section']} mm²** (la sección estándar inmediamente inferior).\n\n"
+                f"Para garantizar la seguridad, utilice la especificación para **{low['section']} mm²** (la sección estándar inmediatamente inferior).\n\n"
                 f"La potencia máxima admitida es **{low['power']:.2f} kW**."
             )
             st.info(f"Fuente: *{low['source']}*")
